@@ -1,0 +1,617 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-09",
+  "purpose": "Preliminary form applicability only. A next result advances the questionnaire; it does not establish legal eligibility, approval, filing readiness, or permission to travel. Review results require current instructions and, where appropriate, qualified individual advice.",
+  "pdfVerificationMethod": "Official USCIS URLs downloaded successfully on the checked date; pdfplumber/pdfminer confirmed an AcroForm field tree and Widget annotations. This verifies interactive PDF structure, not USCIS acceptance of an edition on a future filing date.",
+  "forms": [
+    {
+      "id": "AR-11",
+      "sourceUrl": "https://www.uscis.gov/ar-11",
+      "pdfUrl": "https://www.uscis.gov/sites/default/files/document/forms/ar-11.pdf",
+      "scope": "Report a noncitizen's change of U.S. address to USCIS; this is not an application for immigration status.",
+      "questions": [
+        {
+          "id": "address-change",
+          "text": "Are you reporting a change of your U.S. address as a noncitizen?",
+          "help": "Answer for the person whose address is changing.",
+          "yes": "next",
+          "no": "stop",
+          "stopReason": "AR-11 is a noncitizen address-reporting form. Use USCIS address-change guidance to select the right process for a different purpose."
+        },
+        {
+          "id": "court-only",
+          "text": "Is your only purpose to change your address with an immigration court?",
+          "help": "AR-11 does not update the Immigration Court's records.",
+          "yes": "stop",
+          "no": "next",
+          "stopReason": "Use the court's separate address-change process. If USCIS also needs your new address, complete that update separately."
+        },
+        {
+          "id": "special-procedure",
+          "text": "Does your case require a protected or confidential address procedure?",
+          "help": "For example, special procedures may apply to certain abuse or trafficking survivor cases. Check USCIS guidance if unsure.",
+          "yes": "review",
+          "no": "next",
+          "reviewReason": "Check the current USCIS instructions for your case type before entering or submitting a new address."
+        }
+      ],
+      "additionalSourceUrls": [
+        "https://www.uscis.gov/addresschange"
+      ],
+      "pdfVerification": {
+        "status": "downloaded-and-fillable-structure-verified",
+        "checkedAt": "2026-10-09",
+        "httpStatus": 200,
+        "edition": "11/02/22",
+        "pageCount": 2,
+        "acroFormTopLevelFields": 1,
+        "widgetCount": 31
+      }
+    },
+    {
+      "id": "G-1145",
+      "sourceUrl": "https://www.uscis.gov/g-1145",
+      "pdfUrl": "https://www.uscis.gov/sites/default/files/document/forms/g-1145.pdf",
+      "scope": "Optional email or text notice that USCIS accepted a paper filing at a Lockbox.",
+      "questions": [
+        {
+          "id": "lockbox",
+          "text": "Will you mail an application or petition to a USCIS Lockbox?",
+          "help": "This notice service is for Lockbox filings.",
+          "yes": "next",
+          "no": "stop",
+          "stopReason": "G-1145 is for acceptance notices for USCIS Lockbox filings. It is not a case-status inquiry or a separate immigration application."
+        },
+        {
+          "id": "notification",
+          "text": "Do you want an email or text acceptance notice?",
+          "help": "You can request email, text, or both; overseas recipients receive email only.",
+          "yes": "next",
+          "no": "stop",
+          "stopReason": "G-1145 is optional. You do not need it if you do not want an electronic acceptance notice."
+        }
+      ],
+      "pdfVerification": {
+        "status": "downloaded-and-fillable-structure-verified",
+        "checkedAt": "2026-10-09",
+        "httpStatus": 200,
+        "edition": "09/26/14",
+        "pageCount": 1,
+        "acroFormTopLevelFields": 1,
+        "widgetCount": 6
+      }
+    },
+    {
+      "id": "G-639",
+      "sourceUrl": "https://www.uscis.gov/g-639",
+      "pdfUrl": "https://www.uscis.gov/sites/default/files/document/forms/g-639.pdf",
+      "scope": "Request USCIS records under FOIA/Privacy Act, or an applicable Privacy Act record correction; no visa eligibility is assessed.",
+      "questions": [
+        {
+          "id": "records",
+          "text": "Are you requesting USCIS-held records or an applicable Privacy Act record correction?",
+          "help": "Requests can concern your own records, another person's records, or USCIS agency records.",
+          "yes": "next",
+          "no": "stop",
+          "stopReason": "G-639 is a records-request form. Case-status inquiries, return of originals, and visa petition actions use other processes."
+        },
+        {
+          "id": "third-party",
+          "text": "Does the request include a living person's private records without their consent or evidence of your authority?",
+          "help": "Answer No for your own records or a request limited to agency records.",
+          "yes": "review",
+          "no": "next",
+          "reviewReason": "Privacy protections can limit disclosure. Review USCIS consent, identity, and third-party request requirements before proceeding."
+        },
+        {
+          "id": "identification",
+          "text": "Can you describe the records and provide enough information for USCIS to locate them?",
+          "help": "You do not have to know every field. Describe the documents or subject as clearly as you can.",
+          "yes": "next",
+          "no": "review",
+          "reviewReason": "Clarify the records being requested; missing identifying information may prevent USCIS from locating them."
+        }
+      ],
+      "additionalSourceUrls": [
+        "https://www.uscis.gov/foia"
+      ],
+      "pdfVerification": {
+        "status": "downloaded-and-fillable-structure-verified",
+        "checkedAt": "2026-10-09",
+        "httpStatus": 200,
+        "edition": "12/12/24",
+        "pageCount": 11,
+        "acroFormTopLevelFields": 1,
+        "widgetCount": 159
+      }
+    },
+    {
+      "id": "I-130A",
+      "sourceUrl": "https://www.uscis.gov/i-130",
+      "pdfUrl": "https://www.uscis.gov/sites/default/files/document/forms/i-130a.pdf",
+      "scope": "Supplemental information about the spouse beneficiary of Form I-130; filed with the spouse petition.",
+      "questions": [
+        {
+          "id": "spouse-beneficiary",
+          "text": "Is this information for the spouse beneficiary of an I-130 petition?",
+          "help": "The beneficiary is the spouse seeking immigration through the petition; answer for that person.",
+          "yes": "next",
+          "no": "stop",
+          "stopReason": "I-130A supplements an I-130 spouse petition. It is not the supplement for a parent, child, or sibling petition."
+        },
+        {
+          "id": "connected-petition",
+          "text": "Is an I-130 spouse petition being prepared, or has USCIS requested this supplement for an existing petition?",
+          "help": "I-130A is not a standalone application for a green card.",
+          "yes": "next",
+          "no": "review",
+          "reviewReason": "Confirm the related I-130 petition and when the supplement should be submitted."
+        },
+        {
+          "id": "signature",
+          "text": "Can the required beneficiary information be completed and any required signature obtained?",
+          "help": "A spouse residing overseas must complete I-130A but does not have to sign it.",
+          "yes": "next",
+          "no": "review",
+          "reviewReason": "Review missing information or the applicable signature instructions before submitting the supplement."
+        }
+      ],
+      "pdfVerification": {
+        "status": "downloaded-and-fillable-structure-verified",
+        "checkedAt": "2026-10-09",
+        "httpStatus": 200,
+        "edition": "04/01/24",
+        "pageCount": 6,
+        "acroFormTopLevelFields": 1,
+        "widgetCount": 194
+      }
+    },
+    {
+      "id": "I-131",
+      "sourceUrl": "https://www.uscis.gov/i-131",
+      "pdfUrl": "https://www.uscis.gov/sites/default/files/document/forms/i-131.pdf",
+      "scope": "Select a travel-document, parole, re-parole, or parole-in-place request category; category-specific legal review is still required.",
+      "questions": [
+        {
+          "id": "purpose",
+          "text": "Are you requesting a travel document, parole, re-parole, or parole in place?",
+          "help": "I-131 covers several different request types with different rules.",
+          "yes": "next",
+          "no": "stop",
+          "stopReason": "I-131 is for designated travel/parole requests, not a general passport, visa, or green-card renewal."
+        },
+        {
+          "id": "category",
+          "text": "Have you identified the I-131 request category that matches your situation?",
+          "help": "Examples include a reentry permit, refugee travel document, TPS travel authorization, or advance parole.",
+          "yes": "next",
+          "no": "review",
+          "reviewReason": "Select the correct category and confirm its current requirements before preparing I-131."
+        },
+        {
+          "id": "travel-risk",
+          "text": "Are you already abroad, planning urgent travel, in removal proceedings, or unsure how travel affects a pending case?",
+          "help": "Travel rules and filing-location requirements vary by request type.",
+          "yes": "review",
+          "no": "next",
+          "reviewReason": "Review the specific travel and case consequences before filing or departing. An I-131 filing does not itself authorize travel or guarantee return."
+        }
+      ],
+      "additionalSourceUrls": [
+        "https://www.uscis.gov/sites/default/files/document/forms/i-131instr.pdf"
+      ],
+      "researchNotes": "Downloaded instruction PDF contains a draft watermark. Questions only address broad form purpose and direct category-specific uncertainty to review.",
+      "pdfVerification": {
+        "status": "downloaded-and-fillable-structure-verified",
+        "checkedAt": "2026-10-09",
+        "httpStatus": 200,
+        "edition": "01/20/25",
+        "pageCount": 14,
+        "acroFormTopLevelFields": 1,
+        "widgetCount": 339
+      }
+    },
+    {
+      "id": "I-131A",
+      "sourceUrl": "https://www.uscis.gov/i-131a",
+      "pdfUrl": "https://www.uscis.gov/sites/default/files/document/forms/i-131a.pdf",
+      "scope": "Carrier documentation for certain people abroad who lack documents needed to board transportation to the United States; not a replacement status document.",
+      "questions": [
+        {
+          "id": "outside-us",
+          "text": "Are you currently outside the United States and seeking to return?",
+          "help": "I-131A is used to request carrier documentation abroad.",
+          "yes": "next",
+          "no": "stop",
+          "stopReason": "I-131A is not the domestic replacement-document process. Check the appropriate replacement or travel form while inside the United States."
+        },
+        {
+          "id": "missing-document",
+          "text": "Are you unable to board because your required return-travel document is missing, damaged, or otherwise unavailable?",
+          "help": "Some travelers can board with existing documents; the carrier and current guidance matter.",
+          "yes": "next",
+          "no": "review",
+          "reviewReason": "Check whether carrier documentation is necessary before preparing or paying for I-131A."
+        },
+        {
+          "id": "covered-document",
+          "text": "Are you a permanent resident, or did you hold a qualifying advance-parole document or EAD with travel endorsement?",
+          "help": "I-131A can cover certain non-residents with qualifying travel documents as well as permanent residents.",
+          "yes": "next",
+          "no": "review",
+          "reviewReason": "Confirm the document category. I-131A is not an application for initial humanitarian parole."
+        },
+        {
+          "id": "valid-return",
+          "text": "Can you document that your status or travel authorization remains valid and that your planned return meets its time limits?",
+          "help": "For residents, absences and reentry-permit validity matter; advance-parole travel authorization must still permit the return.",
+          "yes": "next",
+          "no": "review",
+          "reviewReason": "An extended absence, expired/revoked authorization, or status concern requires case-specific review before requesting carrier documentation."
+        }
+      ],
+      "additionalSourceUrls": [
+        "https://www.uscis.gov/sites/default/files/document/forms/i-131ainstr.pdf"
+      ],
+      "pdfVerification": {
+        "status": "downloaded-and-fillable-structure-verified",
+        "checkedAt": "2026-10-09",
+        "httpStatus": 200,
+        "edition": "01/20/25",
+        "pageCount": 6,
+        "acroFormTopLevelFields": 1,
+        "widgetCount": 149
+      }
+    },
+    {
+      "id": "I-134",
+      "sourceUrl": "https://www.uscis.gov/i-134",
+      "pdfUrl": "https://www.uscis.gov/sites/default/files/document/forms/i-134.pdf",
+      "scope": "Financial support declaration for a specified temporary-stay or parole process that calls for I-134.",
+      "questions": [
+        {
+          "id": "temporary-support",
+          "text": "Are you documenting financial support for a temporary U.S. stay or a parole request?",
+          "help": "Depending on the process, the person signing may support themselves or another beneficiary.",
+          "yes": "next",
+          "no": "stop",
+          "stopReason": "I-134 addresses temporary-stay financial support. Confirm the correct support form for a different immigration process."
+        },
+        {
+          "id": "required-form",
+          "text": "Does the relevant USCIS or consular process specifically request Form I-134?",
+          "help": "Support forms are not interchangeable; use the instructions for the beneficiary's process.",
+          "yes": "next",
+          "no": "review",
+          "reviewReason": "Confirm that the current process calls for I-134 before preparing this declaration."
+        },
+        {
+          "id": "i864-required",
+          "text": "Does the beneficiary's process require Form I-864 instead?",
+          "help": "I-864 is a different affidavit used in specified immigrant cases.",
+          "yes": "stop",
+          "no": "next",
+          "stopReason": "Use the required I-864 process. I-134 cannot replace an I-864 that the case requires."
+        },
+        {
+          "id": "resources",
+          "text": "Can the person signing document access to the funds offered for support?",
+          "help": "Income, assets, dependents, and the length of support may be relevant.",
+          "yes": "next",
+          "no": "review",
+          "reviewReason": "Review the financial evidence and the process-specific support requirements before signing."
+        }
+      ],
+      "additionalSourceUrls": [
+        "https://www.uscis.gov/sites/default/files/document/forms/i-134instr.pdf"
+      ],
+      "researchNotes": "Downloaded instruction PDF contains a draft watermark. Confirm the current process and accepted instructions before filing; this check does not assess financial sufficiency.",
+      "pdfVerification": {
+        "status": "downloaded-and-fillable-structure-verified",
+        "checkedAt": "2026-10-09",
+        "httpStatus": 200,
+        "edition": "01/20/25",
+        "pageCount": 10,
+        "acroFormTopLevelFields": 1,
+        "widgetCount": 250
+      }
+    },
+    {
+      "id": "I-765WS",
+      "sourceUrl": "https://www.uscis.gov/i-765",
+      "pdfUrl": "https://www.uscis.gov/sites/default/files/document/forms/i-765ws.pdf",
+      "scope": "Economic-need worksheet accompanying I-765 in deferred-action categories (c)(14) or (c)(33).",
+      "questions": [
+        {
+          "id": "category",
+          "text": "Is your I-765 category (c)(14) deferred action or (c)(33) DACA?",
+          "help": "Check the category used for the employment-authorization request.",
+          "yes": "next",
+          "no": "stop",
+          "stopReason": "USCIS identifies I-765WS for categories (c)(14) and (c)(33). Other I-765 categories do not use this worksheet under these instructions."
+        },
+        {
+          "id": "i765",
+          "text": "Are you preparing the related I-765 application?",
+          "help": "I-765WS is a worksheet, not a standalone request for employment authorization.",
+          "yes": "next",
+          "no": "review",
+          "reviewReason": "Prepare or identify the related I-765 before completing its economic-need worksheet."
+        },
+        {
+          "id": "financial-information",
+          "text": "Can you provide your own annual income, annual expenses, and current asset value?",
+          "help": "Use your own finances; the worksheet does not require other household members' financial information.",
+          "yes": "next",
+          "no": "review",
+          "reviewReason": "Gather or reasonably explain your financial information before completing the worksheet."
+        }
+      ],
+      "pdfVerification": {
+        "status": "downloaded-and-fillable-structure-verified",
+        "checkedAt": "2026-10-09",
+        "httpStatus": 200,
+        "edition": "08/21/25",
+        "pageCount": 1,
+        "acroFormTopLevelFields": 1,
+        "widgetCount": 9
+      }
+    },
+    {
+      "id": "I-821",
+      "sourceUrl": "https://www.uscis.gov/i-821",
+      "pdfUrl": "https://www.uscis.gov/sites/default/files/document/forms/i-821.pdf",
+      "scope": "TPS registration or re-registration; country designation, dates, court orders, and individual requirements need current review.",
+      "questions": [
+        {
+          "id": "tps-purpose",
+          "text": "Are you seeking Temporary Protected Status or TPS re-registration?",
+          "help": "DACA uses I-821D, which is a different form.",
+          "yes": "next",
+          "no": "stop",
+          "stopReason": "I-821 is for TPS. Select the form for your actual immigration request."
+        },
+        {
+          "id": "country",
+          "text": "Have you confirmed the current TPS rules for your nationality, or your last habitual residence if stateless?",
+          "help": "Check the USCIS country page; designations and related court orders can change.",
+          "yes": "next",
+          "no": "review",
+          "reviewReason": "Review the current country-specific TPS guidance before assessing a filing path."
+        },
+        {
+          "id": "filing-window",
+          "text": "Have you identified the applicable registration window and residence/presence dates, or a possible late-filing basis?",
+          "help": "Missing a standard filing window does not by itself resolve whether an exception is available.",
+          "yes": "next",
+          "no": "review",
+          "reviewReason": "Registration dates, late-filing rules, and country-specific requirements need individual review; this check does not find you ineligible."
+        },
+        {
+          "id": "case-review",
+          "text": "Do you have any uncertainty about current TPS court orders, travel history, criminal history, or a prior decision?",
+          "help": "These issues can affect the available filing path.",
+          "yes": "review",
+          "no": "review",
+          "reviewReason": "TPS requires a current country-specific and individual review before filing. This short check only identifies the form's purpose."
+        }
+      ],
+      "additionalSourceUrls": [
+        "https://www.uscis.gov/tps"
+      ],
+      "policyCheckedAt": "2026-10-09",
+      "researchNotes": "Current TPS webpage retrieved directly. No fixed country eligibility or deadline is encoded. Downloaded instruction PDF contains a draft watermark.",
+      "pdfVerification": {
+        "status": "downloaded-and-fillable-structure-verified",
+        "checkedAt": "2026-10-09",
+        "httpStatus": 200,
+        "edition": "01/20/25",
+        "pageCount": 13,
+        "acroFormTopLevelFields": 1,
+        "widgetCount": 478
+      }
+    },
+    {
+      "id": "I-821D",
+      "sourceUrl": "https://www.uscis.gov/i-821d",
+      "pdfUrl": "https://www.uscis.gov/sites/default/files/document/forms/i-821d.pdf",
+      "scope": "DACA request or renewal; initial requests and renewal eligibility require current policy and individual review.",
+      "questions": [
+        {
+          "id": "daca-purpose",
+          "text": "Are you seeking consideration of DACA or a DACA renewal?",
+          "help": "This form is distinct from TPS Form I-821.",
+          "yes": "next",
+          "no": "stop",
+          "stopReason": "I-821D is for DACA. It is not a TPS application or a general request for immigration status."
+        },
+        {
+          "id": "prior-daca",
+          "text": "Have you previously received DACA?",
+          "help": "The current USCIS page says it processes renewals but does not process initial DACA requests.",
+          "yes": "next",
+          "no": "review",
+          "reviewReason": "USCIS currently accepts but does not process initial DACA requests. Review current policy and your circumstances before preparing an initial request."
+        },
+        {
+          "id": "renewal-window",
+          "text": "Is your latest DACA period still valid or expired less than one year ago, and was it never terminated?",
+          "help": "A longer expiration gap or termination may require treatment as an initial request.",
+          "yes": "next",
+          "no": "review",
+          "reviewReason": "Confirm whether USCIS treats this as a renewal or initial request, and how current court orders affect it."
+        },
+        {
+          "id": "individual-review",
+          "text": "Have you had travel without advance parole, a break in continuous residence, a criminal case, or another change affecting DACA?",
+          "help": "Answering Yes does not establish ineligibility.",
+          "yes": "review",
+          "no": "review",
+          "reviewReason": "Review current DACA rules, timing, and individual history before filing. I-765 and I-765WS accompany the DACA request."
+        }
+      ],
+      "additionalSourceUrls": [
+        "https://www.uscis.gov/DACA"
+      ],
+      "policyCheckedAt": "2026-10-09",
+      "researchNotes": "Current DACA webpage retrieved directly: renewals accepted/processed; initial requests accepted but not processed. Downloaded instruction PDF contains a draft watermark.",
+      "pdfVerification": {
+        "status": "downloaded-and-fillable-structure-verified",
+        "checkedAt": "2026-10-09",
+        "httpStatus": 200,
+        "edition": "01/20/25",
+        "pageCount": 7,
+        "acroFormTopLevelFields": 1,
+        "widgetCount": 234
+      }
+    },
+    {
+      "id": "I-864A",
+      "sourceUrl": "https://www.uscis.gov/i-864a",
+      "pdfUrl": "https://www.uscis.gov/sites/default/files/document/forms/i-864a.pdf",
+      "scope": "Contract to combine a qualifying household member's resources with an I-864 sponsor's resources; some intending-immigrant situations have exceptions.",
+      "questions": [
+        {
+          "id": "sponsor-contract",
+          "text": "Will a household member's income or assets be combined with a sponsor's I-864?",
+          "help": "I-864A accompanies I-864 and is signed by the sponsor and qualifying household member.",
+          "yes": "next",
+          "no": "stop",
+          "stopReason": "I-864A is an attachment for combining qualifying resources with I-864. It is not a standalone affidavit or the usual form for a separate joint sponsor."
+        },
+        {
+          "id": "adult-household-member",
+          "text": "Is the household member at least 18 years old?",
+          "help": "Answer for the person providing the household-member resources.",
+          "yes": "next",
+          "no": "stop",
+          "stopReason": "USCIS requires an I-864A household member to be at least 18. Review another qualifying support arrangement."
+        },
+        {
+          "id": "qualifying-relationship",
+          "text": "Does the person meet the I-864A household-member or intending-immigrant rules?",
+          "help": "Qualifying relationships, principal residence, tax dependency, and intending-immigrant rules can differ.",
+          "yes": "next",
+          "no": "review",
+          "reviewReason": "Review the household-member definition and any intending-immigrant exception before using I-864A."
+        },
+        {
+          "id": "intending-immigrant",
+          "text": "Is the resource contributor also the intending immigrant?",
+          "help": "An intending immigrant may not need I-864A, depending on dependents and whether income or only assets are used.",
+          "yes": "review",
+          "no": "next",
+          "reviewReason": "Check whether I-864A is needed. The intending immigrant's income and assets have specific exceptions."
+        }
+      ],
+      "additionalSourceUrls": [
+        "https://www.uscis.gov/sites/default/files/document/forms/i-864ainstr.pdf"
+      ],
+      "pdfVerification": {
+        "status": "downloaded-and-fillable-structure-verified",
+        "checkedAt": "2026-10-09",
+        "httpStatus": 200,
+        "edition": "08/24/26",
+        "pageCount": 8,
+        "acroFormTopLevelFields": 1,
+        "widgetCount": 162
+      }
+    },
+    {
+      "id": "N-565",
+      "sourceUrl": "https://www.uscis.gov/n-565",
+      "pdfUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-565.pdf",
+      "scope": "Replace or correct a previously issued naturalization/citizenship document, or request a special recognition certificate.",
+      "questions": [
+        {
+          "id": "document-purpose",
+          "text": "Have you already been issued a citizenship/naturalization document, or are you a naturalized citizen seeking a special certificate for foreign recognition?",
+          "help": "Covered documents also include a Declaration of Intention or Repatriation Certificate.",
+          "yes": "next",
+          "no": "stop",
+          "stopReason": "N-565 is not the application to become a citizen or to obtain a first Certificate of Citizenship through a parent."
+        },
+        {
+          "id": "replacement-basis",
+          "text": "Is the request for a lost/damaged document, an allowed correction or legal change, or a special recognition certificate?",
+          "help": "The supporting evidence depends on the reason selected.",
+          "yes": "next",
+          "no": "review",
+          "reviewReason": "Confirm an N-565 filing reason in the current USCIS instructions."
+        },
+        {
+          "id": "correction",
+          "text": "Are you requesting a change to information on the existing document?",
+          "help": "Name, date-of-birth, and other correction requests have different rules.",
+          "yes": "review",
+          "no": "next",
+          "reviewReason": "Review the correction basis and evidence. USCIS cannot use N-565 to correct some information the applicant supplied and affirmed during naturalization."
+        }
+      ],
+      "additionalSourceUrls": [
+        "https://www.uscis.gov/sites/default/files/document/forms/n-565instr.pdf"
+      ],
+      "pdfVerification": {
+        "status": "downloaded-and-fillable-structure-verified",
+        "checkedAt": "2026-10-09",
+        "httpStatus": 200,
+        "edition": "02/27/25",
+        "pageCount": 7,
+        "acroFormTopLevelFields": 1,
+        "widgetCount": 139
+      }
+    },
+    {
+      "id": "N-600",
+      "sourceUrl": "https://www.uscis.gov/n-600",
+      "pdfUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-600.pdf",
+      "scope": "Obtain a Certificate of Citizenship recognizing citizenship already acquired through a U.S. citizen parent; not adult naturalization.",
+      "questions": [
+        {
+          "id": "parent-citizenship",
+          "text": "Are you claiming that you already acquired U.S. citizenship through a U.S. citizen parent?",
+          "help": "You can answer for yourself or a child; this form documents existing citizenship.",
+          "yes": "next",
+          "no": "stop",
+          "stopReason": "N-600 documents citizenship acquired through a parent. It is not the application for ordinary adult naturalization."
+        },
+        {
+          "id": "replacement",
+          "text": "Are you only replacing a lost, stolen, or damaged Certificate of Citizenship?",
+          "help": "Replacement of an existing certificate usually uses N-565.",
+          "yes": "stop",
+          "no": "next",
+          "stopReason": "Use the N-565 replacement-document process rather than a new N-600."
+        },
+        {
+          "id": "prior-decision",
+          "text": "Has USCIS already issued a decision on an N-600 for this person?",
+          "help": "A new N-600 is not the usual way to challenge a prior denial.",
+          "yes": "review",
+          "no": "next",
+          "reviewReason": "Review the prior decision and available motion or appeal procedures before filing again."
+        },
+        {
+          "id": "citizenship-basis",
+          "text": "Has the applicable citizenship law and qualifying parent-child history been checked for this person?",
+          "help": "Dates, parentage, custody, residence, adoption, and some military/government-family rules can matter.",
+          "yes": "next",
+          "no": "review",
+          "reviewReason": "Confirm whether citizenship was already acquired. A child living abroad may need a different process; current age alone does not determine the answer."
+        }
+      ],
+      "additionalSourceUrls": [
+        "https://www.uscis.gov/sites/default/files/document/forms/n-600instr.pdf"
+      ],
+      "pdfVerification": {
+        "status": "downloaded-and-fillable-structure-verified",
+        "checkedAt": "2026-10-09",
+        "httpStatus": 200,
+        "edition": "01/20/25",
+        "pageCount": 16,
+        "acroFormTopLevelFields": 1,
+        "widgetCount": 449
+      }
+    }
+  ]
+}

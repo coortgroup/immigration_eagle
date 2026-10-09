@@ -1,0 +1,690 @@
+{
+  "fileKey": "D37t2aLjzF26fAkggMAZB5",
+  "fileUrl": "https://www.figma.com/design/D37t2aLjzF26fAkggMAZB5",
+  "reviewUrl": "https://www.figma.com/design/D37t2aLjzF26fAkggMAZB5?node-id=3-24",
+  "pageId": "0:1",
+  "boardId": "3:24",
+  "assetsId": "3:25",
+  "collectionId": "VariableCollectionId:3:2",
+  "step": "eagle-brand-update-saved",
+  "palette": {
+    "navy": "#061B49",
+    "gold": "#D8AE55",
+    "background": "#F7F8FC",
+    "white": "#FFFFFF",
+    "muted": "#68758E",
+    "line": "#E0E5EF",
+    "soft": "#EDF1F8"
+  },
+  "variables": {
+    "bg": "VariableID:3:4",
+    "card": "VariableID:3:6",
+    "ink": "VariableID:3:8",
+    "muted": "VariableID:3:10",
+    "line": "VariableID:3:12",
+    "navy": "VariableID:3:14",
+    "soft": "VariableID:3:16",
+    "gold": "VariableID:3:18",
+    "nativeBg": "VariableID:3:20",
+    "space": "VariableID:3:21",
+    "radius": "VariableID:3:22",
+    "smallRadius": "VariableID:3:23"
+  },
+  "screenIds": {
+    "home": "4:588",
+    "application": "4:648",
+    "question": "4:742",
+    "documents": "4:801",
+    "ai": "4:866",
+    "native": "4:930"
+  },
+  "components": {
+    "navyButton": "4:547",
+    "goldButton": "4:551",
+    "field": "4:576",
+    "checklistRows": [
+      "4:555",
+      "4:562",
+      "4:569"
+    ],
+    "eagleLogo": "7:79"
+  },
+  "image": {
+    "source": "assets/immigration-eagle.jpg",
+    "hash": "60b2df1e5ab5b952410d3c74f38f83e89972dc9d",
+    "use": "Original provided artwork, unchanged; logo/app-icon component and six Eagle AI tab thumbnails"
+  },
+  "fonts": [
+    "DM Serif Display",
+    "Inter"
+  ],
+  "continueApplicationCardId": "4:619",
+  "createdNodeIds": [
+    "9:79",
+    "9:80",
+    "9:81",
+    "9:82",
+    "9:83",
+    "9:84",
+    "9:85",
+    "9:86",
+    "9:87",
+    "9:88",
+    "9:89",
+    "9:90",
+    "9:91",
+    "9:92",
+    "9:97",
+    "9:98",
+    "9:99",
+    "9:100",
+    "9:101",
+    "9:102",
+    "9:103",
+    "9:104",
+    "9:105",
+    "9:106",
+    "9:107",
+    "9:108",
+    "9:109",
+    "9:110",
+    "9:111",
+    "9:112",
+    "9:113",
+    "9:114",
+    "9:115",
+    "9:116",
+    "9:117",
+    "9:118",
+    "9:119",
+    "9:120",
+    "9:121",
+    "9:122",
+    "9:123",
+    "9:124",
+    "9:125",
+    "9:126",
+    "9:127",
+    "9:128",
+    "9:129",
+    "9:130",
+    "9:131",
+    "9:132",
+    "9:133",
+    "9:134",
+    "9:135",
+    "9:136",
+    "9:137",
+    "9:138",
+    "9:139",
+    "9:140",
+    "9:141",
+    "9:142",
+    "9:147",
+    "9:148",
+    "9:149",
+    "9:150",
+    "9:151",
+    "9:152",
+    "9:153",
+    "9:154",
+    "9:155",
+    "9:156",
+    "9:157",
+    "9:158",
+    "9:159",
+    "9:160",
+    "9:161",
+    "9:162",
+    "9:163",
+    "9:164",
+    "9:165",
+    "9:166",
+    "9:167",
+    "9:168",
+    "9:169",
+    "9:170",
+    "9:171",
+    "9:172",
+    "9:173",
+    "9:174",
+    "9:175",
+    "9:176",
+    "9:177",
+    "9:178",
+    "9:179",
+    "9:180",
+    "9:181",
+    "9:182",
+    "9:183",
+    "9:184",
+    "9:185",
+    "9:186",
+    "9:187",
+    "9:188",
+    "9:189",
+    "9:190",
+    "9:191",
+    "9:192",
+    "9:193",
+    "9:194",
+    "9:195",
+    "9:196",
+    "9:197",
+    "9:198",
+    "9:199",
+    "9:200",
+    "9:201",
+    "9:202",
+    "9:203",
+    "9:204",
+    "9:205",
+    "9:206",
+    "9:207",
+    "9:208",
+    "9:209",
+    "9:210",
+    "9:211",
+    "9:212",
+    "9:213",
+    "9:214",
+    "9:215",
+    "9:216",
+    "9:217",
+    "9:218",
+    "9:219",
+    "9:220",
+    "9:221",
+    "9:222",
+    "9:223",
+    "9:224",
+    "9:225",
+    "9:226",
+    "9:227",
+    "9:228",
+    "9:229",
+    "9:230",
+    "9:231",
+    "9:232",
+    "9:233",
+    "10:79",
+    "10:80",
+    "10:81",
+    "10:82",
+    "10:83",
+    "10:84",
+    "10:85",
+    "10:86",
+    "10:87",
+    "10:88"
+  ],
+  "mutatedNodeIds": [
+    "4:547",
+    "4:551",
+    "4:619",
+    "4:620",
+    "4:621",
+    "4:622",
+    "4:623",
+    "4:624",
+    "4:625",
+    "4:626",
+    "4:627",
+    "4:628",
+    "4:629",
+    "I4:629;4:552",
+    "I4:629;4:553",
+    "I4:629;5:64",
+    "I4:629;5:65",
+    "4:596",
+    "4:656",
+    "4:874",
+    "4:938",
+    "4:688",
+    "4:689",
+    "I4:689;4:556",
+    "I4:689;5:66",
+    "I4:689;5:67",
+    "I4:689;4:558",
+    "I4:689;4:559",
+    "I4:689;4:560",
+    "I4:689;5:68",
+    "I4:689;5:69",
+    "4:696",
+    "I4:696;4:556",
+    "I4:696;5:66",
+    "I4:696;5:67",
+    "I4:696;4:558",
+    "I4:696;4:559",
+    "I4:696;4:560",
+    "I4:696;5:68",
+    "I4:696;5:69",
+    "4:703",
+    "I4:703;4:563",
+    "I4:703;5:70",
+    "I4:703;5:71",
+    "I4:703;4:565",
+    "I4:703;4:566",
+    "I4:703;4:567",
+    "I4:703;5:72",
+    "I4:703;5:73",
+    "4:710",
+    "I4:710;4:570",
+    "I4:710;5:74",
+    "I4:710;5:75",
+    "I4:710;4:572",
+    "I4:710;4:573",
+    "I4:710;4:574",
+    "I4:710;5:76",
+    "I4:710;5:77",
+    "4:717",
+    "I4:717;4:570",
+    "I4:717;5:74",
+    "I4:717;5:75",
+    "I4:717;4:572",
+    "I4:717;4:573",
+    "I4:717;4:574",
+    "I4:717;5:76",
+    "I4:717;5:77",
+    "4:724",
+    "I4:724;4:570",
+    "I4:724;5:74",
+    "I4:724;5:75",
+    "I4:724;4:572",
+    "I4:724;4:573",
+    "I4:724;4:574",
+    "I4:724;5:76",
+    "I4:724;5:77",
+    "4:588",
+    "4:586",
+    "4:587",
+    "4:605",
+    "4:607",
+    "4:648",
+    "4:646",
+    "4:647",
+    "4:665",
+    "4:667",
+    "4:742",
+    "4:740",
+    "4:741",
+    "4:759",
+    "4:761",
+    "4:801",
+    "4:799",
+    "4:800",
+    "4:818",
+    "4:820",
+    "4:866",
+    "4:864",
+    "4:865",
+    "4:883",
+    "4:885",
+    "4:930",
+    "4:928",
+    "4:929",
+    "4:947",
+    "4:949",
+    "4:581",
+    "4:583",
+    "4:858",
+    "4:582",
+    "4:584",
+    "4:585",
+    "3:24",
+    "9:88",
+    "9:92",
+    "9:103",
+    "9:104",
+    "9:101",
+    "9:108",
+    "9:109",
+    "9:106",
+    "9:113",
+    "9:114",
+    "9:111",
+    "10:81",
+    "10:82",
+    "10:79",
+    "9:98",
+    "9:100",
+    "9:138",
+    "9:142",
+    "9:153",
+    "9:154",
+    "9:151",
+    "9:158",
+    "9:159",
+    "9:156",
+    "9:163",
+    "9:164",
+    "9:161",
+    "10:86",
+    "10:87",
+    "10:84",
+    "9:148",
+    "9:150"
+  ],
+  "removedNodeIds": [
+    "4:610",
+    "4:614",
+    "4:615",
+    "4:616",
+    "4:617",
+    "4:618",
+    "4:633",
+    "4:634",
+    "4:640",
+    "4:641",
+    "4:670",
+    "4:676",
+    "4:677",
+    "4:678",
+    "4:679",
+    "4:680",
+    "4:681",
+    "4:687",
+    "4:731",
+    "4:732",
+    "4:736",
+    "4:737",
+    "4:888",
+    "4:892",
+    "4:893",
+    "4:894",
+    "4:895",
+    "4:896",
+    "4:897",
+    "4:904",
+    "4:905",
+    "4:906",
+    "4:907",
+    "4:913",
+    "4:914",
+    "4:920",
+    "4:921",
+    "4:927",
+    "4:952",
+    "4:956",
+    "4:957",
+    "4:958",
+    "4:959",
+    "4:960",
+    "4:961",
+    "4:975",
+    "4:976",
+    "4:977",
+    "4:978",
+    "4:997",
+    "4:998",
+    "4:999",
+    "4:1000",
+    "5:129",
+    "5:149",
+    "5:167",
+    "5:200",
+    "5:228",
+    "5:256"
+  ],
+  "navigationTargets": [
+    {
+      "nodeId": "9:92",
+      "targetNodeId": "4:648"
+    },
+    {
+      "nodeId": "9:101",
+      "targetNodeId": "4:648"
+    },
+    {
+      "nodeId": "9:106",
+      "targetNodeId": "4:648"
+    },
+    {
+      "nodeId": "9:111",
+      "targetNodeId": "4:648"
+    },
+    {
+      "nodeId": "9:142",
+      "targetNodeId": "4:648"
+    },
+    {
+      "nodeId": "9:151",
+      "targetNodeId": "4:648"
+    },
+    {
+      "nodeId": "9:156",
+      "targetNodeId": "4:648"
+    },
+    {
+      "nodeId": "9:161",
+      "targetNodeId": "4:648"
+    },
+    {
+      "nodeId": "4:629",
+      "targetNodeId": "4:742"
+    },
+    {
+      "nodeId": "4:689",
+      "targetNodeId": "4:742"
+    },
+    {
+      "nodeId": "4:696",
+      "targetNodeId": "4:742"
+    },
+    {
+      "nodeId": "4:703",
+      "targetNodeId": "4:742"
+    },
+    {
+      "nodeId": "4:710",
+      "targetNodeId": "4:742"
+    },
+    {
+      "nodeId": "4:717",
+      "targetNodeId": "4:742"
+    },
+    {
+      "nodeId": "4:724",
+      "targetNodeId": "4:742"
+    },
+    {
+      "nodeId": "9:185",
+      "targetNodeId": "4:801"
+    },
+    {
+      "nodeId": "9:207",
+      "targetNodeId": "4:648"
+    },
+    {
+      "nodeId": "9:212",
+      "targetNodeId": "4:801"
+    },
+    {
+      "nodeId": "9:217",
+      "targetNodeId": "4:588"
+    },
+    {
+      "nodeId": "4:599",
+      "targetNodeId": "4:588"
+    },
+    {
+      "nodeId": "4:602",
+      "targetNodeId": "4:648"
+    },
+    {
+      "nodeId": "4:605",
+      "targetNodeId": "4:866"
+    },
+    {
+      "nodeId": "4:659",
+      "targetNodeId": "4:588"
+    },
+    {
+      "nodeId": "4:662",
+      "targetNodeId": "4:648"
+    },
+    {
+      "nodeId": "4:665",
+      "targetNodeId": "4:866"
+    },
+    {
+      "nodeId": "4:753",
+      "targetNodeId": "4:588"
+    },
+    {
+      "nodeId": "4:756",
+      "targetNodeId": "4:648"
+    },
+    {
+      "nodeId": "4:759",
+      "targetNodeId": "4:866"
+    },
+    {
+      "nodeId": "4:812",
+      "targetNodeId": "4:588"
+    },
+    {
+      "nodeId": "4:815",
+      "targetNodeId": "4:648"
+    },
+    {
+      "nodeId": "4:818",
+      "targetNodeId": "4:866"
+    },
+    {
+      "nodeId": "4:877",
+      "targetNodeId": "4:588"
+    },
+    {
+      "nodeId": "4:880",
+      "targetNodeId": "4:648"
+    },
+    {
+      "nodeId": "4:883",
+      "targetNodeId": "4:866"
+    },
+    {
+      "nodeId": "4:941",
+      "targetNodeId": "4:588"
+    },
+    {
+      "nodeId": "4:944",
+      "targetNodeId": "4:648"
+    },
+    {
+      "nodeId": "4:947",
+      "targetNodeId": "4:866"
+    },
+    {
+      "nodeId": "10:79",
+      "targetNodeId": "4:648"
+    },
+    {
+      "nodeId": "10:84",
+      "targetNodeId": "4:648"
+    }
+  ],
+  "navigationNote": "Targets are an implementation map; no new Figma prototype reactions were written. Interactive HTML preview supplies working navigation.",
+  "validation": {
+    "screenshot": "ios-design/eagle-figma-review.png",
+    "visual": "Six-screen composition visually checked: editable hierarchy, original logo, navy/gold/white, Eagle AI tab, moved Continue card, no clipping.",
+    "finalCopyChange": "After the screenshot, both Home screens changed to Your next chapter starts here / Explore services and four services including I-129F; structural bounds passed.",
+    "structural": [
+      {
+        "screen": "home",
+        "contentId": "4:596",
+        "available": 683,
+        "lastChildBottom": 563
+      },
+      {
+        "screen": "application",
+        "contentId": "4:656",
+        "available": 683,
+        "lastChildBottom": 578
+      },
+      {
+        "screen": "question",
+        "contentId": "4:750",
+        "available": 683,
+        "lastChildBottom": 573
+      },
+      {
+        "screen": "documents",
+        "contentId": "4:809",
+        "available": 683,
+        "lastChildBottom": 677
+      },
+      {
+        "screen": "ai",
+        "contentId": "4:874",
+        "available": 683,
+        "lastChildBottom": 603
+      },
+      {
+        "screen": "native",
+        "contentId": "4:938",
+        "available": 683,
+        "lastChildBottom": 577
+      }
+    ],
+    "finalHomeBounds": [
+      {
+        "screen": "4:588",
+        "bottom": 612,
+        "available": 683
+      },
+      {
+        "screen": "4:930",
+        "bottom": 626,
+        "available": 683
+      }
+    ],
+    "editableTextCountAtComposition": 147,
+    "limitation": "Figma Starter MCP tool-call limit blocked a post-copy-change screenshot and separate enlarged app-icon specimen. Original 64×64 logo/app-icon component exists in assets (7:79).",
+    "backend": "Prototype with sample application data and no live AI backend."
+  },
+  "discovery": {
+    "codeConnect": "No matching Code Connect files found in this repo",
+    "components": "Reused existing local button, field, checklist components; added original-image logo component",
+    "styles": "Existing Inter and DM Serif Display retained",
+    "tokens": "Existing semantic aliases retained; primitive colors updated"
+  },
+  "pendingUpdates": {
+    "transparentLogo": {
+      "status": "blocked-by-figma-starter-tool-call-limit",
+      "source": "assets/immigration-eagle-transparent.png",
+      "uiDerivative": "assets/eagle-logo.png",
+      "script": "ios-design/remove-logo-background-figma.js",
+      "scope": "Header logo and Eagle AI bottom-tab artwork; retain original native app icon component 7:79",
+      "attempt": "One read-only Figma access check; no Figma mutations or uploads",
+      "error": "You have reached the Figma MCP tool call limit on the Starter plan.",
+      "requiredNextSteps": [
+        "Upload transparent master and record confirmed imageHash",
+        "Supply imageHash in targeted update script and execute",
+        "Validate affected header/tab logos with screenshot"
+      ]
+    },
+    "formsAndContact": {
+      "status": "blocked-by-figma-starter-tool-call-limit",
+      "source": "prototype/immigration-eagle.html",
+      "scope": [
+        "Remove Find my form button and money-back block",
+        "Keep status and goal finder and 21-entry catalog",
+        "Three preparation options on every form: self, AI, attorney",
+        "Reference AI prices grossed up for assumed 30% Apple IAP commission",
+        "Scoped published attorney fee estimates or individual quotes",
+        "Minimal Eagle AI chat without large logo or promotional heading",
+        "Contact us with form-specific AI or attorney request",
+        "Start filling out form button on finder/catalog/related form cards",
+        "AI service prices rounded to nearest whole dollar",
+        "Researched attorney means adopted as fixed company prices, rounded to whole dollar; no approximation sign/range",
+        "Replace Browse all21forms with8 main forms and13 expandable other forms, each with AI/attorney prices and Start filling out form CTA",
+        "Show Do it yourself / Free, With AI and With an attorney in three equal columns on one row in every form price summary, finder result, catalog and related document",
+        "Route all three preparation choices through form-specific yes/no checks with stop, review and preliminary pass results",
+        "After passing: official fillable USCIS PDF, introductory AI draft interview, or attorney contact intake",
+        "21 checked official PDF links; 89 screening questions and 143 introductory interview fields; live AI, full PDF generation and team delivery remain unconnected"
+      ],
+      "implementation": "Complete in interactive HTML preview; not yet synchronized to Figma"
+    }
+  }
+}

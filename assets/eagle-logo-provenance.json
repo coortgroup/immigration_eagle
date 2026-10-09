@@ -1,0 +1,10 @@
+{
+  "tool": "Built-in ImageGen",
+  "mode": "background-extraction",
+  "source": "assets/immigration-eagle.jpg",
+  "master": "assets/immigration-eagle-transparent.png",
+  "uiAsset": "assets/eagle-logo.png",
+  "transparentBackground": true,
+  "prompt": "Use case: background-extraction\nAsset type: transparent logo cutout for a mobile app header and navigation icon.\nInput image: the provided local file is the EDIT TARGET, not inspiration.\nPrimary request: Remove ONLY the large dark navy blue rounded-square app-icon background surrounding the eagle and flag shield. Output the existing eagle + gold-edged American flag shield as one isolated logo on genuine transparent alpha.\nConstraints: Preserve the exact eagle identity, pose, white feathers, gold beak/talons/feathers, navy outline details, flag colors, shield gold border and original artwork style. Keep all blue areas INSIDE the flag shield and all navy outlining/shading on the eagle. Remove the square background outside the contour of the eagle and shield, including between the claws where it is background. No redesign, no new details, no typography, no added shadows, no blue tile, no flat white background. Clean antialiased transparent edge. Center the complete intact emblem on a square transparent canvas with modest padding; do not crop any tips.",
+  "export": "192px PNG using sips; alpha preserved"
+}

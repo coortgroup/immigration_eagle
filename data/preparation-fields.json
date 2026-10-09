@@ -1,0 +1,1050 @@
+{
+  "forms": [
+    {
+      "id": "AR-11",
+      "subject": "Person reporting an address change",
+      "fields": [
+        {
+          "id": "full_name",
+          "label": "What is your full legal name?",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "date_of_birth",
+          "label": "What is your date of birth?",
+          "type": "date",
+          "required": true
+        },
+        {
+          "id": "previous_address",
+          "label": "What was your previous physical address?",
+          "type": "textarea",
+          "help": "Include street, unit, city, state or province, postal code, and country.",
+          "required": true
+        },
+        {
+          "id": "new_physical_address",
+          "label": "What is your new physical address?",
+          "type": "textarea",
+          "help": "Use the place where you now live.",
+          "required": true
+        },
+        {
+          "id": "mailing_address",
+          "label": "Where should you receive mail?",
+          "type": "textarea",
+          "help": "If it is the same as your new physical address, enter that address again.",
+          "required": true
+        },
+        {
+          "id": "move_date",
+          "label": "When did you move?",
+          "type": "date",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "G-1145",
+      "subject": "Applicant or petitioner requesting receipt notifications",
+      "fields": [
+        {
+          "id": "full_name",
+          "label": "What is the applicant or petitioner's full legal name?",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "packet_forms",
+          "label": "Which forms are in the application package?",
+          "type": "text",
+          "help": "List form names only, such as I-130 or I-485. Do not enter receipt numbers.",
+          "required": true
+        },
+        {
+          "id": "notification_email",
+          "label": "Which email should receive notifications?",
+          "type": "email",
+          "help": "Use a sample email for this draft preview; no notification will be sent.",
+          "required": true
+        },
+        {
+          "id": "notification_phone",
+          "label": "Which phone should receive text notifications?",
+          "type": "tel",
+          "help": "Use a sample U.S. mobile number for this draft preview; no text will be sent.",
+          "required": true
+        },
+        {
+          "id": "notification_preference",
+          "label": "Would you prefer email, text, or both?",
+          "type": "text",
+          "help": "This is a draft preference. The official notification request can use the contact options it supports.",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "G-639",
+      "subject": "Requester and the person whose immigration records are sought",
+      "fields": [
+        {
+          "id": "requester_name",
+          "label": "What is the requester's full name?",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "subject_name",
+          "label": "Whose immigration records are you requesting?",
+          "type": "text",
+          "help": "Enter that person's full legal name, even if it is your own.",
+          "required": true
+        },
+        {
+          "id": "subject_date_of_birth",
+          "label": "What is that person's date of birth?",
+          "type": "date",
+          "required": true
+        },
+        {
+          "id": "requester_relationship",
+          "label": "What is your relationship to that person?",
+          "type": "text",
+          "help": "For your own records, enter Self. Requests about another person may need consent or other authorization.",
+          "required": true
+        },
+        {
+          "id": "records_description",
+          "label": "Which records would you like to request?",
+          "type": "textarea",
+          "help": "Describe the documents or time period. Do not include identification or case numbers in this preview.",
+          "required": true
+        },
+        {
+          "id": "mailing_address",
+          "label": "What is the requester's mailing address?",
+          "type": "textarea",
+          "required": true
+        },
+        {
+          "id": "reply_email",
+          "label": "What email should be used for this draft request?",
+          "type": "email",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "I-90",
+      "subject": "Permanent resident seeking a replacement or renewed card",
+      "fields": [
+        {
+          "id": "full_name",
+          "label": "What is your full legal name?",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "date_of_birth",
+          "label": "What is your date of birth?",
+          "type": "date",
+          "required": true
+        },
+        {
+          "id": "mailing_address",
+          "label": "What is your mailing address?",
+          "type": "textarea",
+          "required": true
+        },
+        {
+          "id": "country_of_birth",
+          "label": "In which country were you born?",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "card_type",
+          "label": "What type of permanent resident card do you have?",
+          "type": "text",
+          "help": "Describe the card, such as a 10-year or 2-year card. If unsure, enter Not sure.",
+          "required": true
+        },
+        {
+          "id": "replacement_reason",
+          "label": "Why are you seeking a new card?",
+          "type": "textarea",
+          "help": "For example: expiration, loss, damage, or a name correction. This answer does not establish eligibility.",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "I-129F",
+      "subject": "U.S. citizen petitioner and their foreign fiancé(e) or spouse",
+      "fields": [
+        {
+          "id": "petitioner_name",
+          "label": "What is the U.S. petitioner's full legal name?",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "petitioner_date_of_birth",
+          "label": "What is the petitioner's date of birth?",
+          "type": "date",
+          "required": true
+        },
+        {
+          "id": "petitioner_mailing_address",
+          "label": "What is the petitioner's mailing address?",
+          "type": "textarea",
+          "required": true
+        },
+        {
+          "id": "beneficiary_name",
+          "label": "What is the beneficiary's full legal name?",
+          "type": "text",
+          "help": "The beneficiary is the fiancé(e) or spouse for whom the petition is prepared.",
+          "required": true
+        },
+        {
+          "id": "beneficiary_date_of_birth",
+          "label": "What is the beneficiary's date of birth?",
+          "type": "date",
+          "required": true
+        },
+        {
+          "id": "relationship",
+          "label": "How are the petitioner and beneficiary related?",
+          "type": "text",
+          "help": "Describe whether they are engaged or married; the correct path needs review.",
+          "required": true
+        },
+        {
+          "id": "beneficiary_location",
+          "label": "Where does the beneficiary currently live?",
+          "type": "text",
+          "help": "Enter city and country.",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "I-130",
+      "subject": "Petitioner sponsoring a family member and the family-member beneficiary",
+      "fields": [
+        {
+          "id": "petitioner_name",
+          "label": "What is the petitioner's full legal name?",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "petitioner_date_of_birth",
+          "label": "What is the petitioner's date of birth?",
+          "type": "date",
+          "required": true
+        },
+        {
+          "id": "petitioner_status",
+          "label": "What is the petitioner's citizenship or immigration status?",
+          "type": "text",
+          "help": "Use a plain-language description. Do not enter document numbers.",
+          "required": true
+        },
+        {
+          "id": "petitioner_mailing_address",
+          "label": "What is the petitioner's mailing address?",
+          "type": "textarea",
+          "required": true
+        },
+        {
+          "id": "beneficiary_name",
+          "label": "What is the family member's full legal name?",
+          "type": "text",
+          "help": "This family member is the beneficiary.",
+          "required": true
+        },
+        {
+          "id": "beneficiary_date_of_birth",
+          "label": "What is the beneficiary's date of birth?",
+          "type": "date",
+          "required": true
+        },
+        {
+          "id": "relationship",
+          "label": "How is the beneficiary related to the petitioner?",
+          "type": "text",
+          "help": "For example: spouse, parent, child, or sibling.",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "I-130A",
+      "subject": "Spouse beneficiary of the related I-130 petition",
+      "fields": [
+        {
+          "id": "beneficiary_name",
+          "label": "What is the spouse beneficiary's full legal name?",
+          "type": "text",
+          "help": "These answers concern the spouse beneficiary, not the I-130 petitioner.",
+          "required": true
+        },
+        {
+          "id": "beneficiary_date_of_birth",
+          "label": "What is the spouse beneficiary's date of birth?",
+          "type": "date",
+          "required": true
+        },
+        {
+          "id": "current_physical_address",
+          "label": "Where does the spouse beneficiary currently live?",
+          "type": "textarea",
+          "help": "Include the full physical address, including country.",
+          "required": true
+        },
+        {
+          "id": "address_start_date",
+          "label": "When did the spouse beneficiary begin living there?",
+          "type": "date",
+          "required": true
+        },
+        {
+          "id": "current_employer",
+          "label": "What is the spouse beneficiary's current employer?",
+          "type": "text",
+          "help": "Enter Unemployed, Student, or Retired if appropriate.",
+          "required": true
+        },
+        {
+          "id": "occupation",
+          "label": "What is the spouse beneficiary's current occupation?",
+          "type": "text",
+          "help": "If not working, describe the current situation.",
+          "required": true
+        },
+        {
+          "id": "petitioner_name",
+          "label": "What is the I-130 petitioner's full legal name?",
+          "type": "text",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "I-131",
+      "subject": "Person seeking a travel, parole, or arrival/departure document",
+      "fields": [
+        {
+          "id": "full_name",
+          "label": "What is the document applicant's full legal name?",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "date_of_birth",
+          "label": "What is the applicant's date of birth?",
+          "type": "date",
+          "required": true
+        },
+        {
+          "id": "mailing_address",
+          "label": "What is the applicant's mailing address?",
+          "type": "textarea",
+          "required": true
+        },
+        {
+          "id": "current_location",
+          "label": "Where is the applicant currently located?",
+          "type": "text",
+          "help": "Enter city and country.",
+          "required": true
+        },
+        {
+          "id": "document_request",
+          "label": "Which document or request are you preparing?",
+          "type": "text",
+          "help": "Use the name identified in your instructions, or enter Not sure. I-131 covers several different requests.",
+          "required": true
+        },
+        {
+          "id": "request_purpose",
+          "label": "What is the purpose of the request?",
+          "type": "textarea",
+          "help": "Briefly describe the travel or parole need. This draft does not determine whether travel is permitted.",
+          "required": true
+        },
+        {
+          "id": "timing",
+          "label": "What travel or request dates are planned?",
+          "type": "text",
+          "help": "Enter approximate dates or Not yet planned; do not invent a date.",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "I-131A",
+      "subject": "Person outside the United States requesting carrier documentation",
+      "fields": [
+        {
+          "id": "full_name",
+          "label": "What is your full legal name?",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "date_of_birth",
+          "label": "What is your date of birth?",
+          "type": "date",
+          "required": true
+        },
+        {
+          "id": "current_overseas_address",
+          "label": "Where are you staying outside the United States?",
+          "type": "textarea",
+          "required": true
+        },
+        {
+          "id": "departure_date",
+          "label": "When did you last depart the United States?",
+          "type": "date",
+          "required": true
+        },
+        {
+          "id": "intended_return_date",
+          "label": "When do you intend to travel to the United States?",
+          "type": "date",
+          "required": true
+        },
+        {
+          "id": "document_type",
+          "label": "Which travel or residence document is affected?",
+          "type": "text",
+          "help": "Describe the document type only. Do not enter its number.",
+          "required": true
+        },
+        {
+          "id": "document_problem",
+          "label": "What happened to the document?",
+          "type": "textarea",
+          "help": "Briefly describe the loss, theft, damage, nonreceipt, or other issue.",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "I-134",
+      "subject": "Individual declaring financial support and the intended beneficiary",
+      "fields": [
+        {
+          "id": "supporter_name",
+          "label": "What is the supporting individual's full legal name?",
+          "type": "text",
+          "help": "If preparing a declaration about your own support, identify yourself.",
+          "required": true
+        },
+        {
+          "id": "supporter_date_of_birth",
+          "label": "What is the supporting individual's date of birth?",
+          "type": "date",
+          "required": true
+        },
+        {
+          "id": "supporter_mailing_address",
+          "label": "What is the supporting individual's mailing address?",
+          "type": "textarea",
+          "required": true
+        },
+        {
+          "id": "beneficiary_name",
+          "label": "What is the beneficiary's full legal name?",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "relationship",
+          "label": "What is the relationship between supporter and beneficiary?",
+          "type": "text",
+          "help": "Enter Self if the declaration is about your own support.",
+          "required": true
+        },
+        {
+          "id": "temporary_stay_purpose",
+          "label": "What is the purpose of the beneficiary's intended temporary stay?",
+          "type": "textarea",
+          "required": true
+        },
+        {
+          "id": "support_plan",
+          "label": "What support is intended during that stay?",
+          "type": "textarea",
+          "help": "Describe housing or living-expense support in general terms. Do not enter bank account numbers.",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "I-485",
+      "subject": "Person applying for permanent residence or adjustment of status",
+      "fields": [
+        {
+          "id": "full_name",
+          "label": "What is your full legal name?",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "date_of_birth",
+          "label": "What is your date of birth?",
+          "type": "date",
+          "required": true
+        },
+        {
+          "id": "country_of_birth",
+          "label": "In which country were you born?",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "physical_address",
+          "label": "Where do you currently live?",
+          "type": "textarea",
+          "help": "Include the full physical address.",
+          "required": true
+        },
+        {
+          "id": "mailing_address",
+          "label": "What is your mailing address?",
+          "type": "textarea",
+          "required": true
+        },
+        {
+          "id": "application_basis",
+          "label": "What is the stated basis for your permanent-residence application?",
+          "type": "text",
+          "help": "Use the path already identified for your case, or enter Not sure. Do not guess a legal category.",
+          "required": true
+        },
+        {
+          "id": "current_status",
+          "label": "How would you describe your current immigration status?",
+          "type": "text",
+          "help": "Use words only, without passport, A-number, or receipt numbers.",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "I-751",
+      "subject": "Conditional permanent resident seeking to remove residence conditions",
+      "fields": [
+        {
+          "id": "full_name",
+          "label": "What is the conditional resident's full legal name?",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "date_of_birth",
+          "label": "What is the conditional resident's date of birth?",
+          "type": "date",
+          "required": true
+        },
+        {
+          "id": "mailing_address",
+          "label": "What is the conditional resident's mailing address?",
+          "type": "textarea",
+          "required": true
+        },
+        {
+          "id": "spouse_name",
+          "label": "What is the full name of the spouse through whom residence was obtained?",
+          "type": "text",
+          "help": "Include a former or deceased spouse's name where applicable.",
+          "required": true
+        },
+        {
+          "id": "marriage_date",
+          "label": "On what date did that marriage begin?",
+          "type": "date",
+          "required": true
+        },
+        {
+          "id": "card_expiration_date",
+          "label": "What is the conditional green card's expiration date?",
+          "type": "date",
+          "required": true
+        },
+        {
+          "id": "filing_basis",
+          "label": "How do you expect to file this petition?",
+          "type": "text",
+          "help": "Describe a joint filing, a requested waiver, or Not sure. This introductory draft does not assess the basis.",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "I-765",
+      "subject": "Person requesting employment authorization",
+      "fields": [
+        {
+          "id": "full_name",
+          "label": "What is your full legal name?",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "date_of_birth",
+          "label": "What is your date of birth?",
+          "type": "date",
+          "required": true
+        },
+        {
+          "id": "mailing_address",
+          "label": "What is your mailing address?",
+          "type": "textarea",
+          "required": true
+        },
+        {
+          "id": "country_of_birth",
+          "label": "In which country were you born?",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "request_type",
+          "label": "Is this an initial request, renewal, or replacement?",
+          "type": "text",
+          "help": "Enter Not sure if the request type has not been confirmed.",
+          "required": true
+        },
+        {
+          "id": "eligibility_basis",
+          "label": "What is the basis for your work-authorization request?",
+          "type": "text",
+          "help": "Use the category already identified for your case, or enter Not sure. No category is selected for you here.",
+          "required": true
+        },
+        {
+          "id": "current_status",
+          "label": "How would you describe your current immigration status?",
+          "type": "text",
+          "help": "Do not enter identification or receipt numbers.",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "I-765WS",
+      "subject": "I-765 applicant preparing a requested economic-need worksheet",
+      "fields": [
+        {
+          "id": "full_name",
+          "label": "What is the I-765 applicant's full legal name?",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "current_annual_income",
+          "label": "What is your current annual income?",
+          "type": "text",
+          "help": "For this draft, use a sample amount in U.S. dollars; enter 0 if none.",
+          "required": true
+        },
+        {
+          "id": "current_annual_expenses",
+          "label": "What are your current annual expenses?",
+          "type": "text",
+          "help": "Use a sample annual amount in U.S. dollars.",
+          "required": true
+        },
+        {
+          "id": "assets_value",
+          "label": "What is the total value of your assets?",
+          "type": "text",
+          "help": "Use a sample amount in U.S. dollars. Do not include account numbers.",
+          "required": true
+        },
+        {
+          "id": "employment_situation",
+          "label": "How would you describe your current work situation?",
+          "type": "text",
+          "help": "For example: employed, unemployed, student, or other.",
+          "required": true
+        },
+        {
+          "id": "economic_need",
+          "label": "How would you explain your economic need to work?",
+          "type": "textarea",
+          "help": "Describe income, expenses, and circumstances in general terms. This is an introductory worksheet draft.",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "I-821",
+      "subject": "Person requesting Temporary Protected Status",
+      "fields": [
+        {
+          "id": "full_name",
+          "label": "What is your full legal name?",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "date_of_birth",
+          "label": "What is your date of birth?",
+          "type": "date",
+          "required": true
+        },
+        {
+          "id": "mailing_address",
+          "label": "What is your mailing address?",
+          "type": "textarea",
+          "required": true
+        },
+        {
+          "id": "country_of_birth",
+          "label": "In which country were you born?",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "nationality",
+          "label": "What is your country of nationality?",
+          "type": "text",
+          "help": "If you do not have a nationality, describe your country of last habitual residence.",
+          "required": true
+        },
+        {
+          "id": "request_type",
+          "label": "Is this an initial TPS request or a re-registration?",
+          "type": "text",
+          "help": "Enter Not sure if you need the request type reviewed.",
+          "required": true
+        },
+        {
+          "id": "arrival_date",
+          "label": "When did you most recently arrive in the United States?",
+          "type": "date",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "I-821D",
+      "subject": "Person requesting consideration of deferred action under DACA",
+      "fields": [
+        {
+          "id": "full_name",
+          "label": "What is your full legal name?",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "date_of_birth",
+          "label": "What is your date of birth?",
+          "type": "date",
+          "required": true
+        },
+        {
+          "id": "mailing_address",
+          "label": "What is your mailing address?",
+          "type": "textarea",
+          "required": true
+        },
+        {
+          "id": "country_of_birth",
+          "label": "In which country were you born?",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "request_type",
+          "label": "Is this an initial request or a renewal?",
+          "type": "text",
+          "help": "This is for organizing a draft only. Current acceptance and processing rules require separate review.",
+          "required": true
+        },
+        {
+          "id": "first_arrival_date",
+          "label": "When did you first come to live in the United States?",
+          "type": "date",
+          "required": true
+        },
+        {
+          "id": "current_activity",
+          "label": "What is your current education or work situation?",
+          "type": "textarea",
+          "help": "Describe it generally. This answer is not an eligibility assessment.",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "I-864",
+      "subject": "Financial sponsor, including a petitioner sponsor or joint sponsor",
+      "fields": [
+        {
+          "id": "sponsor_name",
+          "label": "What is the sponsor's full legal name?",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "sponsor_date_of_birth",
+          "label": "What is the sponsor's date of birth?",
+          "type": "date",
+          "required": true
+        },
+        {
+          "id": "sponsor_mailing_address",
+          "label": "What is the sponsor's mailing address?",
+          "type": "textarea",
+          "required": true
+        },
+        {
+          "id": "sponsor_role",
+          "label": "What is the sponsor's role in this case?",
+          "type": "text",
+          "help": "For example: petitioning sponsor or joint sponsor. Enter Not sure if needed.",
+          "required": true
+        },
+        {
+          "id": "principal_immigrant_name",
+          "label": "What is the principal intending immigrant's full legal name?",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "relationship",
+          "label": "What is the sponsor's relationship to the intending immigrant?",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "income_sources",
+          "label": "What are the sponsor's current income sources?",
+          "type": "textarea",
+          "help": "Describe employment, self-employment, or other sources without account numbers or tax identifiers.",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "I-864A",
+      "subject": "Household member contributing resources under a contract with the I-864 sponsor",
+      "fields": [
+        {
+          "id": "household_member_name",
+          "label": "What is the household member's full legal name?",
+          "type": "text",
+          "help": "These answers start with the contributing household member, not the I-864 sponsor.",
+          "required": true
+        },
+        {
+          "id": "household_member_date_of_birth",
+          "label": "What is the household member's date of birth?",
+          "type": "date",
+          "required": true
+        },
+        {
+          "id": "household_member_address",
+          "label": "What is the household member's physical address?",
+          "type": "textarea",
+          "required": true
+        },
+        {
+          "id": "sponsor_name",
+          "label": "What is the I-864 sponsor's full legal name?",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "relationship_to_sponsor",
+          "label": "How is the household member related to the sponsor?",
+          "type": "text",
+          "help": "Describe the relationship; any qualifying household-member rules need separate review.",
+          "required": true
+        },
+        {
+          "id": "intending_immigrant_name",
+          "label": "What is the principal intending immigrant's full legal name?",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "contributed_resources",
+          "label": "What income or assets does the household member intend to make available?",
+          "type": "textarea",
+          "help": "Describe sources generally. Do not enter bank account or tax-identification numbers.",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "N-400",
+      "subject": "Permanent resident applying for naturalization",
+      "fields": [
+        {
+          "id": "full_name",
+          "label": "What is your current full legal name?",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "date_of_birth",
+          "label": "What is your date of birth?",
+          "type": "date",
+          "required": true
+        },
+        {
+          "id": "country_of_birth",
+          "label": "In which country were you born?",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "physical_address",
+          "label": "Where do you currently live?",
+          "type": "textarea",
+          "required": true
+        },
+        {
+          "id": "mailing_address",
+          "label": "What is your mailing address?",
+          "type": "textarea",
+          "required": true
+        },
+        {
+          "id": "resident_since",
+          "label": "What is the Resident Since date on your green card?",
+          "type": "date",
+          "required": true
+        },
+        {
+          "id": "application_basis",
+          "label": "What naturalization basis has been identified for your case?",
+          "type": "text",
+          "help": "Use a confirmed basis, or enter Not sure. This draft does not select an eligibility rule.",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "N-565",
+      "subject": "Holder of a naturalization or citizenship document needing a replacement or correction",
+      "fields": [
+        {
+          "id": "current_full_name",
+          "label": "What is your current full legal name?",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "name_on_document",
+          "label": "What name appears on the existing document?",
+          "type": "text",
+          "help": "If the document is unavailable and you cannot confirm the name, enter Not sure.",
+          "required": true
+        },
+        {
+          "id": "date_of_birth",
+          "label": "What is your date of birth?",
+          "type": "date",
+          "required": true
+        },
+        {
+          "id": "mailing_address",
+          "label": "What is your mailing address?",
+          "type": "textarea",
+          "required": true
+        },
+        {
+          "id": "document_type",
+          "label": "Which document do you want replaced or corrected?",
+          "type": "text",
+          "help": "Enter the document type, such as Certificate of Naturalization. Do not enter its number.",
+          "required": true
+        },
+        {
+          "id": "request_reason",
+          "label": "Why do you need a replacement or correction?",
+          "type": "textarea",
+          "help": "Describe the issue generally, such as loss, damage, or a name change.",
+          "required": true
+        },
+        {
+          "id": "document_issue_details",
+          "label": "Where and approximately when was the document issued?",
+          "type": "text",
+          "help": "Use approximate information or Not sure if the details are unavailable.",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "N-600",
+      "subject": "Person whose citizenship through a parent is being documented",
+      "fields": [
+        {
+          "id": "subject_full_name",
+          "label": "What is the full legal name of the person seeking the certificate?",
+          "type": "text",
+          "help": "If a parent completes this draft for a child, enter the child's name here.",
+          "required": true
+        },
+        {
+          "id": "subject_date_of_birth",
+          "label": "What is that person's date of birth?",
+          "type": "date",
+          "required": true
+        },
+        {
+          "id": "subject_country_of_birth",
+          "label": "In which country was that person born?",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "subject_physical_address",
+          "label": "Where does that person currently live?",
+          "type": "textarea",
+          "required": true
+        },
+        {
+          "id": "mailing_address",
+          "label": "What mailing address should be used for this draft?",
+          "type": "textarea",
+          "required": true
+        },
+        {
+          "id": "citizen_parent_name",
+          "label": "What is the full legal name of the parent through whom citizenship is claimed?",
+          "type": "text",
+          "help": "If the claim involves both parents, include both names.",
+          "required": true
+        },
+        {
+          "id": "parent_citizenship_history",
+          "label": "How and when did that parent become a U.S. citizen?",
+          "type": "textarea",
+          "help": "Describe known facts or enter Not sure. This introductory draft does not determine citizenship.",
+          "required": true
+        },
+        {
+          "id": "preparer_role",
+          "label": "Who is completing this draft?",
+          "type": "text",
+          "help": "For example: the person seeking the certificate, a parent, or a legal guardian.",
+          "required": true
+        }
+      ]
+    }
+  ]
+}

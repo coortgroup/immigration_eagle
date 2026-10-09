@@ -1,0 +1,690 @@
+{
+  "currency": "USD",
+  "checkedAt": "2026-10-09",
+  "scope": "User-selected company preparation service prices, with researched reference amounts preserved separately. Government filing charges, taxes and optional delivery are excluded. StoreKit products are not configured.",
+  "sources": [
+    {
+      "id": "citizenpath-catalog",
+      "url": "https://citizenpath.com/uscis-forms/",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "id": "citizenpath-i485",
+      "url": "https://citizenpath.com/form-i-485-adjustment-of-status-application/",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "id": "citizenpath-i864",
+      "url": "https://citizenpath.com/form-i-864-affidavit-of-support/",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "id": "citizenpath-daca",
+      "url": "https://citizenpath.com/daca-application-form-i821d/",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "id": "apple-standard",
+      "url": "https://developer.apple.com/support/terms/apple-developer-program-license-agreement/",
+      "section": "Schedule 2, section 3.4(a)",
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "id": "apple-small-business",
+      "url": "https://developer.apple.com/app-store/small-business-program/",
+      "checkedAt": "2026-10-09"
+    }
+  ],
+  "apple": {
+    "defaultCommissionRate": 0.3,
+    "defaultRateStatus": "Assumed pending user selection and actual account/program verification.",
+    "alternativeCommissionRate": 0.15,
+    "formula": "customer_price = reference_net_price / (1 - commission_rate)",
+    "rounding": "Business serviceAmountUsd30/serviceAmountUsd15: nearest whole USD, exact halves up, calculated directly from the unrounded reference/(1-rate). Legacy amountUsd30/amountUsd15: rounded up to the nearest cent and retained only as provenance. Actual StoreKit price points are not configured.",
+    "scope": "Standard Apple in-app purchase scenario. Regional terms, transaction taxes, other payment channels and specific program eligibility may differ.",
+    "smallBusinessNote": "15% requires enrollment and qualifying account proceeds; eligibility alone does not establish enrollment.",
+    "standardSourceUrl": "https://developer.apple.com/support/terms/apple-developer-program-license-agreement/",
+    "smallBusinessSourceUrl": "https://developer.apple.com/app-store/small-business-program/"
+  },
+  "forms": [
+    {
+      "id": "AR-11",
+      "currency": "USD",
+      "checkedAt": "2026-10-09",
+      "citizenPath": {
+        "status": "free",
+        "amountUsd": 0,
+        "sourceUrl": "https://citizenpath.com/uscis-forms/",
+        "packageUrl": "https://citizenpath.com/ar-11-aliens-change-address/",
+        "governmentFeesIncluded": false
+      },
+      "self": {
+        "serviceAmountUsd": 0,
+        "officialUrl": "https://www.uscis.gov/ar-11",
+        "governmentFeesIncluded": false
+      },
+      "eagleAi": {
+        "priceStatus": "calculated-preview",
+        "basisAmountUsd": 0,
+        "defaultRate": 0.3,
+        "amountUsd30": 0.0,
+        "amountUsd15": 0.0,
+        "governmentFeesIncluded": false,
+        "serviceAmountUsd30": 0,
+        "serviceAmountUsd15": 0,
+        "servicePriceSelection": "user-selected-whole-dollar-pricing"
+      }
+    },
+    {
+      "id": "G-1145",
+      "currency": "USD",
+      "checkedAt": "2026-10-09",
+      "citizenPath": {
+        "status": "free",
+        "amountUsd": 0,
+        "sourceUrl": "https://citizenpath.com/uscis-forms/",
+        "packageUrl": "https://citizenpath.com/form-g-1145-enotification/",
+        "governmentFeesIncluded": false
+      },
+      "self": {
+        "serviceAmountUsd": 0,
+        "officialUrl": "https://www.uscis.gov/g-1145",
+        "governmentFeesIncluded": false
+      },
+      "eagleAi": {
+        "priceStatus": "calculated-preview",
+        "basisAmountUsd": 0,
+        "defaultRate": 0.3,
+        "amountUsd30": 0.0,
+        "amountUsd15": 0.0,
+        "governmentFeesIncluded": false,
+        "serviceAmountUsd30": 0,
+        "serviceAmountUsd15": 0,
+        "servicePriceSelection": "user-selected-whole-dollar-pricing"
+      }
+    },
+    {
+      "id": "G-639",
+      "currency": "USD",
+      "checkedAt": "2026-10-09",
+      "citizenPath": {
+        "status": "not-offered",
+        "amountUsd": null,
+        "sourceUrl": "https://citizenpath.com/uscis-forms/",
+        "packageUrl": null,
+        "governmentFeesIncluded": false,
+        "note": "The reference directs users to an official USCIS records request; it does not sell a preparation package."
+      },
+      "self": {
+        "serviceAmountUsd": 0,
+        "officialUrl": "https://www.uscis.gov/records/request-records-through-the-freedom-of-information-act-or-privacy-act",
+        "governmentFeesIncluded": false
+      },
+      "eagleAi": {
+        "priceStatus": "no-independent-price",
+        "basisAmountUsd": null,
+        "defaultRate": 0.3,
+        "amountUsd30": null,
+        "amountUsd15": null,
+        "governmentFeesIncluded": false,
+        "serviceAmountUsd30": null,
+        "serviceAmountUsd15": null,
+        "servicePriceSelection": "no-independent-price"
+      }
+    },
+    {
+      "id": "I-90",
+      "currency": "USD",
+      "checkedAt": "2026-10-09",
+      "citizenPath": {
+        "status": "standalone",
+        "amountUsd": 99,
+        "sourceUrl": "https://citizenpath.com/uscis-forms/",
+        "packageUrl": "https://citizenpath.com/i-90-renew-replace-green-card/",
+        "governmentFeesIncluded": false
+      },
+      "self": {
+        "serviceAmountUsd": 0,
+        "officialUrl": "https://www.uscis.gov/i-90",
+        "governmentFeesIncluded": false
+      },
+      "eagleAi": {
+        "priceStatus": "calculated-preview",
+        "basisAmountUsd": 99,
+        "defaultRate": 0.3,
+        "amountUsd30": 141.43,
+        "amountUsd15": 116.48,
+        "governmentFeesIncluded": false,
+        "serviceAmountUsd30": 141,
+        "serviceAmountUsd15": 116,
+        "servicePriceSelection": "user-selected-whole-dollar-pricing"
+      }
+    },
+    {
+      "id": "I-129F",
+      "currency": "USD",
+      "checkedAt": "2026-10-09",
+      "citizenPath": {
+        "status": "standalone",
+        "amountUsd": 149,
+        "sourceUrl": "https://citizenpath.com/uscis-forms/",
+        "packageUrl": "https://citizenpath.com/form-i-129f-petition-alien-fiance/",
+        "governmentFeesIncluded": false
+      },
+      "self": {
+        "serviceAmountUsd": 0,
+        "officialUrl": "https://www.uscis.gov/i-129f",
+        "governmentFeesIncluded": false
+      },
+      "eagleAi": {
+        "priceStatus": "calculated-preview",
+        "basisAmountUsd": 149,
+        "defaultRate": 0.3,
+        "amountUsd30": 212.86,
+        "amountUsd15": 175.3,
+        "governmentFeesIncluded": false,
+        "serviceAmountUsd30": 213,
+        "serviceAmountUsd15": 175,
+        "servicePriceSelection": "user-selected-whole-dollar-pricing"
+      }
+    },
+    {
+      "id": "I-130",
+      "currency": "USD",
+      "checkedAt": "2026-10-09",
+      "citizenPath": {
+        "status": "standalone",
+        "amountUsd": 149,
+        "sourceUrl": "https://citizenpath.com/uscis-forms/",
+        "packageUrl": "https://citizenpath.com/form-i-130-petition-for-alien-relative/",
+        "governmentFeesIncluded": false
+      },
+      "self": {
+        "serviceAmountUsd": 0,
+        "officialUrl": "https://www.uscis.gov/i-130",
+        "governmentFeesIncluded": false
+      },
+      "eagleAi": {
+        "priceStatus": "calculated-preview",
+        "basisAmountUsd": 149,
+        "defaultRate": 0.3,
+        "amountUsd30": 212.86,
+        "amountUsd15": 175.3,
+        "governmentFeesIncluded": false,
+        "serviceAmountUsd30": 213,
+        "serviceAmountUsd15": 175,
+        "servicePriceSelection": "user-selected-whole-dollar-pricing"
+      }
+    },
+    {
+      "id": "I-130A",
+      "currency": "USD",
+      "checkedAt": "2026-10-09",
+      "citizenPath": {
+        "status": "included",
+        "amountUsd": null,
+        "sourceUrl": "https://citizenpath.com/uscis-forms/",
+        "packageUrl": "https://citizenpath.com/form-i-130-petition-for-alien-relative/",
+        "governmentFeesIncluded": false,
+        "includedWith": [
+          "I-130"
+        ],
+        "incrementalAmountUsd": 0,
+        "note": "Included with the I-130 package; no independent service price is listed."
+      },
+      "self": {
+        "serviceAmountUsd": 0,
+        "officialUrl": "https://www.uscis.gov/i-130",
+        "governmentFeesIncluded": false
+      },
+      "eagleAi": {
+        "priceStatus": "no-independent-price",
+        "basisAmountUsd": null,
+        "defaultRate": 0.3,
+        "amountUsd30": null,
+        "amountUsd15": null,
+        "governmentFeesIncluded": false,
+        "includedWith": [
+          "I-130"
+        ],
+        "incrementalAmountUsd": 0,
+        "serviceAmountUsd30": null,
+        "serviceAmountUsd15": null,
+        "servicePriceSelection": "no-independent-price"
+      }
+    },
+    {
+      "id": "I-131",
+      "currency": "USD",
+      "checkedAt": "2026-10-09",
+      "citizenPath": {
+        "status": "standalone",
+        "amountUsd": 99,
+        "sourceUrl": "https://citizenpath.com/uscis-forms/",
+        "packageUrl": "https://citizenpath.com/i-131-advance-parole-travel-document-application/",
+        "governmentFeesIncluded": false
+      },
+      "self": {
+        "serviceAmountUsd": 0,
+        "officialUrl": "https://www.uscis.gov/i-131",
+        "governmentFeesIncluded": false
+      },
+      "eagleAi": {
+        "priceStatus": "calculated-preview",
+        "basisAmountUsd": 99,
+        "defaultRate": 0.3,
+        "amountUsd30": 141.43,
+        "amountUsd15": 116.48,
+        "governmentFeesIncluded": false,
+        "serviceAmountUsd30": 141,
+        "serviceAmountUsd15": 116,
+        "servicePriceSelection": "user-selected-whole-dollar-pricing"
+      }
+    },
+    {
+      "id": "I-131A",
+      "currency": "USD",
+      "checkedAt": "2026-10-09",
+      "citizenPath": {
+        "status": "standalone",
+        "amountUsd": 99,
+        "sourceUrl": "https://citizenpath.com/uscis-forms/",
+        "packageUrl": "https://citizenpath.com/form-i-131a-application-carrier-documentation/",
+        "governmentFeesIncluded": false
+      },
+      "self": {
+        "serviceAmountUsd": 0,
+        "officialUrl": "https://www.uscis.gov/i-131a",
+        "governmentFeesIncluded": false
+      },
+      "eagleAi": {
+        "priceStatus": "calculated-preview",
+        "basisAmountUsd": 99,
+        "defaultRate": 0.3,
+        "amountUsd30": 141.43,
+        "amountUsd15": 116.48,
+        "governmentFeesIncluded": false,
+        "serviceAmountUsd30": 141,
+        "serviceAmountUsd15": 116,
+        "servicePriceSelection": "user-selected-whole-dollar-pricing"
+      }
+    },
+    {
+      "id": "I-134",
+      "currency": "USD",
+      "checkedAt": "2026-10-09",
+      "citizenPath": {
+        "status": "standalone",
+        "amountUsd": 99,
+        "sourceUrl": "https://citizenpath.com/uscis-forms/",
+        "packageUrl": "https://citizenpath.com/form-i-134-declaration-of-financial-support/",
+        "governmentFeesIncluded": false
+      },
+      "self": {
+        "serviceAmountUsd": 0,
+        "officialUrl": "https://www.uscis.gov/i-134",
+        "governmentFeesIncluded": false
+      },
+      "eagleAi": {
+        "priceStatus": "calculated-preview",
+        "basisAmountUsd": 99,
+        "defaultRate": 0.3,
+        "amountUsd30": 141.43,
+        "amountUsd15": 116.48,
+        "governmentFeesIncluded": false,
+        "serviceAmountUsd30": 141,
+        "serviceAmountUsd15": 116,
+        "servicePriceSelection": "user-selected-whole-dollar-pricing"
+      }
+    },
+    {
+      "id": "I-485",
+      "currency": "USD",
+      "checkedAt": "2026-10-09",
+      "citizenPath": {
+        "status": "standalone",
+        "amountUsd": 279,
+        "sourceUrl": "https://citizenpath.com/uscis-forms/",
+        "packageUrl": "https://citizenpath.com/form-i-485-adjustment-of-status-application/",
+        "governmentFeesIncluded": false,
+        "includes": [
+          "I-485",
+          "G-1145"
+        ],
+        "includesIfNeeded": [
+          "I-130",
+          "I-130A"
+        ],
+        "note": "Base package. Other required forms may add cost; I-130 and I-130A are included when needed."
+      },
+      "self": {
+        "serviceAmountUsd": 0,
+        "officialUrl": "https://www.uscis.gov/i-485",
+        "governmentFeesIncluded": false
+      },
+      "eagleAi": {
+        "priceStatus": "calculated-preview",
+        "basisAmountUsd": 279,
+        "defaultRate": 0.3,
+        "amountUsd30": 398.58,
+        "amountUsd15": 328.24,
+        "governmentFeesIncluded": false,
+        "serviceAmountUsd30": 399,
+        "serviceAmountUsd15": 328,
+        "servicePriceSelection": "user-selected-whole-dollar-pricing"
+      }
+    },
+    {
+      "id": "I-751",
+      "currency": "USD",
+      "checkedAt": "2026-10-09",
+      "citizenPath": {
+        "status": "standalone",
+        "amountUsd": 139,
+        "sourceUrl": "https://citizenpath.com/uscis-forms/",
+        "packageUrl": "https://citizenpath.com/i-751-remove-conditions-residence-green-card/",
+        "governmentFeesIncluded": false
+      },
+      "self": {
+        "serviceAmountUsd": 0,
+        "officialUrl": "https://www.uscis.gov/i-751",
+        "governmentFeesIncluded": false
+      },
+      "eagleAi": {
+        "priceStatus": "calculated-preview",
+        "basisAmountUsd": 139,
+        "defaultRate": 0.3,
+        "amountUsd30": 198.58,
+        "amountUsd15": 163.53,
+        "governmentFeesIncluded": false,
+        "serviceAmountUsd30": 199,
+        "serviceAmountUsd15": 164,
+        "servicePriceSelection": "user-selected-whole-dollar-pricing"
+      }
+    },
+    {
+      "id": "I-765",
+      "currency": "USD",
+      "checkedAt": "2026-10-09",
+      "citizenPath": {
+        "status": "standalone",
+        "amountUsd": 79,
+        "sourceUrl": "https://citizenpath.com/uscis-forms/",
+        "packageUrl": "https://citizenpath.com/i-765-work-permit-employment-authorization-ead/",
+        "governmentFeesIncluded": false
+      },
+      "self": {
+        "serviceAmountUsd": 0,
+        "officialUrl": "https://www.uscis.gov/i-765",
+        "governmentFeesIncluded": false
+      },
+      "eagleAi": {
+        "priceStatus": "calculated-preview",
+        "basisAmountUsd": 79,
+        "defaultRate": 0.3,
+        "amountUsd30": 112.86,
+        "amountUsd15": 92.95,
+        "governmentFeesIncluded": false,
+        "serviceAmountUsd30": 113,
+        "serviceAmountUsd15": 93,
+        "servicePriceSelection": "user-selected-whole-dollar-pricing"
+      }
+    },
+    {
+      "id": "I-765WS",
+      "currency": "USD",
+      "checkedAt": "2026-10-09",
+      "citizenPath": {
+        "status": "included",
+        "amountUsd": null,
+        "sourceUrl": "https://citizenpath.com/uscis-forms/",
+        "packageUrl": "https://citizenpath.com/daca-application-form-i821d/",
+        "governmentFeesIncluded": false,
+        "includedWith": [
+          "I-821D"
+        ],
+        "incrementalAmountUsd": 0,
+        "note": "Included in the DACA package with I-821D and I-765; no independent worksheet price is listed."
+      },
+      "self": {
+        "serviceAmountUsd": 0,
+        "officialUrl": "https://www.uscis.gov/i-765",
+        "governmentFeesIncluded": false
+      },
+      "eagleAi": {
+        "priceStatus": "no-independent-price",
+        "basisAmountUsd": null,
+        "defaultRate": 0.3,
+        "amountUsd30": null,
+        "amountUsd15": null,
+        "governmentFeesIncluded": false,
+        "includedWith": [
+          "I-821D"
+        ],
+        "incrementalAmountUsd": 0,
+        "serviceAmountUsd30": null,
+        "serviceAmountUsd15": null,
+        "servicePriceSelection": "no-independent-price"
+      }
+    },
+    {
+      "id": "I-821",
+      "currency": "USD",
+      "checkedAt": "2026-10-09",
+      "citizenPath": {
+        "status": "not-offered",
+        "amountUsd": null,
+        "sourceUrl": "https://citizenpath.com/uscis-forms/",
+        "packageUrl": null,
+        "governmentFeesIncluded": false,
+        "note": "The reference explicitly says preparation service is unavailable for this form."
+      },
+      "self": {
+        "serviceAmountUsd": 0,
+        "officialUrl": "https://www.uscis.gov/i-821",
+        "governmentFeesIncluded": false
+      },
+      "eagleAi": {
+        "priceStatus": "no-independent-price",
+        "basisAmountUsd": null,
+        "defaultRate": 0.3,
+        "amountUsd30": null,
+        "amountUsd15": null,
+        "governmentFeesIncluded": false,
+        "serviceAmountUsd30": null,
+        "serviceAmountUsd15": null,
+        "servicePriceSelection": "no-independent-price"
+      }
+    },
+    {
+      "id": "I-821D",
+      "currency": "USD",
+      "checkedAt": "2026-10-09",
+      "citizenPath": {
+        "status": "standalone",
+        "amountUsd": 119,
+        "sourceUrl": "https://citizenpath.com/uscis-forms/",
+        "packageUrl": "https://citizenpath.com/daca-application-form-i821d/",
+        "governmentFeesIncluded": false,
+        "includes": [
+          "I-821D",
+          "I-765",
+          "I-765WS",
+          "G-1145"
+        ]
+      },
+      "self": {
+        "serviceAmountUsd": 0,
+        "officialUrl": "https://www.uscis.gov/i-821d",
+        "governmentFeesIncluded": false
+      },
+      "eagleAi": {
+        "priceStatus": "calculated-preview",
+        "basisAmountUsd": 119,
+        "defaultRate": 0.3,
+        "amountUsd30": 170.0,
+        "amountUsd15": 140.0,
+        "governmentFeesIncluded": false,
+        "serviceAmountUsd30": 170,
+        "serviceAmountUsd15": 140,
+        "servicePriceSelection": "user-selected-whole-dollar-pricing"
+      }
+    },
+    {
+      "id": "I-864",
+      "currency": "USD",
+      "checkedAt": "2026-10-09",
+      "citizenPath": {
+        "status": "standalone",
+        "amountUsd": 129,
+        "sourceUrl": "https://citizenpath.com/uscis-forms/",
+        "packageUrl": "https://citizenpath.com/form-i-864-affidavit-of-support/",
+        "governmentFeesIncluded": false
+      },
+      "self": {
+        "serviceAmountUsd": 0,
+        "officialUrl": "https://www.uscis.gov/i-864",
+        "governmentFeesIncluded": false
+      },
+      "eagleAi": {
+        "priceStatus": "calculated-preview",
+        "basisAmountUsd": 129,
+        "defaultRate": 0.3,
+        "amountUsd30": 184.29,
+        "amountUsd15": 151.77,
+        "governmentFeesIncluded": false,
+        "serviceAmountUsd30": 184,
+        "serviceAmountUsd15": 152,
+        "servicePriceSelection": "user-selected-whole-dollar-pricing"
+      }
+    },
+    {
+      "id": "I-864A",
+      "currency": "USD",
+      "checkedAt": "2026-10-09",
+      "citizenPath": {
+        "status": "add-on",
+        "amountUsd": 30,
+        "sourceUrl": "https://citizenpath.com/uscis-forms/",
+        "packageUrl": "https://citizenpath.com/form-i-864-affidavit-of-support/",
+        "governmentFeesIncluded": false,
+        "requiredPackage": "I-864",
+        "note": "Additional charge per I-864A, available only with the I-864 service."
+      },
+      "self": {
+        "serviceAmountUsd": 0,
+        "officialUrl": "https://www.uscis.gov/i-864a",
+        "governmentFeesIncluded": false
+      },
+      "eagleAi": {
+        "priceStatus": "calculated-preview",
+        "basisAmountUsd": 30,
+        "defaultRate": 0.3,
+        "amountUsd30": 42.86,
+        "amountUsd15": 35.3,
+        "governmentFeesIncluded": false,
+        "requiredPackage": "I-864",
+        "unit": "per additional I-864A",
+        "serviceAmountUsd30": 43,
+        "serviceAmountUsd15": 35,
+        "servicePriceSelection": "user-selected-whole-dollar-pricing"
+      }
+    },
+    {
+      "id": "N-400",
+      "currency": "USD",
+      "checkedAt": "2026-10-09",
+      "citizenPath": {
+        "status": "standalone",
+        "amountUsd": 199,
+        "sourceUrl": "https://citizenpath.com/uscis-forms/",
+        "packageUrl": "https://citizenpath.com/form-n-400-application-naturalization/",
+        "governmentFeesIncluded": false
+      },
+      "self": {
+        "serviceAmountUsd": 0,
+        "officialUrl": "https://www.uscis.gov/n-400",
+        "governmentFeesIncluded": false
+      },
+      "eagleAi": {
+        "priceStatus": "calculated-preview",
+        "basisAmountUsd": 199,
+        "defaultRate": 0.3,
+        "amountUsd30": 284.29,
+        "amountUsd15": 234.12,
+        "governmentFeesIncluded": false,
+        "serviceAmountUsd30": 284,
+        "serviceAmountUsd15": 234,
+        "servicePriceSelection": "user-selected-whole-dollar-pricing"
+      }
+    },
+    {
+      "id": "N-565",
+      "currency": "USD",
+      "checkedAt": "2026-10-09",
+      "citizenPath": {
+        "status": "standalone",
+        "amountUsd": 99,
+        "sourceUrl": "https://citizenpath.com/uscis-forms/",
+        "packageUrl": "https://citizenpath.com/form-n-565-replace-citizenship-document/",
+        "governmentFeesIncluded": false
+      },
+      "self": {
+        "serviceAmountUsd": 0,
+        "officialUrl": "https://www.uscis.gov/n-565",
+        "governmentFeesIncluded": false
+      },
+      "eagleAi": {
+        "priceStatus": "calculated-preview",
+        "basisAmountUsd": 99,
+        "defaultRate": 0.3,
+        "amountUsd30": 141.43,
+        "amountUsd15": 116.48,
+        "governmentFeesIncluded": false,
+        "serviceAmountUsd30": 141,
+        "serviceAmountUsd15": 116,
+        "servicePriceSelection": "user-selected-whole-dollar-pricing"
+      }
+    },
+    {
+      "id": "N-600",
+      "currency": "USD",
+      "checkedAt": "2026-10-09",
+      "citizenPath": {
+        "status": "standalone",
+        "amountUsd": 199,
+        "sourceUrl": "https://citizenpath.com/uscis-forms/",
+        "packageUrl": "https://citizenpath.com/form-n-600-certificate-citizenship/",
+        "governmentFeesIncluded": false
+      },
+      "self": {
+        "serviceAmountUsd": 0,
+        "officialUrl": "https://www.uscis.gov/n-600",
+        "governmentFeesIncluded": false
+      },
+      "eagleAi": {
+        "priceStatus": "calculated-preview",
+        "basisAmountUsd": 199,
+        "defaultRate": 0.3,
+        "amountUsd30": 284.29,
+        "amountUsd15": 234.12,
+        "governmentFeesIncluded": false,
+        "serviceAmountUsd30": 284,
+        "serviceAmountUsd15": 234,
+        "servicePriceSelection": "user-selected-whole-dollar-pricing"
+      }
+    }
+  ],
+  "businessPricing": {
+    "selectedBy": "user",
+    "selectedAt": "2026-10-09",
+    "policy": "Company AI service prices use the researched CitizenPath reference amount grossed up for the chosen Apple commission scenario, then rounded to the nearest whole USD; exact halves round up.",
+    "displayFields": [
+      "eagleAi.serviceAmountUsd30",
+      "eagleAi.serviceAmountUsd15"
+    ],
+    "provenance": "Original citizenPath.amountUsd and eagleAi.amountUsd30/amountUsd15 remain unchanged as reference amounts and earlier cent-rounded calculations. Display the new serviceAmount fields.",
+    "nullPolicy": "Null remains null for included supplements without an independent price and services with no reference price. Existing includedWith and requiredPackage relationships remain in effect.",
+    "governmentFeesIncluded": false
+  }
+}

@@ -1,0 +1,194 @@
+{
+  "source": {
+    "url": "https://citizenpath.com/uscis-forms/",
+    "accessed": "2026-10-09",
+    "method": "Catalog and form-finder conditional rules inspected in source HTML. Labels and summaries adapted. Routing is discovery only, not an eligibility determination."
+  },
+  "availabilityDefinitions": {
+    "primary": "Standalone form listed in the reference service catalog; inclusion does not confirm Eagle service readiness.",
+    "related": "Supplement or worksheet associated with a primary form.",
+    "uscis-resource": "Direct official resource, not a preparation package."
+  },
+  "forms": [
+    {
+      "id": "AR-11",
+      "title": "Alien's Change of Address Card",
+      "summary": "Report an address update.",
+      "category": "Other",
+      "officialUrl": "https://www.uscis.gov/ar-11",
+      "availability": "primary"
+    },
+    {
+      "id": "G-1145",
+      "title": "E-Notification of Application/Petition Acceptance",
+      "summary": "Request receipt notifications.",
+      "category": "Other",
+      "officialUrl": "https://www.uscis.gov/g-1145",
+      "availability": "primary"
+    },
+    {
+      "id": "G-639",
+      "title": "FOIA / Immigration Records Request",
+      "summary": "Request immigration records from USCIS.",
+      "category": "Other",
+      "officialUrl": "https://www.uscis.gov/records/request-records-through-the-freedom-of-information-act-or-privacy-act",
+      "availability": "uscis-resource",
+      "availabilityNote": "Direct USCIS records request; the reference page does not offer a preparation package."
+    },
+    {
+      "id": "I-90",
+      "title": "Application to Replace Permanent Resident Card",
+      "summary": "Renew or replace your green card.",
+      "category": "Green card",
+      "officialUrl": "https://www.uscis.gov/i-90",
+      "availability": "primary"
+    },
+    {
+      "id": "I-129F",
+      "title": "Petition for Alien Fiancé(e)",
+      "summary": "Start a fiancé(e) petition.",
+      "category": "Family",
+      "officialUrl": "https://www.uscis.gov/i-129f",
+      "availability": "primary"
+    },
+    {
+      "id": "I-130",
+      "title": "Petition for Alien Relative",
+      "summary": "Establish a qualifying family relationship.",
+      "category": "Family",
+      "officialUrl": "https://www.uscis.gov/i-130",
+      "availability": "primary"
+    },
+    {
+      "id": "I-130A",
+      "title": "Supplemental Information for Spouse Beneficiary",
+      "summary": "Additional spouse details for I-130.",
+      "category": "Family",
+      "officialUrl": "https://www.uscis.gov/i-130",
+      "availability": "related",
+      "relatedTo": [
+        "I-130"
+      ]
+    },
+    {
+      "id": "I-131",
+      "title": "Application for Travel Documents, Parole Documents, and Arrival/Departure Records",
+      "summary": "Explore travel document requests.",
+      "category": "Travel",
+      "officialUrl": "https://www.uscis.gov/i-131",
+      "availability": "primary"
+    },
+    {
+      "id": "I-131A",
+      "title": "Application for Carrier Documentation",
+      "summary": "Request boarding documentation after losing travel documents abroad.",
+      "category": "Travel",
+      "officialUrl": "https://www.uscis.gov/i-131a",
+      "availability": "primary"
+    },
+    {
+      "id": "I-134",
+      "title": "Declaration of Financial Support",
+      "summary": "Document support for a temporary visitor.",
+      "category": "Family",
+      "officialUrl": "https://www.uscis.gov/i-134",
+      "availability": "primary"
+    },
+    {
+      "id": "I-485",
+      "title": "Application to Register Permanent Residence or Adjust Status",
+      "summary": "Apply for permanent residence from within the U.S.",
+      "category": "Green card",
+      "officialUrl": "https://www.uscis.gov/i-485",
+      "availability": "primary"
+    },
+    {
+      "id": "I-751",
+      "title": "Petition to Remove Conditions on Residence",
+      "summary": "Request removal of marriage-based residence conditions.",
+      "category": "Green card",
+      "officialUrl": "https://www.uscis.gov/i-751",
+      "availability": "primary"
+    },
+    {
+      "id": "I-765",
+      "title": "Application for Employment Authorization",
+      "summary": "Request employment authorization.",
+      "category": "Work",
+      "officialUrl": "https://www.uscis.gov/i-765",
+      "availability": "primary"
+    },
+    {
+      "id": "I-765WS",
+      "title": "I-765 Worksheet",
+      "summary": "Provide financial details with a DACA work request.",
+      "category": "Work",
+      "officialUrl": "https://www.uscis.gov/i-765",
+      "availability": "related",
+      "relatedTo": [
+        "I-821D",
+        "I-765"
+      ]
+    },
+    {
+      "id": "I-821",
+      "title": "Application for Temporary Protected Status",
+      "summary": "Explore a Temporary Protected Status request.",
+      "category": "Humanitarian",
+      "officialUrl": "https://www.uscis.gov/i-821",
+      "availability": "uscis-resource",
+      "availabilityNote": "USCIS resource; the reference page explicitly excludes this form from its preparation services."
+    },
+    {
+      "id": "I-821D",
+      "title": "Consideration of Deferred Action for Childhood Arrivals",
+      "summary": "Explore DACA requests and renewals.",
+      "category": "Humanitarian",
+      "officialUrl": "https://www.uscis.gov/i-821d",
+      "availability": "primary"
+    },
+    {
+      "id": "I-864",
+      "title": "Affidavit of Support Under Section 213A of the INA",
+      "summary": "Document a financial sponsorship commitment.",
+      "category": "Family",
+      "officialUrl": "https://www.uscis.gov/i-864",
+      "availability": "primary"
+    },
+    {
+      "id": "I-864A",
+      "title": "Contract Between Sponsor and Household Member",
+      "summary": "Combine a qualifying household member’s financial resources.",
+      "category": "Family",
+      "officialUrl": "https://www.uscis.gov/i-864a",
+      "availability": "related",
+      "relatedTo": [
+        "I-864"
+      ]
+    },
+    {
+      "id": "N-400",
+      "title": "Application for Naturalization",
+      "summary": "Apply for citizenship through naturalization.",
+      "category": "Citizenship",
+      "officialUrl": "https://www.uscis.gov/n-400",
+      "availability": "primary"
+    },
+    {
+      "id": "N-565",
+      "title": "Application for Replacement Naturalization/Citizenship Document",
+      "summary": "Replace a citizenship or naturalization document.",
+      "category": "Citizenship",
+      "officialUrl": "https://www.uscis.gov/n-565",
+      "availability": "primary"
+    },
+    {
+      "id": "N-600",
+      "title": "Application for Certificate of Citizenship",
+      "summary": "Document citizenship acquired through a parent.",
+      "category": "Citizenship",
+      "officialUrl": "https://www.uscis.gov/n-600",
+      "availability": "primary"
+    }
+  ]
+}

@@ -1,0 +1,462 @@
+{
+  "source": {
+    "url": "https://citizenpath.com/uscis-forms/",
+    "accessed": "2026-10-09",
+    "method": "Catalog and form-finder conditional rules inspected in source HTML. Labels and summaries adapted. Routing is discovery only, not an eligibility determination."
+  },
+  "statuses": [
+    {
+      "id": "lpr",
+      "label": "Lawful permanent resident",
+      "goals": [
+        {
+          "id": "renew-a-green-card",
+          "label": "Renew a green card",
+          "forms": [
+            "I-90"
+          ]
+        },
+        {
+          "id": "replace-a-green-card",
+          "label": "Replace a green card",
+          "forms": [
+            "I-90"
+          ]
+        },
+        {
+          "id": "fix-a-green-card-error",
+          "label": "Fix a green card error",
+          "forms": [
+            "I-90"
+          ]
+        },
+        {
+          "id": "return-to-the-u-s-with-missing-travel-documents",
+          "label": "Return to the U.S. with missing travel documents",
+          "forms": [
+            "I-131A"
+          ]
+        },
+        {
+          "id": "remove-green-card-conditions",
+          "label": "Remove green card conditions",
+          "forms": [
+            "I-751"
+          ]
+        },
+        {
+          "id": "become-a-u-s-citizen",
+          "label": "Become a U.S. citizen",
+          "forms": [
+            "N-400"
+          ]
+        },
+        {
+          "id": "get-a-reentry-permit",
+          "label": "Get a reentry permit",
+          "forms": [
+            "I-131"
+          ]
+        },
+        {
+          "id": "start-a-family-green-card-petition",
+          "label": "Start a family green card petition",
+          "forms": [
+            "I-130"
+          ]
+        },
+        {
+          "id": "sponsor-a-relative-financially",
+          "label": "Sponsor a relative financially",
+          "forms": [
+            "I-864"
+          ]
+        },
+        {
+          "id": "support-a-temporary-visitor-financially",
+          "label": "Support a temporary visitor financially",
+          "forms": [
+            "I-134"
+          ]
+        },
+        {
+          "id": "get-immigration-records",
+          "label": "Get immigration records",
+          "forms": [
+            "G-639"
+          ]
+        },
+        {
+          "id": "update-my-uscis-address",
+          "label": "Update my USCIS address",
+          "forms": [
+            "AR-11"
+          ]
+        },
+        {
+          "id": "get-application-receipt-alerts",
+          "label": "Get application receipt alerts",
+          "forms": [
+            "G-1145"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "conditional-resident",
+      "label": "Conditional permanent resident",
+      "goals": [
+        {
+          "id": "remove-green-card-conditions",
+          "label": "Remove green card conditions",
+          "forms": [
+            "I-751"
+          ]
+        },
+        {
+          "id": "replace-a-green-card",
+          "label": "Replace a green card",
+          "forms": [
+            "I-90"
+          ]
+        },
+        {
+          "id": "fix-a-green-card-error",
+          "label": "Fix a green card error",
+          "forms": [
+            "I-90"
+          ]
+        },
+        {
+          "id": "return-to-the-u-s-with-missing-travel-documents",
+          "label": "Return to the U.S. with missing travel documents",
+          "forms": [
+            "I-131A"
+          ]
+        },
+        {
+          "id": "become-a-u-s-citizen",
+          "label": "Become a U.S. citizen",
+          "forms": [
+            "N-400"
+          ]
+        },
+        {
+          "id": "get-a-reentry-permit",
+          "label": "Get a reentry permit",
+          "forms": [
+            "I-131"
+          ]
+        },
+        {
+          "id": "start-a-family-green-card-petition",
+          "label": "Start a family green card petition",
+          "forms": [
+            "I-130"
+          ]
+        },
+        {
+          "id": "sponsor-a-relative-financially",
+          "label": "Sponsor a relative financially",
+          "forms": [
+            "I-864"
+          ]
+        },
+        {
+          "id": "support-a-temporary-visitor-financially",
+          "label": "Support a temporary visitor financially",
+          "forms": [
+            "I-134"
+          ]
+        },
+        {
+          "id": "get-a-10-year-green-card",
+          "label": "Get a 10-year green card",
+          "forms": [
+            "I-751"
+          ]
+        },
+        {
+          "id": "update-my-uscis-address",
+          "label": "Update my USCIS address",
+          "forms": [
+            "AR-11"
+          ]
+        },
+        {
+          "id": "get-application-receipt-alerts",
+          "label": "Get application receipt alerts",
+          "forms": [
+            "G-1145"
+          ]
+        },
+        {
+          "id": "get-immigration-records",
+          "label": "Get immigration records",
+          "forms": [
+            "G-639"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "us-citizen",
+      "label": "U.S. citizen",
+      "goals": [
+        {
+          "id": "start-a-family-green-card-petition",
+          "label": "Start a family green card petition",
+          "forms": [
+            "I-130"
+          ]
+        },
+        {
+          "id": "start-a-fianc-e-visa-petition",
+          "label": "Start a fiancé(e) visa petition",
+          "forms": [
+            "I-129F"
+          ]
+        },
+        {
+          "id": "sponsor-a-relative-financially",
+          "label": "Sponsor a relative financially",
+          "forms": [
+            "I-864"
+          ]
+        },
+        {
+          "id": "support-a-temporary-visitor-financially",
+          "label": "Support a temporary visitor financially",
+          "forms": [
+            "I-134"
+          ]
+        },
+        {
+          "id": "get-a-citizenship-certificate",
+          "label": "Get a citizenship certificate",
+          "forms": [
+            "N-600"
+          ]
+        },
+        {
+          "id": "document-my-child-s-citizenship-through-a-parent",
+          "label": "Document my child's citizenship through a parent",
+          "forms": [
+            "N-600"
+          ]
+        },
+        {
+          "id": "replace-a-citizenship-or-naturalization-certificate",
+          "label": "Replace a citizenship or naturalization certificate",
+          "forms": [
+            "N-565"
+          ]
+        },
+        {
+          "id": "get-immigration-records",
+          "label": "Get immigration records",
+          "forms": [
+            "G-639"
+          ]
+        },
+        {
+          "id": "get-application-receipt-alerts",
+          "label": "Get application receipt alerts",
+          "forms": [
+            "G-1145"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "daca",
+      "label": "Deferred Action (DACA) recipient",
+      "goals": [
+        {
+          "id": "renew-daca",
+          "label": "Renew DACA",
+          "forms": [
+            "I-821D"
+          ]
+        },
+        {
+          "id": "replace-a-work-permit",
+          "label": "Replace a work permit",
+          "forms": [
+            "I-765"
+          ]
+        },
+        {
+          "id": "get-immigration-records",
+          "label": "Get immigration records",
+          "forms": [
+            "G-639"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "no-status",
+      "label": "Non citizen (no status)",
+      "goals": [
+        {
+          "id": "explore-a-daca-request",
+          "label": "Explore a DACA request",
+          "forms": [
+            "I-821D"
+          ]
+        },
+        {
+          "id": "apply-for-or-renew-tps",
+          "label": "Apply for or renew TPS",
+          "forms": [
+            "I-821"
+          ]
+        },
+        {
+          "id": "get-immigration-records",
+          "label": "Get immigration records",
+          "forms": [
+            "G-639"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tps",
+      "label": "Temporary Protected Status (TPS) beneficiary",
+      "goals": [
+        {
+          "id": "apply-for-or-renew-tps",
+          "label": "Apply for or renew TPS",
+          "forms": [
+            "I-821"
+          ]
+        },
+        {
+          "id": "renew-or-replace-a-work-permit",
+          "label": "Renew or replace a work permit",
+          "forms": [
+            "I-765"
+          ]
+        },
+        {
+          "id": "request-permission-for-travel-abroad",
+          "label": "Request permission for travel abroad",
+          "forms": [
+            "I-131"
+          ]
+        },
+        {
+          "id": "get-immigration-records",
+          "label": "Get immigration records",
+          "forms": [
+            "G-639"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "refugee-asylee",
+      "label": "Refugee or asylee",
+      "goals": [
+        {
+          "id": "apply-for-a-green-card-from-inside-the-u-s",
+          "label": "Apply for a green card from inside the U.S.",
+          "forms": [
+            "I-485"
+          ]
+        },
+        {
+          "id": "apply-for-a-work-permit",
+          "label": "Apply for a work permit",
+          "forms": [
+            "I-765"
+          ]
+        },
+        {
+          "id": "renew-or-replace-a-work-permit",
+          "label": "Renew or replace a work permit",
+          "forms": [
+            "I-765"
+          ]
+        },
+        {
+          "id": "get-a-travel-document",
+          "label": "Get a travel document",
+          "forms": [
+            "I-131"
+          ]
+        },
+        {
+          "id": "get-immigration-records",
+          "label": "Get immigration records",
+          "forms": [
+            "G-639"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "k-visa",
+      "label": "K-1 or K-3 visa holder",
+      "goals": [
+        {
+          "id": "apply-for-a-green-card-from-inside-the-u-s",
+          "label": "Apply for a green card from inside the U.S.",
+          "forms": [
+            "I-485"
+          ]
+        },
+        {
+          "id": "apply-for-a-work-permit",
+          "label": "Apply for a work permit",
+          "forms": [
+            "I-765"
+          ]
+        },
+        {
+          "id": "get-application-receipt-alerts",
+          "label": "Get application receipt alerts",
+          "forms": [
+            "G-1145"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "nonimmigrant",
+      "label": "Non-immigrant",
+      "goals": [
+        {
+          "id": "apply-for-a-green-card-from-inside-the-u-s",
+          "label": "Apply for a green card from inside the U.S.",
+          "forms": [
+            "I-485"
+          ]
+        },
+        {
+          "id": "apply-for-or-renew-tps",
+          "label": "Apply for or renew TPS",
+          "forms": [
+            "I-821"
+          ]
+        },
+        {
+          "id": "support-a-temporary-visitor-financially",
+          "label": "Support a temporary visitor financially",
+          "forms": [
+            "I-134"
+          ]
+        },
+        {
+          "id": "get-immigration-records",
+          "label": "Get immigration records",
+          "forms": [
+            "G-639"
+          ]
+        }
+      ]
+    }
+  ]
+}

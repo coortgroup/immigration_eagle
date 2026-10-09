@@ -1,0 +1,12 @@
+import sharp from 'sharp';
+import { fileURLToPath } from 'node:url';
+import path from 'node:path';
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
+const artwork=path.join(root,'assets/immigration-eagle-transparent.png');
+const emblem=await sharp(artwork).resize(900,900,{fit:'contain',background:'#00000000'}).png().toBuffer();
+await sharp({create:{width:1024,height:1024,channels:3,background:'#061B49'}}).composite([{input:emblem,left:62,top:62}]).removeAlpha().png().toFile(path.join(root,'assets/app-icon.png'));
+const adaptive=await sharp(artwork).resize(660,660,{fit:'contain',background:'#00000000'}).png().toBuffer();
+await sharp({create:{width:1024,height:1024,channels:4,background:'#00000000'}}).composite([{input:adaptive,left:182,top:182}]).png().toFile(path.join(root,'assets/adaptive-icon.png'));
+await sharp(artwork).resize(600,600).png().toFile(path.join(root,'assets/splash-icon.png'));
+await sharp(path.join(root,'assets/app-icon.png')).resize(64,64).png().toFile(path.join(root,'assets/favicon.png'));
+console.log('Exported app icon, Android adaptive foreground, splash artwork and favicon from the existing eagle.');

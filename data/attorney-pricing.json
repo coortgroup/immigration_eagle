@@ -1,0 +1,875 @@
+{
+  "schemaVersion": 2,
+  "checkedAt": "2026-10-09",
+  "currency": "USD",
+  "displayLabel": "Company service price",
+  "methodology": {
+    "description": "Illustrative sample of publicly listed law-firm legal fees retained as provenance for company service prices selected by the user; not a U.S. national average.",
+    "calculation": "For each benchmark, average the midpoint of each included observed range. Exact fees have identical endpoints. Round the arithmetic mean to two decimals.",
+    "range": "Minimum and maximum are the envelope of included observations, not a confidence interval.",
+    "minimumComparableFirms": 2,
+    "sampling": "Convenience sample from accessible primary law-firm fee pages; not random, exhaustive, geographically weighted or adjusted for service quality.",
+    "comparability": "Separate standalone filings, joint cases, renewals, bundles, review-only work and add-ons. Excluded observations remain visible for scope transparency.",
+    "freshness": "Checked date means the source page was inspected on that date; most source firms give no fee-effective date. Source observations remain research provenance and do not establish their current availability.",
+    "governmentFees": "Only attorney/legal-fee figures are stored. Government filing fees, medical exams, translations and third-party costs are separate; ambiguous source wording is flagged.",
+    "display": "Display servicePriceUsd as the fixed company price when status is fixed. Display Quote required when no benchmark exists. Preserve benchmark and observations as research provenance rather than displaying an estimate as the company price.",
+    "engagement": "User selection establishes the company pricing policy only; it does not confirm acceptance by the source law firms, create an attorney-client relationship, or guarantee a case outcome."
+  },
+  "sources": [
+    {
+      "id": "hummel",
+      "firm": "The Law Offices of Sean D. Hummel",
+      "url": "https://www.hummelaw.com/attorney-fees/",
+      "governmentFeesScope": "explicitly-separate",
+      "scopeNotes": "Routine case fees; evidence review and filing work. Interview attendance and unusual work can cost extra.",
+      "publishedEffectiveDate": null,
+      "checkedAt": "2026-10-09",
+      "sourceType": "law-firm-published-fee"
+    },
+    {
+      "id": "watkins",
+      "firm": "Watkins Immigration Law, LLC",
+      "url": "https://www.watkinsimmigrationlaw.com/fees",
+      "governmentFeesScope": "explicitly-separate",
+      "scopeNotes": "Listed case fees; complications can change the quote. Separate prices for standalone filings and combined cases.",
+      "publishedEffectiveDate": null,
+      "checkedAt": "2026-10-09",
+      "sourceType": "law-firm-published-fee"
+    },
+    {
+      "id": "bordeaux",
+      "firm": "E. Antonio Bordeaux PLLC",
+      "url": "https://ebordlaw.com/services-and-fees/",
+      "governmentFeesScope": "explicitly-separate",
+      "scopeNotes": "Individual service rows; interview preparation and RFE responses are separately priced.",
+      "publishedEffectiveDate": null,
+      "checkedAt": "2026-10-09",
+      "sourceType": "law-firm-published-fee"
+    },
+    {
+      "id": "avlg",
+      "firm": "American Visa Law Group",
+      "url": "https://www.usavisalaw.com/immigration-attorney-cost",
+      "governmentFeesScope": "explicitly-separate",
+      "scopeNotes": "Base casework; optional interviews, dependents, extra sponsors and complications can add cost.",
+      "publishedEffectiveDate": "2026-07-01",
+      "checkedAt": "2026-10-09",
+      "sourceType": "law-firm-published-fee"
+    },
+    {
+      "id": "iv-law",
+      "firm": "Irina Vinogradsky / IV-Law",
+      "url": "https://www.iv-law.com/immigration-attorneys-fees/",
+      "governmentFeesScope": "attorney-fee-heading-only",
+      "scopeNotes": "Attorney-fee table; exact inclusions and government-fee separation need written confirmation. Source HTML fetched directly after browser reader failed.",
+      "publishedEffectiveDate": null,
+      "checkedAt": "2026-10-09",
+      "sourceType": "law-firm-published-fee"
+    },
+    {
+      "id": "mhaiskar",
+      "firm": "Law Office of Dipti Mhaiskar",
+      "url": "https://www.mhaiskarlaw.com/fee-schedule",
+      "governmentFeesScope": "explicitly-separate",
+      "scopeNotes": "Case-specific written quote; copying, postage and expedited delivery are extra. Interview coverage unspecified unless noted.",
+      "publishedEffectiveDate": null,
+      "checkedAt": "2026-10-09",
+      "sourceType": "law-firm-published-fee"
+    },
+    {
+      "id": "cis",
+      "firm": "Comprehensive Immigration Services, PLLC",
+      "url": "https://www.cisconsult.co/booking-consultation",
+      "governmentFeesScope": "legal-flat-fee-stated-government-exclusion-not-explicit",
+      "scopeNotes": "Standard preparation and filing. Interview preparation and extra agency work cost more; confirm filing-fee exclusion.",
+      "publishedEffectiveDate": null,
+      "checkedAt": "2026-10-09",
+      "sourceType": "law-firm-published-fee"
+    },
+    {
+      "id": "tsang-n565",
+      "firm": "Tsang & Associates, PLC",
+      "url": "https://tsangslaw.com/services/citizenship/n-565-application-for-replacement-of-the-naturalization-citizenship-document/",
+      "governmentFeesScope": "government-fee-discussed-separately",
+      "scopeNotes": "Standard N-565 legal fee; final scope is customized and can cover selected stages.",
+      "publishedEffectiveDate": null,
+      "checkedAt": "2026-10-09",
+      "sourceType": "law-firm-published-fee"
+    },
+    {
+      "id": "fickey-support",
+      "firm": "Fickey Martinez Law Firm",
+      "url": "https://www.fickeymartinezlaw.com/affidavit-of-support",
+      "governmentFeesScope": "separate-attorney-and-processing-columns",
+      "scopeNotes": "Affidavit estimates specify joint sponsors; substitute sponsorship priced separately.",
+      "publishedEffectiveDate": null,
+      "checkedAt": "2026-10-09",
+      "sourceType": "law-firm-published-fee"
+    },
+    {
+      "id": "dekruyff",
+      "firm": "Law Office of Juan DeKruyff",
+      "url": "https://www.juandekruyff.com/services-payments/",
+      "governmentFeesScope": "explicitly-separate",
+      "scopeNotes": "Flat attorney fees; unexpected complexity can add cost. Government amounts shown on the page were not imported.",
+      "publishedEffectiveDate": null,
+      "checkedAt": "2026-10-09",
+      "sourceType": "law-firm-published-fee"
+    }
+  ],
+  "forms": [
+    {
+      "id": "AR-11",
+      "status": "quote-required",
+      "benchmark": null,
+      "observations": [
+        {
+          "sourceId": "bordeaux",
+          "minUsd": 350,
+          "maxUsd": 350,
+          "priceType": "flat",
+          "scope": "Address-change service; AR-11 is not named in the published row.",
+          "includeInBenchmark": false
+        }
+      ],
+      "note": "One related service price; no two explicitly comparable AR-11 attorney quotes. Request an individual quote.",
+      "servicePriceUsd": null,
+      "servicePriceSelection": "quote-required-no-benchmark"
+    },
+    {
+      "id": "G-1145",
+      "status": "quote-required",
+      "benchmark": null,
+      "observations": [],
+      "note": "No reliable standalone attorney-price pair found; do not infer a fee from a complete application package.",
+      "servicePriceUsd": null,
+      "servicePriceSelection": "quote-required-no-benchmark"
+    },
+    {
+      "id": "G-639",
+      "status": "fixed",
+      "benchmark": {
+        "meanUsd": 1350,
+        "minUsd": 1200,
+        "maxUsd": 1500,
+        "sampleSize": 2,
+        "scope": "FOIA request with immigration-records review",
+        "method": "mean-of-comparable-observation-midpoints"
+      },
+      "observations": [
+        {
+          "sourceId": "hummel",
+          "minUsd": 1500,
+          "maxUsd": 1500,
+          "priceType": "flat",
+          "scope": "Records request plus immigration-history review.",
+          "includeInBenchmark": true
+        },
+        {
+          "sourceId": "iv-law",
+          "minUsd": 1200,
+          "maxUsd": 1200,
+          "priceType": "flat",
+          "scope": "Records request and evaluation.",
+          "includeInBenchmark": true
+        },
+        {
+          "sourceId": "avlg",
+          "minUsd": 450,
+          "maxUsd": 450,
+          "priceType": "flat",
+          "scope": "One-agency FOIA request; review scope unspecified.",
+          "includeInBenchmark": false,
+          "additionalAgencyUsd": 200
+        }
+      ],
+      "note": "Benchmark covers request plus review. A request-only price is excluded; not a government records fee.",
+      "servicePriceUsd": 1350,
+      "servicePriceSelection": "user-selected-from-researched-benchmark"
+    },
+    {
+      "id": "I-90",
+      "status": "fixed",
+      "benchmark": {
+        "meanUsd": 725,
+        "minUsd": 600,
+        "maxUsd": 850,
+        "sampleSize": 2,
+        "scope": "Routine green-card replacement case",
+        "method": "mean-of-comparable-observation-midpoints"
+      },
+      "observations": [
+        {
+          "sourceId": "mhaiskar",
+          "minUsd": 600,
+          "maxUsd": 600,
+          "priceType": "flat",
+          "scope": "Replacement filing.",
+          "includeInBenchmark": true
+        },
+        {
+          "sourceId": "hummel",
+          "minUsd": 850,
+          "maxUsd": 850,
+          "priceType": "flat",
+          "scope": "I-90 filing; schedule groups this row with I-102.",
+          "includeInBenchmark": true
+        },
+        {
+          "sourceId": "avlg",
+          "minUsd": 550,
+          "maxUsd": 550,
+          "priceType": "flat",
+          "scope": "Green-card renewal, not a specifically priced replacement.",
+          "includeInBenchmark": false
+        },
+        {
+          "sourceId": "dekruyff",
+          "minUsd": 135,
+          "maxUsd": 135,
+          "priceType": "flat",
+          "scope": "Ten-year card renewal only.",
+          "includeInBenchmark": false
+        }
+      ],
+      "note": "Replacement benchmark; renewal-only prices remain separate observations.",
+      "servicePriceUsd": 725,
+      "servicePriceSelection": "user-selected-from-researched-benchmark"
+    },
+    {
+      "id": "I-129F",
+      "status": "fixed",
+      "benchmark": {
+        "meanUsd": 1933.33,
+        "minUsd": 1500,
+        "maxUsd": 2500,
+        "sampleSize": 3,
+        "scope": "K-1 petition stage, excluding consular processing",
+        "method": "mean-of-comparable-observation-midpoints"
+      },
+      "observations": [
+        {
+          "sourceId": "watkins",
+          "minUsd": 1500,
+          "maxUsd": 1500,
+          "priceType": "flat",
+          "scope": "Petition; consular stage adds a separate fee.",
+          "includeInBenchmark": true
+        },
+        {
+          "sourceId": "hummel",
+          "minUsd": 2500,
+          "maxUsd": 2500,
+          "priceType": "flat",
+          "scope": "Petition without consular processing.",
+          "includeInBenchmark": true
+        },
+        {
+          "sourceId": "avlg",
+          "minUsd": 1800,
+          "maxUsd": 1800,
+          "priceType": "flat",
+          "scope": "K-1 base petition; NVC help is extra.",
+          "includeInBenchmark": true
+        }
+      ],
+      "note": "No consular-stage, adjustment, dependent or government costs included in this comparison.",
+      "servicePriceUsd": 1933,
+      "servicePriceSelection": "user-selected-from-researched-benchmark"
+    },
+    {
+      "id": "I-130",
+      "status": "fixed",
+      "benchmark": {
+        "meanUsd": 1837.5,
+        "minUsd": 850,
+        "maxUsd": 2500,
+        "sampleSize": 4,
+        "scope": "Standalone family petition",
+        "method": "mean-of-comparable-observation-midpoints"
+      },
+      "observations": [
+        {
+          "sourceId": "watkins",
+          "minUsd": 1500,
+          "maxUsd": 1500,
+          "priceType": "flat",
+          "scope": "Standalone petition.",
+          "includeInBenchmark": true
+        },
+        {
+          "sourceId": "hummel",
+          "minUsd": 2500,
+          "maxUsd": 2500,
+          "priceType": "flat",
+          "scope": "Family petition; combined cases priced separately.",
+          "includeInBenchmark": true
+        },
+        {
+          "sourceId": "bordeaux",
+          "minUsd": 2500,
+          "maxUsd": 2500,
+          "priceType": "flat",
+          "scope": "USCIS petition stage.",
+          "includeInBenchmark": true
+        },
+        {
+          "sourceId": "mhaiskar",
+          "minUsd": 850,
+          "maxUsd": 850,
+          "priceType": "flat",
+          "scope": "Individual family petition.",
+          "includeInBenchmark": true
+        }
+      ],
+      "note": "Excludes I-485 bundles and consular/NVC processing.",
+      "servicePriceUsd": 1838,
+      "servicePriceSelection": "user-selected-from-researched-benchmark"
+    },
+    {
+      "id": "I-130A",
+      "status": "quote-required",
+      "benchmark": null,
+      "observations": [],
+      "note": "No reliable standalone attorney-price pair found. A spouse-petition bundle must not be charged or compared again as a standalone supplement.",
+      "relatedTo": [
+        "I-130"
+      ],
+      "servicePriceUsd": null,
+      "servicePriceSelection": "quote-required-no-benchmark"
+    },
+    {
+      "id": "I-131",
+      "status": "fixed",
+      "benchmark": {
+        "meanUsd": 1050,
+        "minUsd": 450,
+        "maxUsd": 1500,
+        "sampleSize": 3,
+        "scope": "Reentry-permit case",
+        "method": "mean-of-comparable-observation-midpoints"
+      },
+      "observations": [
+        {
+          "sourceId": "avlg",
+          "minUsd": 450,
+          "maxUsd": 450,
+          "priceType": "flat",
+          "scope": "Reentry permit.",
+          "includeInBenchmark": true
+        },
+        {
+          "sourceId": "bordeaux",
+          "minUsd": 1500,
+          "maxUsd": 1500,
+          "priceType": "flat",
+          "scope": "Travel/reentry permit.",
+          "includeInBenchmark": true
+        },
+        {
+          "sourceId": "iv-law",
+          "minUsd": 1200,
+          "maxUsd": 1200,
+          "priceType": "flat",
+          "scope": "Advance parole or reentry permit.",
+          "includeInBenchmark": true
+        }
+      ],
+      "note": "This benchmark is for reentry-permit work. Other I-131 categories, humanitarian parole and travel-related bundles need their own quote.",
+      "servicePriceUsd": 1050,
+      "servicePriceSelection": "user-selected-from-researched-benchmark"
+    },
+    {
+      "id": "I-131A",
+      "status": "quote-required",
+      "benchmark": null,
+      "observations": [],
+      "note": "No reliable comparable published attorney-fee pair found. Request a case-specific quote.",
+      "servicePriceUsd": null,
+      "servicePriceSelection": "quote-required-no-benchmark"
+    },
+    {
+      "id": "I-134",
+      "status": "quote-required",
+      "benchmark": null,
+      "observations": [
+        {
+          "sourceId": "fickey-support",
+          "minUsd": 1000,
+          "maxUsd": 1000,
+          "priceType": "flat",
+          "scope": "Affidavit preparation with joint sponsors.",
+          "includeInBenchmark": false
+        },
+        {
+          "sourceId": "avlg",
+          "minUsd": 1050,
+          "maxUsd": 1050,
+          "priceType": "flat",
+          "scope": "Ukraine sponsorship program service, not a generic visitor-support declaration.",
+          "includeInBenchmark": false
+        }
+      ],
+      "note": "Observed scopes differ. Do not combine a specialized sponsorship program with standard I-134 work.",
+      "servicePriceUsd": null,
+      "servicePriceSelection": "quote-required-no-benchmark"
+    },
+    {
+      "id": "I-485",
+      "status": "fixed",
+      "benchmark": {
+        "meanUsd": 2750,
+        "minUsd": 2500,
+        "maxUsd": 3000,
+        "sampleSize": 2,
+        "scope": "Standalone adjustment-of-status filing",
+        "method": "mean-of-comparable-observation-midpoints"
+      },
+      "observations": [
+        {
+          "sourceId": "watkins",
+          "minUsd": 2500,
+          "maxUsd": 2500,
+          "priceType": "flat",
+          "scope": "Standalone filing.",
+          "includeInBenchmark": true
+        },
+        {
+          "sourceId": "hummel",
+          "minUsd": 3000,
+          "maxUsd": 3000,
+          "priceType": "flat",
+          "scope": "Adjustment filing; combined family case separately priced.",
+          "includeInBenchmark": true
+        },
+        {
+          "sourceId": "watkins",
+          "minUsd": 4000,
+          "maxUsd": 4000,
+          "priceType": "flat",
+          "scope": "Family packet including I-130, I-765 and I-131.",
+          "includeInBenchmark": false
+        },
+        {
+          "sourceId": "hummel",
+          "minUsd": 5000,
+          "maxUsd": 5000,
+          "priceType": "flat",
+          "scope": "Combined I-130, I-485 and I-765 case.",
+          "includeInBenchmark": false
+        }
+      ],
+      "note": "Only standalone rows enter the mean. Full family-case bundles are shown as excluded context.",
+      "servicePriceUsd": 2750,
+      "servicePriceSelection": "user-selected-from-researched-benchmark"
+    },
+    {
+      "id": "I-751",
+      "status": "fixed",
+      "benchmark": {
+        "meanUsd": 1950,
+        "minUsd": 1500,
+        "maxUsd": 2500,
+        "sampleSize": 3,
+        "scope": "Routine joint petition",
+        "method": "mean-of-comparable-observation-midpoints"
+      },
+      "observations": [
+        {
+          "sourceId": "watkins",
+          "minUsd": 1500,
+          "maxUsd": 1500,
+          "priceType": "flat",
+          "scope": "Joint filing.",
+          "includeInBenchmark": true
+        },
+        {
+          "sourceId": "hummel",
+          "minUsd": 2500,
+          "maxUsd": 2500,
+          "priceType": "flat",
+          "scope": "Joint petition for a couple living together.",
+          "includeInBenchmark": true
+        },
+        {
+          "sourceId": "avlg",
+          "minUsd": 1850,
+          "maxUsd": 1850,
+          "priceType": "flat",
+          "scope": "Joint petition; dependents and interviews may cost extra.",
+          "includeInBenchmark": true
+        }
+      ],
+      "note": "Waivers, self-petitions, complex evidence and interview attendance excluded.",
+      "servicePriceUsd": 1950,
+      "servicePriceSelection": "user-selected-from-researched-benchmark"
+    },
+    {
+      "id": "I-765",
+      "status": "fixed",
+      "benchmark": {
+        "meanUsd": 1125,
+        "minUsd": 750,
+        "maxUsd": 1500,
+        "sampleSize": 2,
+        "scope": "Standalone employment-authorization filing",
+        "method": "mean-of-comparable-observation-midpoints"
+      },
+      "observations": [
+        {
+          "sourceId": "hummel",
+          "minUsd": 750,
+          "maxUsd": 750,
+          "priceType": "flat",
+          "scope": "Employment-authorization application.",
+          "includeInBenchmark": true
+        },
+        {
+          "sourceId": "bordeaux",
+          "minUsd": 1500,
+          "maxUsd": 1500,
+          "priceType": "flat",
+          "scope": "Work-authorization application.",
+          "includeInBenchmark": true
+        },
+        {
+          "sourceId": "dekruyff",
+          "minUsd": 200,
+          "maxUsd": 200,
+          "priceType": "flat",
+          "scope": "Extension while a residency case is pending.",
+          "includeInBenchmark": false
+        },
+        {
+          "sourceId": "avlg",
+          "minUsd": 450,
+          "maxUsd": 450,
+          "priceType": "flat",
+          "scope": "EAD extension for a new client.",
+          "includeInBenchmark": false
+        }
+      ],
+      "note": "Renewal-specific and bundled prices are excluded from the standard filing mean; eligibility category can change the quote.",
+      "servicePriceUsd": 1125,
+      "servicePriceSelection": "user-selected-from-researched-benchmark"
+    },
+    {
+      "id": "I-765WS",
+      "status": "quote-required",
+      "benchmark": null,
+      "observations": [],
+      "note": "No reliable standalone attorney-price pair found. Do not reuse the DACA package price for this worksheet.",
+      "relatedTo": [
+        "I-821D",
+        "I-765"
+      ],
+      "servicePriceUsd": null,
+      "servicePriceSelection": "quote-required-no-benchmark"
+    },
+    {
+      "id": "I-821",
+      "status": "quote-required",
+      "benchmark": null,
+      "observations": [
+        {
+          "sourceId": "bordeaux",
+          "minUsd": 1500,
+          "maxUsd": 1500,
+          "priceType": "flat",
+          "scope": "TPS or renewal; EAD scope not specified.",
+          "includeInBenchmark": false
+        },
+        {
+          "sourceId": "cis",
+          "minUsd": 1500,
+          "maxUsd": 1500,
+          "priceType": "flat",
+          "scope": "TPS; initial/renewal and EAD scope unspecified.",
+          "includeInBenchmark": false
+        },
+        {
+          "sourceId": "avlg",
+          "minUsd": 1400,
+          "maxUsd": 1400,
+          "priceType": "flat",
+          "scope": "Initial TPS with EAD.",
+          "includeInBenchmark": false
+        },
+        {
+          "sourceId": "avlg",
+          "minUsd": 850,
+          "maxUsd": 850,
+          "priceType": "flat",
+          "scope": "TPS extension with EAD.",
+          "includeInBenchmark": false
+        },
+        {
+          "sourceId": "dekruyff",
+          "minUsd": 400,
+          "maxUsd": 400,
+          "priceType": "flat",
+          "scope": "TPS row describes work-permit renewal.",
+          "includeInBenchmark": false
+        }
+      ],
+      "note": "Initial, renewal and EAD-inclusive services are not comparable enough for one form-wide mean. Obtain a quote for the selected TPS scenario.",
+      "servicePriceUsd": null,
+      "servicePriceSelection": "quote-required-no-benchmark"
+    },
+    {
+      "id": "I-821D",
+      "status": "fixed",
+      "benchmark": {
+        "meanUsd": 650,
+        "minUsd": 500,
+        "maxUsd": 800,
+        "sampleSize": 2,
+        "scope": "DACA renewal package including work-authorization renewal",
+        "method": "mean-of-comparable-observation-midpoints"
+      },
+      "observations": [
+        {
+          "sourceId": "avlg",
+          "minUsd": 800,
+          "maxUsd": 800,
+          "priceType": "flat",
+          "scope": "DACA renewal including EAD.",
+          "includeInBenchmark": true
+        },
+        {
+          "sourceId": "dekruyff",
+          "minUsd": 500,
+          "maxUsd": 500,
+          "priceType": "flat",
+          "scope": "DACA renewal described as renewing the work permit.",
+          "includeInBenchmark": true
+        },
+        {
+          "sourceId": "avlg",
+          "minUsd": 1400,
+          "maxUsd": 1400,
+          "priceType": "flat",
+          "scope": "Initial DACA package with EAD.",
+          "includeInBenchmark": false
+        }
+      ],
+      "note": "Renewal bundle estimate only, not a standalone I-821D or initial-filing price. It must not be added again to I-765 or I-765WS prices.",
+      "bundledForms": [
+        "I-821D",
+        "I-765"
+      ],
+      "scopeRestriction": "renewal-only",
+      "servicePriceUsd": 650,
+      "servicePriceSelection": "user-selected-from-researched-benchmark"
+    },
+    {
+      "id": "I-864",
+      "status": "fixed",
+      "benchmark": {
+        "meanUsd": 850,
+        "minUsd": 700,
+        "maxUsd": 1000,
+        "sampleSize": 2,
+        "scope": "Standalone affidavit-of-support preparation",
+        "method": "mean-of-comparable-observation-midpoints"
+      },
+      "observations": [
+        {
+          "sourceId": "avlg",
+          "minUsd": 700,
+          "maxUsd": 700,
+          "priceType": "flat",
+          "scope": "USCIS affidavit only; NVC and extra sponsors differ.",
+          "includeInBenchmark": true
+        },
+        {
+          "sourceId": "iv-law",
+          "minUsd": 1000,
+          "maxUsd": 1000,
+          "priceType": "flat",
+          "scope": "Affidavit of support.",
+          "includeInBenchmark": true
+        },
+        {
+          "sourceId": "fickey-support",
+          "minUsd": 1000,
+          "maxUsd": 1000,
+          "priceType": "flat",
+          "scope": "Affidavit with joint sponsors.",
+          "includeInBenchmark": false
+        },
+        {
+          "sourceId": "hummel",
+          "minUsd": 1000,
+          "maxUsd": 1000,
+          "priceType": "flat",
+          "scope": "Additional co-sponsor within a case, not standalone base service.",
+          "includeInBenchmark": false
+        }
+      ],
+      "note": "Standard standalone rows only. Joint-sponsor add-ons and case bundles are excluded.",
+      "servicePriceUsd": 850,
+      "servicePriceSelection": "user-selected-from-researched-benchmark"
+    },
+    {
+      "id": "I-864A",
+      "status": "quote-required",
+      "benchmark": null,
+      "observations": [],
+      "note": "No reliable standalone attorney-price pair found; request a quote within the relevant support case.",
+      "relatedTo": [
+        "I-864"
+      ],
+      "servicePriceUsd": null,
+      "servicePriceSelection": "quote-required-no-benchmark"
+    },
+    {
+      "id": "N-400",
+      "status": "fixed",
+      "benchmark": {
+        "meanUsd": 1690,
+        "minUsd": 850,
+        "maxUsd": 2500,
+        "sampleSize": 5,
+        "scope": "Routine naturalization preparation and filing",
+        "method": "mean-of-comparable-observation-midpoints"
+      },
+      "observations": [
+        {
+          "sourceId": "mhaiskar",
+          "minUsd": 850,
+          "maxUsd": 850,
+          "priceType": "flat",
+          "scope": "Naturalization including RFE work; interview scope unspecified.",
+          "includeInBenchmark": true
+        },
+        {
+          "sourceId": "bordeaux",
+          "minUsd": 1500,
+          "maxUsd": 1500,
+          "priceType": "flat",
+          "scope": "Naturalization filing; interview prep separately listed.",
+          "includeInBenchmark": true
+        },
+        {
+          "sourceId": "avlg",
+          "minUsd": 1600,
+          "maxUsd": 1600,
+          "priceType": "flat",
+          "scope": "Ordinary case; interview work and complications extra.",
+          "includeInBenchmark": true
+        },
+        {
+          "sourceId": "watkins",
+          "minUsd": 2000,
+          "maxUsd": 2000,
+          "priceType": "flat",
+          "scope": "Naturalization; multiple character concerns add cost.",
+          "includeInBenchmark": true
+        },
+        {
+          "sourceId": "hummel",
+          "minUsd": 2500,
+          "maxUsd": 2500,
+          "priceType": "flat",
+          "scope": "Routine naturalization; interview attendance separately priced.",
+          "includeInBenchmark": true
+        },
+        {
+          "sourceId": "dekruyff",
+          "minUsd": 1600,
+          "maxUsd": 1600,
+          "priceType": "flat",
+          "scope": "Includes attorney attendance at San Antonio interview.",
+          "includeInBenchmark": false
+        }
+      ],
+      "note": "Base filing-service comparison. Interview-inclusive regional service is excluded; inclusions still vary across firms.",
+      "servicePriceUsd": 1690,
+      "servicePriceSelection": "user-selected-from-researched-benchmark"
+    },
+    {
+      "id": "N-565",
+      "status": "fixed",
+      "benchmark": {
+        "meanUsd": 1175,
+        "minUsd": 850,
+        "maxUsd": 1500,
+        "sampleSize": 2,
+        "scope": "Standard replacement citizenship/naturalization document",
+        "method": "mean-of-comparable-observation-midpoints"
+      },
+      "observations": [
+        {
+          "sourceId": "cis",
+          "minUsd": 850,
+          "maxUsd": 850,
+          "priceType": "flat",
+          "scope": "Standard legal preparation and filing.",
+          "includeInBenchmark": true
+        },
+        {
+          "sourceId": "tsang-n565",
+          "minUsd": 1500,
+          "maxUsd": 1500,
+          "priceType": "flat",
+          "scope": "Standard replacement case; final engagement scope customized.",
+          "includeInBenchmark": true
+        }
+      ],
+      "note": "Small two-firm sample. CIS does not explicitly spell out government-fee exclusion; verify the written quote before budgeting.",
+      "servicePriceUsd": 1175,
+      "servicePriceSelection": "user-selected-from-researched-benchmark"
+    },
+    {
+      "id": "N-600",
+      "status": "fixed",
+      "benchmark": {
+        "meanUsd": 1000,
+        "minUsd": 500,
+        "maxUsd": 1500,
+        "sampleSize": 2,
+        "scope": "Certificate-of-citizenship preparation and filing",
+        "method": "mean-of-comparable-observation-midpoints"
+      },
+      "observations": [
+        {
+          "sourceId": "mhaiskar",
+          "minUsd": 500,
+          "maxUsd": 500,
+          "priceType": "flat",
+          "scope": "N-600 application.",
+          "includeInBenchmark": true
+        },
+        {
+          "sourceId": "cis",
+          "minUsd": 1500,
+          "maxUsd": 1500,
+          "priceType": "flat",
+          "scope": "Certificate case; row also lists N-600K.",
+          "includeInBenchmark": true
+        }
+      ],
+      "note": "Small two-firm sample. N-600K shares one source row but is not a catalog entry; scope and filing-fee exclusion need confirmation.",
+      "servicePriceUsd": 1000,
+      "servicePriceSelection": "user-selected-from-researched-benchmark"
+    }
+  ],
+  "researchNotes": [
+    "No nonprofit, non-attorney preparer, aggregator, social-media report or government filing-fee schedule was used as an attorney-price observation.",
+    "Unverified or mismatched scopes were not averaged. Search results with a broken live source page were omitted.",
+    "No government fee amounts or eligibility claims are inferred from these attorney fee schedules."
+  ],
+  "businessPricing": {
+    "selectedBy": "user",
+    "selectedAt": "2026-10-09",
+    "policy": "Use each researched benchmark mean as the fixed company attorney-service price, rounded to the nearest whole USD; exact halves round up.",
+    "displayField": "forms[].servicePriceUsd",
+    "statusField": "forms[].status",
+    "fixedStatus": "fixed",
+    "unpricedStatus": "quote-required",
+    "provenance": "Original benchmark means, ranges, observations and source records remain unchanged as research provenance.",
+    "scope": "The selected company prices retain the recorded service scope. They are not confirmations or negotiated offers from the source law firms.",
+    "governmentFeesIncluded": false
+  }
+}

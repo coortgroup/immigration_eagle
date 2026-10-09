@@ -1,0 +1,486 @@
+<div id="immigration-eagle-review">
+  <div class="eagle-stage viz-dotted-background">
+    <div class="eagle-device" aria-label="Immigration Eagle app">
+      <div class="eagle-status" aria-hidden="true"><span>9:41</span><span class="eagle-island"></span><span class="eagle-signal"><i data-lucide="signal"></i><i data-lucide="wifi"></i><i data-lucide="battery-full"></i></span></div>
+      <main class="eagle-view"></main>
+      <nav class="eagle-nav" aria-label="App navigation">
+        <button type="button" class="cursor-interaction" data-route="home"><i data-lucide="house" aria-hidden="true"></i><span>Home</span></button>
+        <button type="button" class="cursor-interaction" data-route="application"><i data-lucide="list-checks" aria-hidden="true"></i><span>My Application</span></button>
+        <button type="button" class="cursor-interaction" data-route="ai"><span class="eagle-nav-logo"></span><span>Eagle AI</span></button>
+      </nav>
+      <div class="eagle-home-indicator" aria-hidden="true"><span></span></div>
+      <div class="eagle-sheet" hidden></div>
+      <div class="eagle-toast" role="status" aria-live="polite"></div>
+    </div>
+  </div>
+</div>
+<style>
+  #immigration-eagle-review { font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif; font-size:14px; line-height:1.35; color-scheme: light; }
+  #immigration-eagle-review * { box-sizing: border-box; }
+  #immigration-eagle-review [hidden] { display: none !important; }
+  #immigration-eagle-review .eagle-stage { display: flex; justify-content: center; padding: 26px 12px 32px; }
+  #immigration-eagle-review .eagle-device { --eagle-navy:#061b49; --eagle-blue:#102e64; --eagle-gold:#d8ae55; --eagle-gold-light:#f0d28e; --eagle-cream:#fcf7eb; --eagle-paper:#f7f8fc; --eagle-white:#fff; --eagle-ink:#102244; --eagle-muted:#637089; --eagle-line:#e1e5ee; --eagle-radius:20px; position:relative; width:min(100%,390px); min-width:0; border:6px solid #0a1834; border-radius:46px; background:var(--eagle-paper); color:var(--eagle-ink); overflow:hidden; box-shadow:0 18px 46px #061b4926; text-align:left; }
+  #immigration-eagle-review button, #immigration-eagle-review input, #immigration-eagle-review select, #immigration-eagle-review textarea { font:inherit; }
+  #immigration-eagle-review button { -webkit-tap-highlight-color:transparent; }
+  #immigration-eagle-review svg { width:21px; height:21px; flex-shrink:0; stroke-width:1.7; }
+  #immigration-eagle-review .eagle-status { position:relative; height:49px; padding:0 24px; display:flex; align-items:center; justify-content:space-between; font-size:13px; font-weight:600; background:var(--eagle-white); }
+  #immigration-eagle-review .eagle-island { position:absolute; width:102px; height:27px; left:50%; top:9px; transform:translateX(-50%); border-radius:20px; background:#0a142b; }
+  #immigration-eagle-review .eagle-signal { display:flex; align-items:center; gap:4px; }
+  #immigration-eagle-review .eagle-signal svg { width:13px; height:13px; }
+  #immigration-eagle-review .eagle-signal svg:last-child { width:20px; height:16px; }
+  #immigration-eagle-review .eagle-view { min-height:675px; }
+  #immigration-eagle-review .eagle-header { display:flex; justify-content:space-between; align-items:center; gap:10px; padding:8px 22px 18px; background:var(--eagle-white); }
+  #immigration-eagle-review .eagle-brand { display:flex; align-items:center; gap:9px; }
+  #immigration-eagle-review .eagle-logo { width:42px; height:42px; display:block; object-fit:contain; }
+  #immigration-eagle-review .eagle-wordmark { display:flex; flex-direction:column; gap:2px; }
+  #immigration-eagle-review .eagle-wordmark span { font-size:9px; font-weight:600; letter-spacing:1.9px; }
+  #immigration-eagle-review .eagle-wordmark strong { font-size:20px; font-weight:700; letter-spacing:1.5px; line-height:1; }
+  #immigration-eagle-review .eagle-avatar { border:1px solid var(--eagle-line); background:var(--eagle-paper); color:var(--eagle-navy); border-radius:50%; width:44px; height:44px; font-size:12px; font-weight:600; padding:0; flex-shrink:0; }
+  #immigration-eagle-review .eagle-hero { padding:25px 24px 24px; position:relative; background:var(--eagle-navy); color:var(--eagle-white); overflow:hidden; }
+  #immigration-eagle-review .eagle-eyebrow { margin:0 0 12px; display:flex; align-items:center; gap:7px; font-size:10px; font-weight:600; letter-spacing:1.5px; line-height:1.5; }
+  #immigration-eagle-review .eagle-hero .eagle-eyebrow { color:var(--eagle-gold-light); }
+  #immigration-eagle-review .eagle-hero h1 { margin:0; font-family:Georgia,serif; font-size:32px; font-weight:400; line-height:1.12; letter-spacing:-1.2px; }
+  #immigration-eagle-review .eagle-hero h1 em { color:var(--eagle-gold-light); font-style:normal; }
+  #immigration-eagle-review .eagle-hero p { max-width:300px; font-size:13px; line-height:1.6; color:#dce5f5; margin:13px 0 19px; }
+  #immigration-eagle-review .eagle-button { display:flex; align-items:center; justify-content:center; gap:10px; width:100%; min-height:47px; padding:12px 16px; border:0; border-radius:12px; color:var(--eagle-white); background:var(--eagle-navy); font-size:13px; font-weight:600; text-decoration:none; }
+  #immigration-eagle-review .eagle-button.gold { color:var(--eagle-navy); background:var(--eagle-gold-light); }
+  #immigration-eagle-review .eagle-button svg { width:17px; height:17px; }
+  #immigration-eagle-review .eagle-hero-note { display:flex; justify-content:center; align-items:center; gap:6px; font-size:11px; margin-top:14px; color:#dce5f5; }
+  #immigration-eagle-review .eagle-hero-note svg { width:14px; height:14px; color:var(--eagle-gold-light); }
+  #immigration-eagle-review .eagle-section { padding:22px; }
+  #immigration-eagle-review .eagle-section-heading { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:12px; }
+  #immigration-eagle-review .eagle-section-heading h2 { margin:0; font-size:17px; font-weight:650; letter-spacing:-.3px; }
+  #immigration-eagle-review .eagle-text-button { display:inline-flex; align-items:center; gap:4px; min-height:44px; padding:5px 0; border:0; background:transparent; color:var(--eagle-navy); font-size:12px; font-weight:600; }
+  #immigration-eagle-review .eagle-text-button svg { width:14px; height:14px; }
+  #immigration-eagle-review .eagle-package-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+  #immigration-eagle-review .eagle-package { position:relative; text-align:left; border:1px solid var(--eagle-line); border-radius:16px; background:var(--eagle-white); color:var(--eagle-ink); padding:14px; min-height:125px; display:flex; flex-direction:column; align-items:flex-start; gap:9px; }
+  #immigration-eagle-review .eagle-package .eagle-package-icon { color:var(--eagle-navy); height:22px; }
+  #immigration-eagle-review .eagle-package strong { font-size:14px; font-weight:600; line-height:1.3; }
+  #immigration-eagle-review .eagle-package small { color:var(--eagle-muted); font-size:11px; margin-top:auto; }
+  #immigration-eagle-review .eagle-package .eagle-package-arrow { position:absolute; right:13px; bottom:13px; width:14px; height:14px; color:var(--eagle-muted); }
+  #immigration-eagle-review .eagle-nav { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:2px; background:var(--eagle-white); padding:7px 9px 2px; border-top:1px solid var(--eagle-line); }
+  #immigration-eagle-review .eagle-nav button { position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; min-height:59px; border:0; border-radius:12px; background:transparent; color:var(--eagle-muted); font-size:11px; white-space:nowrap; padding:7px 2px; }
+  #immigration-eagle-review .eagle-nav button[aria-current=page] { color:var(--eagle-navy); font-weight:650; background:var(--eagle-cream); }
+  #immigration-eagle-review .eagle-nav button[aria-current=page]::before { content:''; position:absolute; top:-7px; width:24px; height:3px; border-radius:0 0 3px 3px; background:var(--eagle-gold); }
+  #immigration-eagle-review .eagle-nav-logo { display:block; height:25px; width:25px; }
+  #immigration-eagle-review .eagle-nav-logo img { width:25px; height:25px; object-fit:contain; display:block; }
+  #immigration-eagle-review .eagle-nav button>svg { width:23px; height:25px; }
+  #immigration-eagle-review .eagle-home-indicator { height:24px; display:flex; align-items:center; justify-content:center; background:var(--eagle-white); }
+  #immigration-eagle-review .eagle-home-indicator span { height:4px; width:112px; border-radius:4px; background:var(--eagle-ink); }
+  #immigration-eagle-review .eagle-page { padding:7px 22px 24px; }
+  #immigration-eagle-review .eagle-subtop { min-height:50px; display:flex; align-items:center; justify-content:space-between; gap:7px; margin-bottom:10px; }
+  #immigration-eagle-review .eagle-icon-button { display:flex; align-items:center; justify-content:center; border:0; background:transparent; color:var(--eagle-navy); width:44px; height:44px; padding:0; }
+  #immigration-eagle-review .eagle-heading { font-family:Georgia,serif; font-size:31px; font-weight:400; line-height:1.15; letter-spacing:-1px; margin:0 0 10px; }
+  #immigration-eagle-review .eagle-intro { font-size:13px; line-height:1.6; margin:0 0 21px; color:var(--eagle-muted); }
+  #immigration-eagle-review .eagle-progress-card { background:var(--eagle-navy); color:var(--eagle-white); border-radius:var(--eagle-radius); padding:20px; margin:21px 0; }
+  #immigration-eagle-review .eagle-card-top { display:flex; justify-content:space-between; align-items:center; font-size:10px; letter-spacing:1px; gap:10px; color:var(--eagle-gold-light); margin-bottom:13px; }
+  #immigration-eagle-review .eagle-form-tag { color:var(--eagle-white); letter-spacing:0; background:#ffffff14; border-radius:6px; padding:5px 8px; }
+  #immigration-eagle-review .eagle-progress-card h2 { font-family:Georgia,serif; font-size:26px; font-weight:400; margin:0 0 17px; }
+  #immigration-eagle-review .eagle-progress-meta { display:flex; justify-content:space-between; gap:5px; font-size:11px; color:#dce5f5; }
+  #immigration-eagle-review .eagle-progress { height:5px; border-radius:5px; overflow:hidden; background:#ffffff26; margin:9px 0 18px; }
+  #immigration-eagle-review .eagle-progress span { display:block; height:100%; background:var(--eagle-gold-light); border-radius:5px; }
+  #immigration-eagle-review .eagle-checklist { background:var(--eagle-white); border:1px solid var(--eagle-line); border-radius:16px; overflow:hidden; }
+  #immigration-eagle-review .eagle-check-row { display:flex; width:100%; gap:11px; align-items:center; text-align:left; background:transparent; border:0; color:var(--eagle-ink); padding:12px 14px; min-height:60px; }
+  #immigration-eagle-review .eagle-check-row+.eagle-check-row { border-top:1px solid var(--eagle-line); }
+  #immigration-eagle-review .eagle-check-row.current { background:var(--eagle-cream); }
+  #immigration-eagle-review .eagle-step { width:25px; height:25px; display:flex; align-items:center; justify-content:center; border-radius:50%; background:var(--eagle-paper); color:var(--eagle-muted); flex-shrink:0; font-size:11px; }
+  #immigration-eagle-review .eagle-step svg { width:13px; height:13px; }
+  #immigration-eagle-review .done .eagle-step { background:var(--eagle-navy); color:var(--eagle-gold-light); }
+  #immigration-eagle-review .current .eagle-step { background:var(--eagle-gold-light); color:var(--eagle-navy); }
+  #immigration-eagle-review .eagle-check-row strong { font-size:13px; font-weight:550; display:block; }
+  #immigration-eagle-review .eagle-check-row small { font-size:11px; color:var(--eagle-muted); display:block; margin-top:3px; }
+  #immigration-eagle-review .eagle-chevron { display:flex; align-items:center; justify-content:center; width:16px; height:16px; color:var(--eagle-muted); margin-left:auto; }
+  #immigration-eagle-review .eagle-document-link { margin:14px 0 0; width:100%; justify-content:center; }
+  #immigration-eagle-review .eagle-note { display:flex; align-items:flex-start; gap:10px; padding:14px; background:var(--eagle-cream); color:var(--eagle-muted); font-size:12px; line-height:1.55; border-radius:12px; margin:18px 0; }
+  #immigration-eagle-review .eagle-note svg { color:var(--eagle-navy); width:18px; height:18px; }
+  #immigration-eagle-review .eagle-field { display:flex; flex-direction:column; gap:8px; margin:16px 0; font-size:12px; font-weight:500; min-width:0; }
+  #immigration-eagle-review .eagle-field input { width:100%; min-width:0; height:47px; border:1px solid var(--eagle-line); border-radius:11px; padding:12px; background:var(--eagle-white); color:var(--eagle-ink); font-size:16px; }
+  #immigration-eagle-review .eagle-field-pair { display:grid; grid-template-columns:1.3fr 1fr; gap:12px; }
+  #immigration-eagle-review .eagle-footnote { font-size:11px; line-height:1.55; color:var(--eagle-muted); margin:12px 0 0; text-align:center; }
+  #immigration-eagle-review .eagle-file { display:flex; align-items:center; gap:12px; padding:15px 0; border-bottom:1px solid var(--eagle-line); }
+  #immigration-eagle-review .eagle-file>svg { width:26px; height:26px; }
+  #immigration-eagle-review .eagle-file>span { flex:1; min-width:0; }
+  #immigration-eagle-review .eagle-file strong { font-size:13px; font-weight:550; display:block; overflow-wrap:anywhere; }
+  #immigration-eagle-review .eagle-file small { font-size:11px; color:var(--eagle-muted); display:block; margin-top:5px; }
+  #immigration-eagle-review .eagle-upload { width:100%; display:flex; flex-direction:column; align-items:center; gap:9px; border:1px dashed #b7c1d3; border-radius:16px; padding:23px; margin:22px 0; color:var(--eagle-navy); background:var(--eagle-white); font-size:13px; }
+  #immigration-eagle-review .eagle-upload small { font-size:11px; color:var(--eagle-muted); }
+  #immigration-eagle-review .eagle-ai-screen { min-height:675px; display:flex; flex-direction:column; padding:0 20px 16px; background:var(--eagle-white); }
+  #immigration-eagle-review .eagle-ai-topbar { display:flex; align-items:center; justify-content:space-between; gap:8px; border-bottom:1px solid var(--eagle-line); padding:5px 0 10px; }
+  #immigration-eagle-review .eagle-ai-topbar h1 { font:600 18px/1.4 -apple-system,BlinkMacSystemFont,sans-serif; margin:0 auto 0 0; letter-spacing:-.4px; }
+  #immigration-eagle-review .eagle-ai-body { display:flex; flex-direction:column; justify-content:center; flex:1; padding:22px 0; }
+  #immigration-eagle-review .eagle-ai-empty h2 { font-size:25px; font-weight:500; letter-spacing:-.8px; text-align:center; margin:30px 0; line-height:1.3; }
+  #immigration-eagle-review .eagle-prompt-list { display:flex; flex-direction:column; align-items:flex-start; gap:8px; margin:0 0 15px; }
+  #immigration-eagle-review .eagle-prompt-chip { display:flex; align-items:center; gap:8px; min-height:44px; max-width:100%; padding:10px 13px; color:var(--eagle-ink); background:var(--eagle-paper); border:1px solid var(--eagle-line); border-radius:13px; font-size:12px; text-align:left; }
+  #immigration-eagle-review .eagle-ai-context { margin:14px 0 0; border-radius:10px; padding:11px 13px; background:var(--eagle-cream); color:var(--eagle-navy); font-size:12px; }
+  #immigration-eagle-review .eagle-ai-suggestion { width:100%; border:1px solid var(--eagle-line); border-radius:13px; padding:15px; margin:0 0 10px; display:flex; align-items:center; gap:12px; text-align:left; background:var(--eagle-white); color:var(--eagle-navy); font-size:13px; min-height:53px; }
+  #immigration-eagle-review .eagle-ai-suggestion>svg:first-child { width:19px; height:19px; }
+  #immigration-eagle-review .eagle-ai-example { text-align:center; font-size:11px; color:var(--eagle-muted); margin:15px 0; }
+  #immigration-eagle-review .eagle-chat { display:flex; flex-direction:column; gap:15px; padding:12px 0 18px; }
+  #immigration-eagle-review .eagle-chat-message { font-size:13px; line-height:1.6; border-radius:16px; padding:15px; overflow-wrap:anywhere; }
+  #immigration-eagle-review .eagle-chat-message.user { background:var(--eagle-navy); color:var(--eagle-white); align-self:flex-end; max-width:90%; white-space:pre-wrap; }
+  #immigration-eagle-review .eagle-chat-message.assistant { background:var(--eagle-white); border:1px solid var(--eagle-line); }
+  #immigration-eagle-review .eagle-chat-author { display:flex; align-items:center; gap:8px; font-weight:600; color:var(--eagle-navy); font-size:12px; margin-bottom:10px; }
+  #immigration-eagle-review .eagle-chat-author img { width:27px; height:27px; object-fit:contain; }
+  #immigration-eagle-review .eagle-chat-message p { margin:0 0 14px; }
+  #immigration-eagle-review .eagle-chat-form { display:flex; gap:8px; padding:7px; border:1px solid var(--eagle-line); background:var(--eagle-white); border-radius:15px; }
+  #immigration-eagle-review .eagle-chat-form textarea { border:0; min-width:0; width:100%; background:transparent; color:var(--eagle-ink); font-size:16px; line-height:1.5; padding:8px; resize:vertical; min-height:62px; }
+  #immigration-eagle-review .eagle-chat-form button { width:43px; min-height:43px; height:43px; padding:0; flex-shrink:0; align-self:flex-end; border-radius:50%; }
+  #immigration-eagle-review .eagle-catalog { display:flex; flex-direction:column; gap:12px; }
+  #immigration-eagle-review .eagle-catalog-card { padding:18px; border:1px solid var(--eagle-line); border-radius:16px; background:var(--eagle-white); }
+  #immigration-eagle-review .eagle-catalog-card h2 { font-size:19px; margin:12px 0 7px; }
+  #immigration-eagle-review .eagle-catalog-card p { font-size:13px; line-height:1.6; color:var(--eagle-muted); margin:0 0 15px; }
+  #immigration-eagle-review .eagle-sheet { position:absolute; inset:0; background:#061b4970; z-index:10; display:flex; align-items:flex-start; padding:70px 12px 20px; }
+  #immigration-eagle-review .eagle-sheet-panel { width:100%; background:var(--eagle-white); border-radius:22px; padding:16px 20px 25px; box-shadow:0 10px 35px #061b4924; }
+  #immigration-eagle-review .eagle-sheet-top { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:14px; }
+  #immigration-eagle-review .eagle-sheet-top h2 { font-family:Georgia,serif; font-size:25px; letter-spacing:-.5px; font-weight:400; margin:0; }
+  #immigration-eagle-review .eagle-sheet p { font-size:13px; line-height:1.7; color:var(--eagle-muted); margin:0 0 18px; }
+  #immigration-eagle-review .eagle-sheet ol { padding-left:22px; margin:0 0 20px; }
+  #immigration-eagle-review .eagle-sheet li { font-size:13px; line-height:1.7; padding:6px 0; }
+  #immigration-eagle-review .eagle-sheet .eagle-ai-suggestion { margin-bottom:9px; }
+  #immigration-eagle-review .eagle-toast { position:absolute; bottom:105px; left:20px; right:20px; background:var(--eagle-navy); color:var(--eagle-white); padding:14px 16px; border:1px solid var(--eagle-gold); border-radius:13px; font-size:12px; line-height:1.5; pointer-events:none; opacity:0; z-index:20; text-align:center; }
+  #immigration-eagle-review .eagle-toast.visible { opacity:1; }
+  #immigration-eagle-review .eagle-finder { margin:0; padding:22px; background:var(--eagle-white); }
+  #immigration-eagle-review .eagle-finder h2, #immigration-eagle-review .eagle-benefits h2 { margin:0 0 10px; font-family:Georgia,serif; font-size:27px; line-height:1.16; font-weight:400; letter-spacing:-.7px; }
+  #immigration-eagle-review .eagle-finder>p { margin:0 0 18px; font-size:13px; line-height:1.6; color:var(--eagle-muted); }
+  #immigration-eagle-review .eagle-select-label { display:flex; flex-direction:column; gap:8px; min-width:0; margin:14px 0; font-size:12px; font-weight:600; }
+  #immigration-eagle-review .eagle-select-label select { display:block; width:100%; min-width:0; min-height:48px; border:1px solid #bac4d7; border-radius:11px; padding:12px 10px; background:var(--eagle-paper); color:var(--eagle-navy); font-size:14px; text-overflow:ellipsis; }
+  #immigration-eagle-review .eagle-select-label select:disabled { background:#f2f3f7; color:#7b8598; border-color:var(--eagle-line); }
+  #immigration-eagle-review .eagle-selection-copy { font-size:12px; line-height:1.6; color:var(--eagle-muted); margin:14px 0; }
+  #immigration-eagle-review .eagle-result-heading { font-size:13px; font-weight:600; margin:19px 0 10px; }
+  #immigration-eagle-review .eagle-form-result { width:100%; text-align:left; border:1px solid var(--eagle-line); border-radius:13px; padding:14px; margin:8px 0; background:var(--eagle-paper); color:var(--eagle-navy); }
+  #immigration-eagle-review .eagle-form-info { display:flex; align-items:center; gap:11px; margin-bottom:13px; }
+  #immigration-eagle-review .eagle-form-code { display:inline-flex; align-items:center; justify-content:center; padding:6px 8px; background:var(--eagle-navy); color:var(--eagle-gold-light); border-radius:7px; font-size:11px; font-weight:650; white-space:nowrap; flex-shrink:0; }
+  #immigration-eagle-review .eagle-form-info>span:nth-child(2) { display:flex; flex-direction:column; gap:4px; min-width:0; }
+  #immigration-eagle-review .eagle-form-result strong { font-size:12px; font-weight:600; line-height:1.4; }
+  #immigration-eagle-review .eagle-form-result small { font-size:11px; color:var(--eagle-muted); line-height:1.4; }
+  #immigration-eagle-review .eagle-home-forms { padding:24px 22px; background:var(--eagle-white); border-top:1px solid var(--eagle-line); }
+  #immigration-eagle-review .eagle-home-forms>h2 { margin:0 0 9px; font-family:Georgia,serif; font-size:28px; font-weight:400; letter-spacing:-.7px; }
+  #immigration-eagle-review .eagle-list-heading { margin:23px 0 4px; font-size:13px; font-weight:600; color:var(--eagle-muted); }
+  #immigration-eagle-review .eagle-priced-form { padding:18px 0 13px; border-bottom:1px solid var(--eagle-line); }
+  #immigration-eagle-review .eagle-priced-form .eagle-form-info { align-items:flex-start; margin-bottom:14px; }
+  #immigration-eagle-review .eagle-priced-form h3 { font-size:14px; line-height:1.4; font-weight:600; margin:3px 0 0; }
+  #immigration-eagle-review .eagle-list-prices { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; padding:0 0 5px; }
+  #immigration-eagle-review .eagle-list-prices>div { min-width:0; }
+  #immigration-eagle-review .eagle-list-prices span { display:block; min-height:2.8em; font-size:11px; line-height:1.4; color:var(--eagle-muted); margin-bottom:3px; }
+  #immigration-eagle-review .eagle-list-prices strong { display:block; font-size:16px; line-height:1.3; font-weight:600; color:var(--eagle-navy); }
+  #immigration-eagle-review .eagle-list-prices small { display:block; margin:4px 0 0; font-size:11px; line-height:1.45; color:var(--eagle-muted); overflow-wrap:anywhere; }
+  #immigration-eagle-review .eagle-form-result .eagle-list-prices { margin:0 0 13px; }
+  #immigration-eagle-review .eagle-priced-form .eagle-text-button { margin-top:4px; }
+  #immigration-eagle-review .eagle-other-forms { margin-top:18px; }
+  #immigration-eagle-review .eagle-other-forms summary { min-height:48px; padding:14px 0; color:var(--eagle-navy); font-size:14px; font-weight:600; }
+  #immigration-eagle-review .eagle-benefits { padding:25px 22px; }
+  #immigration-eagle-review .eagle-benefit { display:flex; gap:13px; padding:18px 0; border-bottom:1px solid var(--eagle-line); }
+  #immigration-eagle-review .eagle-benefit:last-child { border-bottom:0; padding-bottom:0; }
+  #immigration-eagle-review .eagle-benefit-icon { display:flex; align-items:center; justify-content:center; flex-shrink:0; width:35px; height:35px; background:var(--eagle-white); color:var(--eagle-navy); border-radius:10px; }
+  #immigration-eagle-review .eagle-benefit h3 { margin:0 0 6px; font-size:14px; line-height:1.4; font-weight:600; }
+  #immigration-eagle-review .eagle-benefit p { margin:0; font-size:12px; line-height:1.6; color:var(--eagle-muted); }
+  #immigration-eagle-review .eagle-plan-list { display:flex; flex-direction:column; gap:13px; margin-top:18px; }
+  #immigration-eagle-review .eagle-plan { padding:18px; border:1px solid var(--eagle-line); border-radius:17px; background:var(--eagle-white); }
+  #immigration-eagle-review .eagle-plan.featured { background:var(--eagle-navy); color:var(--eagle-white); border-color:var(--eagle-navy); }
+  #immigration-eagle-review .eagle-plan-top { display:flex; align-items:center; gap:9px; margin-bottom:12px; }
+  #immigration-eagle-review .eagle-plan h3 { margin:0; font-size:15px; font-weight:600; }
+  #immigration-eagle-review .eagle-plan-price { font-size:27px; line-height:1.2; letter-spacing:-.7px; font-weight:600; }
+  #immigration-eagle-review .eagle-plan small { display:block; margin-top:4px; font-size:11px; line-height:1.5; color:var(--eagle-muted); }
+  #immigration-eagle-review .eagle-plan p { font-size:12px; line-height:1.6; color:var(--eagle-muted); margin:12px 0 15px; }
+  #immigration-eagle-review .eagle-plan.featured small, #immigration-eagle-review .eagle-plan.featured p { color:#dce5f5; }
+  #immigration-eagle-review .eagle-plan.featured .eagle-plan-top { color:var(--eagle-gold-light); }
+  #immigration-eagle-review .eagle-plan .eagle-button.secondary { background:var(--eagle-white); color:var(--eagle-navy); border:1px solid var(--eagle-line); }
+  #immigration-eagle-review .eagle-search { display:flex; align-items:center; gap:9px; background:var(--eagle-white); border:1px solid var(--eagle-line); border-radius:12px; padding:0 13px; margin:20px 0 12px; }
+  #immigration-eagle-review .eagle-search input { width:100%; min-width:0; height:49px; padding:12px 0; border:0; background:transparent; color:var(--eagle-ink); font-size:16px; }
+  #immigration-eagle-review .eagle-catalog-meta { display:flex; align-items:center; justify-content:space-between; gap:9px; font-size:12px; color:var(--eagle-muted); margin:0 0 14px; min-height:44px; }
+  #immigration-eagle-review .eagle-catalog .eagle-form-result { background:var(--eagle-white); margin:0; }
+  #immigration-eagle-review .eagle-detail-code { margin:6px 0 20px; }
+  #immigration-eagle-review .eagle-detail-text { font-size:14px; line-height:1.7; color:var(--eagle-muted); margin:15px 0 23px; }
+  #immigration-eagle-review .eagle-detail-actions { display:flex; flex-direction:column; gap:12px; }
+  #immigration-eagle-review .eagle-detail-actions .secondary { background:var(--eagle-white); color:var(--eagle-navy); border:1px solid var(--eagle-line); }
+  #immigration-eagle-review .eagle-contact-link { margin-top:14px; background:var(--eagle-cream); border-color:transparent; }
+  #immigration-eagle-review .eagle-contact-title { display:flex; align-items:center; gap:12px; margin:8px 0 16px; }
+  #immigration-eagle-review .eagle-contact-title .eagle-logo { width:55px; height:55px; }
+  #immigration-eagle-review .eagle-field textarea { width:100%; min-height:125px; resize:vertical; padding:12px; border:1px solid var(--eagle-line); border-radius:11px; background:var(--eagle-white); color:var(--eagle-ink); font-size:16px; line-height:1.5; }
+  #immigration-eagle-review .eagle-error { color:#a32037; font-size:12px; line-height:1.5; margin:10px 0; }
+  #immigration-eagle-review .eagle-contact-preview { overflow-wrap:anywhere; white-space:pre-wrap; padding:14px; background:var(--eagle-paper); border-radius:11px; font-size:13px; line-height:1.6; }
+  @media(max-width:400px) { #immigration-eagle-review .eagle-stage { padding:14px 3px 22px; } #immigration-eagle-review .eagle-device { border-width:5px; border-radius:38px; } #immigration-eagle-review .eagle-header { padding-left:18px; padding-right:18px; } #immigration-eagle-review .eagle-section, #immigration-eagle-review .eagle-page { padding-left:18px; padding-right:18px; } #immigration-eagle-review .eagle-hero { padding-left:20px; padding-right:20px; } #immigration-eagle-review .eagle-hero h1 { font-size:30px; } #immigration-eagle-review .eagle-package { padding:12px; } #immigration-eagle-review .eagle-heading { font-size:29px; } #immigration-eagle-review .eagle-nav { padding-left:3px; padding-right:3px; } #immigration-eagle-review .eagle-nav button { font-size:11px; } }
+__PREPARATION_CSS__
+</style>
+<script>
+(() => {
+  const root = document.getElementById('immigration-eagle-review');
+  const phone = root.querySelector('.eagle-device');
+  const view = root.querySelector('.eagle-view');
+  const overlay = root.querySelector('.eagle-sheet');
+  const logoSource = '__EAGLE_IMAGE__';
+  const preparationRoutes = ['qualification','qualification-result','prepare-ai','attorney-intake'];
+  const routes = ['home','application','question','documents','ai','services','form','contact',...preparationRoutes];
+  const catalogData = __FORM_CATALOG__;
+  const finderData = __FORM_FINDER__;
+  const pricingData = __FORM_PRICING__;
+  const attorneyData = __ATTORNEY_PRICING__;
+  const eligibilityMain = __ELIGIBILITY_MAIN__;
+  const eligibilityOther = __ELIGIBILITY_OTHER__;
+  const preparationFields = __PREPARATION_FIELDS__;
+  const eligibilityForms = [...eligibilityMain.forms,...eligibilityOther.forms];
+__QUALIFICATION_ENGINE__
+  const commissionRate = pricingData.apple.defaultCommissionRate;
+  const forms = catalogData.forms;
+  const state = { route:'home', completed:2, attached:false, chat:[], aiFormId:'', finderStatus:'', finderGoal:'', query:'', formId:'N-400', formBack:'services', otherFormsOpen:false };
+  const mainFormIds=['N-400','I-90','I-130','I-485','I-765','I-751','I-129F','I-864'];
+  const formLabels={'AR-11':'Change of address','G-1145':'Receipt notifications','G-639':'Immigration records (FOIA)','I-90':'Renew or replace a green card','I-129F':'Fiancé(e) petition','I-130':'Family petition','I-130A':'Spouse information','I-131':'Travel document','I-131A':'Carrier documentation','I-134':'Financial support','I-485':'Adjustment of status','I-751':'Remove green card conditions','I-765':'Work permit','I-765WS':'Work permit worksheet','I-821':'Temporary Protected Status','I-821D':'DACA','I-864':'Affidavit of support','I-864A':'Household member support','N-400':'U.S. citizenship','N-565':'Replace a citizenship document','N-600':'Certificate of citizenship'};
+  const contactDraft = { name:'', email:'', phone:'', message:'', topic:'Application support' };
+  let toastTimer, returnFocus;
+  const icon = (name, classes='') => classes ? `<span class="${classes}" aria-hidden="true"><i data-lucide="${name}"></i></span>` : `<i data-lucide="${name}" aria-hidden="true"></i>`;
+  const logo = (classes='eagle-logo') => `<img class="${classes}" src="${logoSource}" alt="" draggable="false">`;
+  const button = (label, attributes='', classes='eagle-button') => `<button type="button" class="${classes} cursor-interaction" ${attributes}>${label}</button>`;
+  const escape = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const chevron = () => icon('chevron-right','eagle-chevron');
+  const benefits = [
+    ['badge-check','Attorney-Reviewed Software',"Prepare USCIS forms correctly with easy, step-by-step process and alerts if there's a problem"],
+    ['file-check','Official USCIS Forms','Perfectly prepared documents on the latest edition of USCIS forms'],
+    ['list-checks','Personal Filing Instructions','Checklist of supporting documents and how to organize your application'],
+    ['printer','Printing & Shipping','Digital download on all orders and optional print and mail available'],
+    ['files','Sample Documents','Example cover letters, affidavits and how-to information for your situation'],
+    ['headphones','Customer Support','Live, knowledgeable customer support at your fingertips']
+  ];
+  const sections = ['Getting started','Personal information','Address history','Work & education','Travel history','Review'];
+  const header = () => `<header class="eagle-header"><div class="eagle-brand" aria-label="Immigration Eagle">${logo()}<span class="eagle-wordmark"><span>IMMIGRATION</span><strong>EAGLE</strong></span></div>${button('AR','data-action="profile" aria-label="Open sample profile"','eagle-avatar')}</header>`;
+  const back = (route='home', name='Home') => `<div class="eagle-subtop">${button(icon('chevron-left')+name,`data-route="${route}"`,'eagle-text-button')}${button(icon('circle-help'),'data-route="ai" aria-label="Help with Eagle AI"','eagle-icon-button')}</div>`;
+  const page = content => `<section class="eagle-page">${content}</section>`;
+  const progress = () => {
+    const percent = Math.round(state.completed / 6 * 100);
+    return `<section class="eagle-progress-card" aria-label="Current application"><div class="eagle-card-top"><span>YOUR NEXT CHAPTER</span><span class="eagle-form-tag">N-400</span></div><h2>U.S. citizenship</h2><div class="eagle-progress-meta"><span>${state.completed} of 6 sections complete</span><span>${percent}%</span></div><div class="eagle-progress" role="progressbar" aria-label="Sample preparation progress" aria-valuenow="${percent}" aria-valuemin="0" aria-valuemax="100"><span style="width:${percent}%"></span></div>${button('Continue application '+icon('arrow-right'), state.completed===2?'data-route="question"':'data-action="section" data-section="3"','eagle-button gold')}</section>`;
+  };
+  function home() {
+    return `${header()}<section class="eagle-hero"><div class="eagle-eyebrow">IMMIGRATION MADE SIMPLE</div><h1>Prepare immigration paperwork correctly, <em>guaranteed.</em></h1><p>Find your form. Follow clear steps.<br>Move forward with confidence.</p></section>${finder()}${homeForms()}<section class="eagle-benefits"><div class="eagle-eyebrow">SUPPORT AT EVERY STEP</div><h2>Every package includes</h2>${benefits.map(([i,title,copy])=>`<article class="eagle-benefit"><span class="eagle-benefit-icon">${icon(i)}</span><div><h3>${title}</h3><p>${copy}</p></div></article>`).join('')}</section>`;
+  }
+  function formPriceSummary(f) {
+    const ai=aiPricing(f), cp=pricingData.forms.find(p=>p.id===f.id).citizenPath;
+    const lawyer=attorneyData.forms.find(p=>p.id===f.id)?.servicePriceUsd;
+    const detail=cp.status==='included'?ai.note:cp.status==='add-on'?ai.note:f.id==='I-485'?'Base package':f.id==='I-821D'?'Includes I-765 and I-765WS':'';
+    const lawyerScope={'I-90':'Replacement','I-129F':'Petition stage','I-130':'Petition only','I-485':'Standalone filing','I-751':'Joint petition','I-131':'Reentry permit','I-821D':'Renewal with work permit','G-639':'Request and records review'}[f.id];
+    return `<div class="eagle-list-prices"><div class="eagle-self-price"><span>Do it yourself</span><strong>Free</strong></div><div><span>With AI</span><strong>${ai.unavailable?'Contact us':ai.label}</strong>${detail?`<small>${escape(detail)}</small>`:''}</div><div><span>With an attorney</span><strong>${Number.isFinite(lawyer)?money(lawyer):'Get a quote'}</strong>${Number.isFinite(lawyer)&&lawyerScope?`<small>${escape(lawyerScope)}</small>`:''}</div></div>`;
+  }
+  function pricedFormRow(f) {
+    return `<article class="eagle-priced-form" data-priced-form="${f.id}"><div class="eagle-form-info"><span class="eagle-form-code">${escape(f.id)}</span><h3>${escape(formLabels[f.id]||f.title)}</h3></div>${formPriceSummary(f)}${button('Start filling out form '+icon('arrow-right'),`data-form="${f.id}" aria-label="Start filling out form ${f.id}"`,'eagle-text-button')}</article>`;
+  }
+  function homeForms() {
+    const mainForms=mainFormIds.map(id=>forms.find(f=>f.id===id));
+    const otherForms=forms.filter(f=>!mainFormIds.includes(f.id));
+    return `<section class="eagle-home-forms" aria-labelledby="eagle-forms-heading"><h2 id="eagle-forms-heading">Immigration forms</h2><p class="eagle-intro">Self-preparation is free. Choose AI or attorney assistance below.</p><h3 class="eagle-list-heading">Main forms</h3><div class="eagle-main-forms">${mainForms.map(pricedFormRow).join('')}</div><details class="eagle-other-forms" ${state.otherFormsOpen?'open':''}><summary class="cursor-interaction">All other forms</summary>${otherForms.map(pricedFormRow).join('')}</details><p class="eagle-footnote">Prices in USD. Government filing fees and taxes are separate.</p></section>`;
+  }
+  const selectedStatus = () => finderData.statuses.find(s=>s.id===state.finderStatus);
+  const selectedGoal = () => selectedStatus()?.goals.find(g=>g.id===state.finderGoal);
+  const availabilityLabel = f => f.availability==='uscis-resource'?'USCIS resource':f.availability==='related'?'Related document':f.category;
+  function formRow(f) {
+    return `<article class="eagle-form-result"><div class="eagle-form-info"><span class="eagle-form-code">${escape(f.id)}</span><span><strong>${escape(f.title)}</strong><small>${escape(availabilityLabel(f))}</small></span></div>${formPriceSummary(f)}${button('Start filling out form '+icon('arrow-right'),`data-form="${f.id}" aria-label="Start filling out form ${f.id}"`)}</article>`;
+  }
+  function goalOptions() {
+    return '<option value="">Choose your goal…</option>'+(selectedStatus()?.goals||[]).map(g=>`<option value="${g.id}" ${g.id===state.finderGoal?'selected':''}>${escape(g.label)}</option>`).join('');
+  }
+  function finderResults() {
+    const goal=selectedGoal();
+    if(!goal)return `<p class="eagle-selection-copy">${selectedStatus()?'Now choose what you would like to do.':'Choose your situation to explore related forms.'}</p>`;
+    return `<p class="eagle-selection-copy">${escape(selectedStatus().label)} · ${escape(goal.label)}</p><h3 class="eagle-result-heading">${goal.forms.length===1?'Form to explore':'Forms to explore'}</h3>${goal.forms.map(id=>formRow(forms.find(f=>f.id===id))).join('')}<p class="eagle-selection-copy">Check the official instructions to confirm the requirements for your situation.</p>`;
+  }
+  function finder() {
+    return `<section class="eagle-finder" aria-labelledby="eagle-finder-heading"><h2 id="eagle-finder-heading">Find the Right<br>USCIS Form</h2><p>Use <strong>I am / I would like to</strong> to find the document for your next step.</p><label class="eagle-select-label"><span>I am</span><select id="eagle-status-select" aria-label="I am"><option value="">Choose your status…</option>${finderData.statuses.map(s=>`<option value="${s.id}" ${s.id===state.finderStatus?'selected':''}>${escape(s.label)}</option>`).join('')}</select></label><label class="eagle-select-label"><span>I would like to</span><select id="eagle-goal-select" aria-label="I would like to" ${selectedStatus()?'':'disabled'}>${goalOptions()}</select></label><div id="eagle-form-results" aria-live="polite">${finderResults()}</div></section>`;
+  }
+  function application() {
+    return page(`${back()}<h1 class="eagle-heading">My Application</h1><p class="eagle-intro">Your next step, right where you left it.</p>${progress()}<div class="eagle-section-heading"><h2>Your checklist</h2><span class="eagle-footnote">Sample progress</span></div><div class="eagle-checklist">${sections.map((title,i)=>button(`<span class="eagle-step">${i<state.completed?icon('check'):i+1}</span><span><strong>${title}</strong><small>${i<state.completed?'Complete':i===state.completed?'Continue here':'Not started'}</small></span>${chevron()}`,i===2?'data-route="question"':`data-action="section" data-section="${i}"`,`eagle-check-row ${i<state.completed?'done':i===state.completed?'current':''}`)).join('')}</div>${button(icon('folder')+' My documents '+chevron(),'data-route="documents"','eagle-text-button eagle-document-link')}`);
+  }
+  function question() {
+    return page(`${back('application','My Application')}<div class="eagle-eyebrow">ADDRESS HISTORY · SECTION 3 OF 6</div><h1 class="eagle-heading">Where do you<br>live now?</h1><div class="eagle-note">${icon('info')}<span>Example details for this design preview.</span></div><label class="eagle-field"><span>Street address</span><input readonly value="123 Maple Avenue"></label><label class="eagle-field"><span>Apartment or unit</span><input readonly value="Apt 4B"></label><label class="eagle-field"><span>City</span><input readonly value="Seattle"></label><div class="eagle-field-pair"><label class="eagle-field"><span>State</span><input readonly value="Washington"></label><label class="eagle-field"><span>ZIP code</span><input readonly value="98101"></label></div>${button(icon('circle-help')+' Ask Eagle AI','data-route="ai"','eagle-text-button')}${button('Save & continue '+icon('arrow-right'),'data-action="complete"')}<p class="eagle-footnote">Design preview · No information is submitted.</p>`);
+  }
+  function documents() {
+    const files = ['Passport-copy.pdf','Address-record.pdf',...(state.attached?['Scanned-document.pdf']:[])];
+    return page(`${back('application','My Application')}<h1 class="eagle-heading">My documents</h1><p class="eagle-intro">A place for the paperwork that matters.</p><div class="eagle-note">${icon('folder-check')}<span>${files.length} sample files · Illustrative files, not a required-document list.</span></div>${files.map((f,i)=>`<div class="eagle-file">${icon('file-text')}<span><strong>${f}</strong><small>Sample file · PDF</small></span>${button(icon('ellipsis'),`data-file="${i}" aria-label="Options for ${f}"`,'eagle-icon-button')}</div>`).join('')}${button(icon('plus')+'<strong>Add a document</strong><small>Scan a page or choose a file</small>','data-action="add-document"','eagle-upload')}<p class="eagle-intro">Keep your information organized while you prepare your application.</p>${button('Back to My Application','data-route="application"')}`);
+  }
+  const prompts = [ ['list-checks','Help me choose a form','how'], ['files','Organize my documents','documents'], ['arrow-right','What’s my next step?','next'] ];
+  function answer(kind) {
+    if(kind==='next') return { text:`Your sample citizenship application has ${state.completed} of 6 sections complete. You can pick up ${state.completed===2?'Address history':'Work & education'} from My Application.`, label:'Open My Application', route:'application' };
+    if(kind==='documents') return { text:'Keep the files you are working with together in My documents. In this preview, you can try adding a sample file and see how it fits into your workspace.', label:'Open My documents', route:'documents' };
+    if(kind==='how') return { text:'Choose your current status and what you would like to do in the form finder. You can then compare self-preparation, AI assistance and attorney assistance for a form.', label:'Open form finder', route:'home' };
+    return { text:'This is a design preview with example responses. Try one of the suggested questions to explore the application and document flows. A live AI assistant is not connected yet.', label:'See suggested questions', action:'clear-chat' };
+  }
+  function ai() {
+    const content=state.chat.length?`<div class="eagle-chat" role="log" aria-live="polite">${state.chat.map(turn=>{const response=answer(turn.kind);return `<div class="eagle-chat-message user">${escape(turn.question)}</div><div class="eagle-chat-message assistant"><div class="eagle-chat-author">Eagle AI</div><p>${response.text}</p>${button(response.label,response.route?`data-route="${response.route}"`:`data-action="${response.action}"`,'eagle-text-button')}</div>`;}).join('')}</div>`:`<div class="eagle-ai-empty"><h2>How can I help?</h2></div>`;
+    return `<section class="eagle-ai-screen"><header class="eagle-ai-topbar"><h1>Eagle AI</h1>${button('Contact us','data-route="contact"','eagle-text-button')}${button(icon('square-pen'),'data-action="clear-chat" aria-label="New conversation"','eagle-icon-button')}</header>${state.aiFormId?`<div class="eagle-ai-context">${escape(state.aiFormId)} · AI preparation preview</div>`:''}<div class="eagle-ai-body">${content}</div>${state.chat.length?'':`<div class="eagle-prompt-list">${prompts.map(([i,label,kind])=>button(icon(i)+`<span>${label}</span>`,`data-prompt="${kind}"`,'eagle-prompt-chip')).join('')}</div>`}<div class="eagle-chat-form" role="group" aria-label="Send a message to Eagle AI"><textarea name="question" rows="2" maxlength="2000" aria-label="Message Eagle AI" placeholder="Message Eagle AI…" autocomplete="off"></textarea><button type="button" data-action="send-chat" class="eagle-button cursor-interaction" aria-label="Send message">${icon('arrow-up')}</button></div><p class="eagle-ai-example">Demo · Example responses</p></section>`;
+  }
+  const normalizedSearch = value => value.toLowerCase().replace(/[^a-z0-9]/g,'');
+  function matchingForms() {
+    const query=normalizedSearch(state.query);
+    return forms.filter(f=>normalizedSearch([f.id,f.title,f.summary,f.category].join(' ')).includes(query));
+  }
+  function catalogRows() {
+    const matches=matchingForms();
+    return matches.length?matches.map(formRow).join(''):`<div class="eagle-note">${icon('search')}<span>No forms found. Try a form number such as N-400 or a word such as citizenship.</span></div>`;
+  }
+  function services() {
+    return page(`${back()}<h1 class="eagle-heading">All forms</h1><p class="eagle-intro">Find a form by number, name or purpose.</p><label class="eagle-search">${icon('search')}<input type="search" id="eagle-catalog-search" aria-label="Search forms" placeholder="Search forms, e.g. N-400" value="${escape(state.query)}" autocomplete="off"></label><div class="eagle-catalog-meta"><span id="eagle-result-count" role="status">${matchingForms().length} of ${forms.length} forms</span>${button('Clear search','data-action="clear-search"','eagle-text-button')}</div><div class="eagle-catalog" id="eagle-catalog-results">${catalogRows()}</div>`);
+  }
+  function form() {
+    const f=forms.find(item=>item.id===state.formId)||forms.find(item=>item.id==='N-400');
+    const relatedIds=[...(f.relatedTo||[]),...forms.filter(item=>item.relatedTo?.includes(f.id)).map(item=>item.id)];
+    const related=[...new Set(relatedIds)].map(id=>forms.find(item=>item.id===id)).filter(Boolean);
+    return page(`${back(state.formBack,state.formBack==='home'?'Form finder':'All forms')}<span class="eagle-form-code eagle-detail-code">${escape(f.id)}</span><h1 class="eagle-heading">${escape(f.title)}</h1><p class="eagle-detail-text">Choose how you’d like to prepare your form.</p>${preparationOptions(f)}${related.length?`<div class="eagle-section-heading" style="margin-top:25px"><h2>Related documents</h2></div>${related.map(formRow).join('')}`:''}`);
+  }
+  const money = amount => new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(Math.round(amount));
+  function aiPricing(f) {
+    const price=pricingData.forms.find(p=>p.id===f.id), cp=price.citizenPath;
+    const packageId=cp.includedWith?.[0]||cp.requiredPackage;
+    const parent=packageId?pricingData.forms.find(p=>p.id===packageId):null;
+    const amount=p=>commissionRate===0.15?p.eagleAi.serviceAmountUsd15:p.eagleAi.serviceAmountUsd30;
+    if(cp.status==='included')return {label:money(amount(parent)),note:`Included with ${packageId} · full package price`,description:`Prepare this document as part of your ${packageId} application.`,target:packageId,parent:true};
+    if(cp.status==='not-offered')return {label:'Ask about availability',note:'No preparation price available',description:'Contact our team to discuss help with this request.',unavailable:true};
+    if(cp.status==='add-on')return {label:'+'+money(amount(price)),note:`Add-on to ${packageId} (${money(amount(parent))})`,description:`Add this household-member document to your ${packageId} package.`,target:packageId,parent:true};
+    const detail=f.id==='I-485'?'Base package; additional forms may cost extra.':f.id==='I-821D'?'Includes I-765 and I-765WS.':'Step-by-step help preparing your form.';
+    return {label:money(amount(price)),note:amount(price)===0?'No preparation charge':'One-time preparation fee',description:detail,target:f.id,parent:false};
+  }
+  function preparationOptions(f) {
+    const aiPrice=aiPricing(f), law=attorneyData.forms.find(p=>p.id===f.id), benchmark=law?.benchmark;
+    const hasAttorneyPrice=Number.isFinite(law?.servicePriceUsd);
+    const attorneyPrice=hasAttorneyPrice?money(law.servicePriceUsd):'Request a quote';
+    const attorneyNote=hasAttorneyPrice?'Fixed preparation fee':'Pricing depends on your case';
+    const attorneyDescription=hasAttorneyPrice?`${escape(benchmark.scope)}. Get help preparing your form with our legal team.`:'Speak with an attorney about your situation and receive an individual quote.';
+    const aiButton=button('Continue with AI','data-preparation-mode="ai"','eagle-button gold');
+    return `<div class="eagle-note">${icon('list-checks')}<span>Every option begins with a short check for this form.</span></div><div class="eagle-plan-list"><article class="eagle-plan"><div class="eagle-plan-top">${icon('file-pen-line')}<h3>Do it yourself</h3></div><div class="eagle-plan-price">Free</div><small>No preparation charge</small><p>Complete the official fillable PDF yourself, then save and print it.</p>${button('Open free form','data-preparation-mode="free"','eagle-button secondary')}</article><article class="eagle-plan featured"><div class="eagle-plan-top">${icon('sparkles')}<h3>Prepare with AI</h3></div><div class="eagle-plan-price">${aiPrice.label}</div><small>${aiPrice.note}</small><p>${aiPrice.description}</p>${aiButton}</article><article class="eagle-plan"><div class="eagle-plan-top">${icon('scale')}<h3>Prepare with an attorney</h3></div><div class="eagle-plan-price">${attorneyPrice}</div><small>${attorneyNote}</small><p>${attorneyDescription}</p>${button('Continue with an attorney','data-preparation-mode="attorney"','eagle-button secondary')}</article></div><p class="eagle-footnote">Preparation fees only. Government filing fees and taxes are separate.<br>Design preview · No payment collected.</p>`;
+  }
+  function contact() {
+    return page(`${back('ai','Eagle AI')}<div class="eagle-contact-title">${logo()}<div><div class="eagle-eyebrow">WE’RE HERE TO HELP</div><h1 class="eagle-heading">Contact us</h1></div></div><p class="eagle-intro">Leave your question and contact details. Our team will call or email you.</p><label class="eagle-field"><span>Your name</span><input id="eagle-contact-name" type="text" placeholder="Full name" autocomplete="name" maxlength="100" required></label><p class="eagle-intro" id="eagle-contact-help">Enter your email or phone number so we can get back to you.</p><label class="eagle-field"><span>Email</span><input id="eagle-contact-email" type="email" placeholder="you@example.com" autocomplete="email" maxlength="150" aria-describedby="eagle-contact-help"></label><label class="eagle-field"><span>Phone number</span><input id="eagle-contact-phone" type="tel" placeholder="+1 (555) 123-4567" autocomplete="tel" maxlength="40" aria-describedby="eagle-contact-help"></label><label class="eagle-select-label"><span>What can we help with?</span><select id="eagle-contact-topic"><option value="Application support">Application support</option><option value="Choosing a form">Choosing a form</option><option value="Documents">Documents</option><option value="AI preparation">AI preparation</option><option value="Attorney assistance">Attorney assistance</option><option value="Something else">Something else</option></select></label><label class="eagle-field"><span>Your question</span><textarea id="eagle-contact-message" placeholder="How can we help?" maxlength="1500" required></textarea></label><p class="eagle-error" id="eagle-contact-error" role="alert" hidden></p>${button('Preview request '+icon('arrow-right'),'data-action="preview-contact"')}<p class="eagle-footnote">Design preview · Requests are not sent.</p>`);
+  }
+  function updateIcons() { if(globalThis.lucide) lucide.createIcons({attrs:{width:20,height:20}}); }
+__PREPARATION_FLOW__
+  function restore(saved) {
+    const s=saved?.privateContent;
+    if(!s) return;
+    if(routes.includes(s.route)) state.route=preparationRoutes.includes(s.route)&&preparation?.formId!==s.formId?'form':s.route;
+    if(s.completed===2 || s.completed===3) state.completed=s.completed;
+    state.attached=s.attached===true;
+    if(forms.some(f=>f.id===s.formId))state.formId=s.formId;
+    if(['home','services'].includes(s.formBack))state.formBack=s.formBack;
+    if(typeof s.otherFormsOpen==='boolean')state.otherFormsOpen=s.otherFormsOpen;
+  }
+  const persistedState = () => ({route:state.route,completed:state.completed,attached:state.attached,formId:state.formId,formBack:state.formBack,otherFormsOpen:state.otherFormsOpen});
+  function remember() {
+    window.openai?.setWidgetState?.({modelContent:{design:'Immigration Eagle',screen:state.route},privateContent:persistedState()}).catch(()=>{});
+  }
+  function closeSheet(restoreFocus=true) {
+    overlay.hidden=true;
+    view.inert=false;
+    root.querySelector('.eagle-nav').inert=false;
+    if(restoreFocus && returnFocus?.isConnected) returnFocus.focus();
+    returnFocus=null;
+  }
+  function render() {
+    closeSheet(false);
+    if(preparationRoutes.includes(state.route)&&(!preparation||preparation.formId!==state.formId))state.route='form';
+    if(['prepare-ai','attorney-intake'].includes(state.route)&&!canPrepare())state.route='qualification-result';
+    view.innerHTML=({home,application,question,documents,ai,services,form,contact,qualification,'qualification-result':qualificationResult,'prepare-ai':prepareAi,'attorney-intake':attorneyIntake})[state.route]();
+    if(state.route==='contact')for(const key of Object.keys(contactDraft))view.querySelector('#eagle-contact-'+key).value=contactDraft[key];
+    const active=['question','documents'].includes(state.route)?'application':['services','form',...preparationRoutes].includes(state.route)?'home':state.route==='contact'?'ai':state.route;
+    root.querySelectorAll('.eagle-nav [data-route]').forEach(b=>{if(b.dataset.route===active)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');});
+    root.querySelector('.eagle-nav-logo').innerHTML=logo('');
+    updateIcons();
+  }
+  function navigate(route) {
+    if(!routes.includes(route))return;
+    state.route=route; render(); remember();
+    phone.scrollIntoView({block:'start',behavior:'instant'});
+    view.querySelector('button')?.focus({preventScroll:true});
+  }
+  function notify(message) {
+    const toast=root.querySelector('.eagle-toast'); toast.textContent=message; toast.classList.add('visible');
+    clearTimeout(toastTimer); toastTimer=setTimeout(()=>toast.classList.remove('visible'),3200);
+  }
+  function sheet(title,content) {
+    returnFocus=document.activeElement;
+    overlay.innerHTML=`<section class="eagle-sheet-panel" role="dialog" aria-modal="true" aria-labelledby="eagle-sheet-title"><div class="eagle-sheet-top"><h2 id="eagle-sheet-title">${title}</h2>${button(icon('x'),'data-action="close-sheet" aria-label="Close dialog"','eagle-icon-button')}</div>${content}</section>`;
+    overlay.hidden=false; view.inert=true; root.querySelector('.eagle-nav').inert=true;
+    updateIcons(); phone.scrollIntoView({block:'start',behavior:'instant'}); overlay.querySelector('button').focus({preventScroll:true});
+  }
+  root.addEventListener('click',event=>{
+    const target=event.target.closest('button'); if(!target)return;
+    if(handlePreparationClick(target))return;
+    if(target.dataset.route) { navigate(target.dataset.route); return; }
+    if(target.dataset.form) {
+      if(!forms.some(f=>f.id===target.dataset.form))return;
+      if(state.route!=='form')state.formBack=state.route==='home'?'home':'services';
+      state.formId=target.dataset.form; navigate('form'); return;
+    }
+    if(target.dataset.prompt) {
+      const prompt=prompts.find(p=>p[2]===target.dataset.prompt);
+      state.chat.push({kind:prompt[2],question:prompt[1]}); render(); view.querySelector('textarea[name="question"]')?.focus({preventScroll:true}); return;
+    }
+    if(target.dataset.file!==undefined) { sheet('Sample document','<p>This is an illustrative file for the design preview.</p>'+button('Done','data-action="close-sheet"')); return; }
+    const action=target.dataset.action;
+    if(action==='close-sheet')closeSheet();
+    if(action==='profile')sheet('Your account','<p>Alex Rivera · Sample account</p>'+button(icon('rotate-ccw')+' Reset sample progress','data-action="reset"','eagle-ai-suggestion')+button('Ask Eagle AI','data-route="ai"'));
+    if(action==='clear-search') { state.query=''; view.querySelector('#eagle-catalog-search').value=''; updateCatalog(); view.querySelector('#eagle-catalog-search').focus(); }
+    if(action==='preview-contact') {
+      const name=view.querySelector('#eagle-contact-name'), email=view.querySelector('#eagle-contact-email'), phoneField=view.querySelector('#eagle-contact-phone'), message=view.querySelector('#eagle-contact-message'), error=view.querySelector('#eagle-contact-error');
+      for(const field of [name,email,phoneField,message]) { field.removeAttribute('aria-invalid'); field.setAttribute('aria-describedby',[email,phoneField].includes(field)?'eagle-contact-help':''); }
+      const issues=[];
+      if(!name.value.trim())issues.push([name,'Please enter your name.']);
+      if(!email.value.trim()&&!phoneField.value.trim())issues.push([email,'Enter an email address or phone number.']);
+      if(email.value.trim()&&!email.validity.valid)issues.push([email,'Enter a valid email address.']);
+      if(phoneField.value.trim()&&!/^[+\d\s().-]+$/.test(phoneField.value.trim()))issues.push([phoneField,'Enter a valid phone number.']);
+      if(phoneField.value.trim()&&(phoneField.value.replace(/\D/g,'').length<7||phoneField.value.replace(/\D/g,'').length>15))issues.push([phoneField,'Enter a phone number with 7 to 15 digits.']);
+      if(!message.value.trim())issues.push([message,'Please enter your question.']);
+      if(issues.length) { error.textContent=issues[0][1]; error.hidden=false; const field=issues[0][0]; field.setAttribute('aria-invalid','true'); field.setAttribute('aria-describedby',([email,phoneField].includes(field)?'eagle-contact-help ':'')+'eagle-contact-error'); field.focus(); return; }
+      error.hidden=true;
+      const topic=view.querySelector('#eagle-contact-topic').value;
+      const compactMessage=message.value.trim().replace(/\s+/g,' ');
+      const excerpt=compactMessage.length>220?compactMessage.slice(0,220)+'…':compactMessage;
+      const details=[name.value.trim(),email.value.trim(),phoneField.value.trim(),topic].filter(Boolean).map(escape).join('<br>');
+      sheet('Your request preview',`<p>No request has been sent. This is a local preview of the details our team will receive.</p><div class="eagle-contact-preview">${details}<br><br>${escape(excerpt)}</div>${compactMessage.length>220?'<p>Question excerpt. Return to the form to see your full draft.</p>':''}${button('Back to form','data-action="close-sheet"')}`);
+    }
+    if(action==='complete') { state.completed=3; navigate('application'); notify('Sample section saved. Your progress is now 50%.'); }
+    if(action==='section') { const index=Number(target.dataset.section); sheet(sections[index],'<p>This section is part of the sample checklist. Try the Address history screen to preview the question flow.</p>'+button('Preview address questions','data-route="question"')); }
+    if(action==='add-document')sheet('Add a document','<p>Try the sample flow. No camera or personal files are accessed.</p>'+button(icon('scan-line')+' Scan a document','data-action="attach"','eagle-ai-suggestion')+button(icon('folder-open')+' Choose from Files','data-action="attach"','eagle-ai-suggestion'));
+    if(action==='attach') { state.attached=true; render(); remember(); notify('Sample document added. No file was uploaded.'); }
+    if(action==='clear-chat') { state.chat=[]; state.aiFormId=''; render(); view.querySelector('textarea[name="question"]')?.focus({preventScroll:true}); }
+    if(action==='send-chat')sendChat();
+    if(action==='reset') { preparation=null; Object.assign(state,{route:'home',completed:2,attached:false,chat:[],aiFormId:'',finderStatus:'',finderGoal:'',query:'',formId:'N-400',formBack:'services',otherFormsOpen:false}); Object.assign(contactDraft,{name:'',email:'',phone:'',message:'',topic:'Application support'}); render(); remember(); }
+  });
+  root.addEventListener('toggle',event=>{
+    if(event.target.matches('.eagle-other-forms')&&state.otherFormsOpen!==event.target.open) { state.otherFormsOpen=event.target.open; remember(); }
+  },true);
+  function updateCatalog() {
+    view.querySelector('#eagle-catalog-results').innerHTML=catalogRows();
+    view.querySelector('#eagle-result-count').textContent=`${matchingForms().length} of ${forms.length} forms`;
+    updateIcons();
+  }
+  root.addEventListener('input',event=>{
+    if(event.target.id==='eagle-catalog-search') { state.query=event.target.value.slice(0,150); updateCatalog(); }
+    for(const key of ['name','email','phone','message'])if(event.target.id==='eagle-contact-'+key)contactDraft[key]=event.target.value;
+  });
+  root.addEventListener('change',event=>{
+    if(event.target.id==='eagle-contact-topic')contactDraft.topic=event.target.value;
+    if(event.target.id==='eagle-status-select') {
+      state.finderStatus=event.target.value; state.finderGoal='';
+      const goal=view.querySelector('#eagle-goal-select');
+      goal.innerHTML=goalOptions(); goal.disabled=!selectedStatus();
+      view.querySelector('#eagle-form-results').innerHTML=finderResults(); updateIcons();
+    }
+    if(event.target.id==='eagle-goal-select') {
+      state.finderGoal=event.target.value;
+      view.querySelector('#eagle-form-results').innerHTML=finderResults(); updateIcons();
+    }
+  });
+  function sendChat() {
+    const input=view.querySelector('textarea[name="question"]');
+    const question=input.value.trim(); if(!question)return;
+    state.chat.push({kind:'custom',question:question.slice(0,2000)}); render(); view.querySelector('textarea[name="question"]')?.focus({preventScroll:true});
+  }
+  root.addEventListener('keydown',event=>{
+    if(event.key==='Enter'&&!event.shiftKey&&event.target.matches('.eagle-chat-form textarea')) { event.preventDefault(); sendChat(); return; }
+    if(overlay.hidden)return;
+    if(event.key==='Escape') { event.preventDefault(); closeSheet(); }
+    if(event.key==='Tab') { const items=[...overlay.querySelectorAll('button,a,input')]; const first=items[0],last=items.at(-1); if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();} }
+  });
+  restore(window.openai?.widgetState); render();
+  window.addEventListener('openai:set_globals',event=>{const saved=event.detail?.globals?.widgetState;if(saved){const previous=JSON.stringify(persistedState());restore(saved);if(JSON.stringify(persistedState())!==previous)render();}});
+  if(globalThis.Tweak) {
+    const design={radius:20}; const tweak=new Tweak({container:phone,onChange:()=>phone.style.setProperty('--eagle-radius',design.radius+'px')});
+    tweak.addSlider(design,'radius',{label:'Card corner radius',min:12,max:24,step:1,unit:'px'});
+  }
+})();
+</script>

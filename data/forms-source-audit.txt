@@ -1,0 +1,14 @@
+Source audit — Immigration Eagle forms catalog
+Source: https://citizenpath.com/uscis-forms/
+Accessed: 2026-10-09
+Source HTML SHA-256: 89df25ebed7f3c1d9d8348cef2a8cc1bc51cc17c07580c77d1d998f4f0dd42d3
+
+Inventory: 18 visible form/resource cards plus I-130A and I-864A in the package table and I-765WS named in the DACA package description = 21 entries.
+Preparation catalog: 16 primary entries; I-130A, I-864A and I-765WS are related entries. FOIA/G-639 and I-821 link to USCIS resources, not preparation packages.
+
+Finder: 9 status choices and 57 total dependent goals. Associations are extracted from Gravity Forms 11 conditional display rules; goal labels are paraphrased while preserving the observed association. No additional eligibility or admissibility rules were added. Results identify a form to explore; they do not establish eligibility.
+
+Official destination notes: FOIA and I-821 links were directly present in the source HTML. Standard USCIS form landing URLs are used for other records; I-130A points to the I-130 hub and I-765WS to the I-765 hub. The USCIS browser fetch returned 403 for attempted landing-page checks, so no current USCIS edition dates, fees, or eligibility rules are asserted here.
+
+Excluded: competitor prices, reviews, proprietary descriptions, logos, guarantee terms, service-readiness claims, and copied layout/code.
+Validation: JSON parsed successfully; all 21 form IDs unique; all 57 goal associations refer to known form IDs.

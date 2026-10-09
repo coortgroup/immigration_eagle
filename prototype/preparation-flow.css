@@ -1,0 +1,29 @@
+  #immigration-eagle-review .eagle-flow-context { display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin:4px 0 24px; font-size:12px; color:var(--eagle-muted); }
+  #immigration-eagle-review .eagle-flow-progress { margin:0 0 24px; }
+  #immigration-eagle-review .eagle-flow-progress p { display:flex; justify-content:space-between; gap:12px; font-size:12px; color:var(--eagle-muted); margin:0 0 10px; }
+  #immigration-eagle-review .eagle-flow-track { height:5px; background:var(--eagle-line); border-radius:3px; overflow:hidden; }
+  #immigration-eagle-review .eagle-flow-track span { display:block; height:100%; background:var(--eagle-gold); }
+  #immigration-eagle-review .eagle-flow-question { font-family:Georgia,serif; color:var(--eagle-navy); font-size:26px; line-height:1.24; font-weight:400; margin:0 0 18px; }
+  #immigration-eagle-review .eagle-flow-help { font-size:14px; line-height:1.65; color:var(--eagle-muted); margin:0 0 24px; }
+  #immigration-eagle-review .eagle-binary { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:20px 0; }
+  #immigration-eagle-review .eagle-binary button { min-height:64px; background:var(--eagle-white); color:var(--eagle-navy); border:1px solid var(--eagle-line); border-radius:13px; font-size:16px; font-weight:600; }
+  #immigration-eagle-review .eagle-binary button[aria-pressed="true"] { background:var(--eagle-navy); color:var(--eagle-white); border-color:var(--eagle-navy); }
+  #immigration-eagle-review .eagle-button:disabled { opacity:.45; cursor:default; }
+  #immigration-eagle-review .eagle-flow-source { display:inline-flex; align-items:center; gap:5px; color:var(--eagle-navy); font-size:12px; line-height:1.5; margin-top:20px; text-underline-offset:3px; }
+  #immigration-eagle-review .eagle-flow-source svg { width:14px; height:14px; }
+  #immigration-eagle-review .eagle-flow-result { padding-top:22px; }
+  #immigration-eagle-review .eagle-result-symbol { width:66px; height:66px; display:flex; align-items:center; justify-content:center; background:var(--eagle-cream); color:var(--eagle-navy); border-radius:50%; margin:0 0 24px; }
+  #immigration-eagle-review .eagle-result-symbol svg { width:30px; height:30px; }
+  #immigration-eagle-review .eagle-flow-result .eagle-button { margin:12px 0; }
+  #immigration-eagle-review .eagle-flow-summary { margin:22px 0; padding:18px; background:var(--eagle-white); border:1px solid var(--eagle-line); border-radius:14px; }
+  #immigration-eagle-review .eagle-flow-summary h2 { font-size:16px; margin:0 0 8px; }
+  #immigration-eagle-review .eagle-flow-summary p { font-size:13px; line-height:1.6; color:var(--eagle-muted); margin:0; }
+  #immigration-eagle-review .eagle-answer-review { margin:18px 0 28px; }
+  #immigration-eagle-review .eagle-answer-review>div { padding:14px 0; border-bottom:1px solid var(--eagle-line); }
+  #immigration-eagle-review .eagle-answer-review dt { display:flex; gap:12px; align-items:center; justify-content:space-between; font-size:12px; color:var(--eagle-muted); }
+  #immigration-eagle-review .eagle-answer-review dd { margin:7px 0 0; font-size:15px; line-height:1.5; color:var(--eagle-ink); white-space:pre-wrap; overflow-wrap:anywhere; }
+  #immigration-eagle-review .eagle-answer-review .eagle-text-button { min-height:44px; font-size:12px; }
+  #immigration-eagle-review .eagle-interview-reply { background:var(--eagle-navy); color:var(--eagle-white); border-radius:16px 16px 4px 16px; padding:12px 16px; margin:0 0 20px 24px; font-size:14px; white-space:pre-wrap; overflow-wrap:anywhere; }
+  #immigration-eagle-review .eagle-flow-actions { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-top:16px; }
+  #immigration-eagle-review .eagle-intake-consent { display:flex; gap:10px; align-items:flex-start; font-size:13px; line-height:1.5; margin:20px 0; }
+  #immigration-eagle-review .eagle-intake-consent input { flex:none; width:20px; height:20px; margin:2px 0 0; }

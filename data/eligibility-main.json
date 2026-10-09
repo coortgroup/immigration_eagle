@@ -1,0 +1,562 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-09",
+  "purpose": "Short preliminary form-selection and complexity check, not a legal eligibility certification or filing approval.",
+  "resultPolicy": {
+    "next": "Advance to the next question. If every response is next, use the final title You can continue.",
+    "stop": "The stated role or purpose does not match this form; explain stopReason without saying the person is ineligible for immigration benefits.",
+    "review": "Explain reviewReason and offer individual review; do not label the person ineligible.",
+    "uncertain": "review",
+    "continueTitle": "You can continue",
+    "continueDescription": "Your answers fit this preliminary preparation path. The complete USCIS requirements, current instructions and your documents still need to be checked."
+  },
+  "verificationNotes": [
+    "USCIS HTML/browser-reader requests returned 403. Official PDF URLs were downloaded successfully and their instruction text was inspected directly.",
+    "Each pdfUrl contains an official PDF with interactive Widget annotations; download SHA-256 and widget count are recorded. No PDF was modified.",
+    "Downloaded form/instruction editions are recorded as source evidence; a filing workflow must check the USCIS landing page for the currently accepted edition and any new alerts.",
+    "Military, K-3, waiver, late-filing and other special paths are intentionally sent to review rather than forced through ordinary rules."
+  ],
+  "forms": [
+    {
+      "id": "N-400",
+      "sourceUrl": "https://www.uscis.gov/n-400",
+      "pdfUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "instructionsUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400instr.pdf",
+      "checkedAt": "2026-10-09",
+      "scope": "Preliminary routing for ordinary five-year and marriage-based three-year naturalization. Military service, VAWA and other special routes require review rather than rejection.",
+      "sourceSections": [
+        "General eligibility and early filing",
+        "Marriage and special provisions",
+        "Residence and physical presence",
+        "Good moral character and military service"
+      ],
+      "pdfVerification": {
+        "checkedAt": "2026-10-09",
+        "method": "Downloaded from the official USCIS URL; PDF signature, form title and interactive Widget annotations inspected with pdfplumber.",
+        "pageCount": 14,
+        "widgetCount": 440,
+        "downloadedFormEdition": "01/20/25",
+        "sha256": "8b33868ba071e261bf5e8d87d9667860d1f6d2c4de76101eb1e674404a82d909"
+      },
+      "questions": [
+        {
+          "id": "already-citizen",
+          "text": "Are you already a U.S. citizen?",
+          "help": "A person who already acquired citizenship generally needs proof of citizenship, not naturalization.",
+          "yes": "stop",
+          "no": "next",
+          "stopReason": "N-400 applies for naturalization. Explore the appropriate proof-of-citizenship document instead."
+        },
+        {
+          "id": "ordinary-route",
+          "text": "Are you using the usual five-year residence route or the three-year route as the spouse of a U.S. citizen?",
+          "help": "Military service, VAWA, qualifying employment abroad and other special provisions have different rules.",
+          "yes": "next",
+          "no": "review",
+          "reviewReason": "A special naturalization route may apply. Review its requirements; this is not a finding that you are ineligible."
+        },
+        {
+          "id": "age-and-status",
+          "text": "Are you at least 18 and a lawful permanent resident?",
+          "help": "This question applies to the ordinary routes above. Some military provisions have different age or residence rules.",
+          "yes": "next",
+          "no": "review",
+          "reviewReason": "Age, residence status or a possible special route needs review."
+        },
+        {
+          "id": "residence",
+          "text": "Have you checked that you meet the residence, physical-presence and filing-date rules for your route?",
+          "help": "The usual routes generally require five years with 30 months of physical presence, or three years with 18 months for a qualifying U.S.-citizen spouse; three-month state/district residence also matters. Limited 90-day early filing does not waive other requirements.",
+          "yes": "next",
+          "no": "review",
+          "reviewReason": "Review the applicable residence period, travel history, marriage requirements and earliest filing date before continuing."
+        },
+        {
+          "id": "testing",
+          "text": "Are you prepared to meet the English and civics requirements, or have you identified an applicable exception?",
+          "help": "Age/residence exceptions, disability exceptions and accommodations require their own checks; needing one does not make you ineligible.",
+          "yes": "next",
+          "no": "review",
+          "reviewReason": "Review the testing rules and any exception or accommodation that may apply."
+        },
+        {
+          "id": "complex-history",
+          "text": "Is your case free of issues that need individual review, such as arrests, tax or support problems, removal proceedings, citizenship claims or long absences?",
+          "help": "A past issue does not automatically prevent naturalization. Its facts and timing matter.",
+          "yes": "next",
+          "no": "review",
+          "reviewReason": "An attorney or accredited representative should review the relevant history before a filing decision."
+        }
+      ]
+    },
+    {
+      "id": "I-90",
+      "sourceUrl": "https://www.uscis.gov/i-90",
+      "pdfUrl": "https://www.uscis.gov/sites/default/files/document/forms/i-90.pdf",
+      "instructionsUrl": "https://www.uscis.gov/sites/default/files/document/forms/i-90instr.pdf",
+      "checkedAt": "2026-10-09",
+      "scope": "Renewal or replacement of an existing permanent resident card. This screen does not determine whether permanent resident status remains valid.",
+      "sourceSections": [
+        "Purpose and conditional-card restriction",
+        "Reason for application and required evidence"
+      ],
+      "pdfVerification": {
+        "checkedAt": "2026-10-09",
+        "method": "Downloaded from the official USCIS URL; PDF signature, form title and interactive Widget annotations inspected with pdfplumber.",
+        "pageCount": 7,
+        "widgetCount": 195,
+        "downloadedFormEdition": "01/20/25",
+        "sha256": "fd436062284fd572224509e0e17a795f915734f7e7c0fca8a161d0a9976f83a0"
+      },
+      "questions": [
+        {
+          "id": "resident",
+          "text": "Are you already a lawful permanent resident, including a conditional or commuter resident?",
+          "help": "I-90 replaces an existing resident card; it does not apply for a first green card.",
+          "yes": "next",
+          "no": "stop",
+          "stopReason": "I-90 is for people who already have permanent resident status."
+        },
+        {
+          "id": "card-purpose",
+          "text": "Do you need to renew, replace or correct your existing green card?",
+          "help": "Examples include a lost, stolen, damaged or incorrect card, a qualifying renewal, or another I-90 reason listed in the instructions.",
+          "yes": "next",
+          "no": "stop",
+          "stopReason": "I-90 is for an existing green-card document, not another immigration benefit."
+        },
+        {
+          "id": "remove-conditions",
+          "text": "Are you trying to remove conditions on a two-year green card?",
+          "help": "Marriage-based conditions normally use I-751; investment-based conditions use I-829.",
+          "yes": "stop",
+          "no": "next",
+          "stopReason": "Use the removal-of-conditions process rather than I-90 for this purpose."
+        },
+        {
+          "id": "conditional-expiry",
+          "text": "Is your card a two-year conditional card that has expired or will expire within 90 days?",
+          "help": "USCIS instructions exclude I-90 replacement of such a card for any reason. Review the proper evidence-of-status or removal-of-conditions process.",
+          "yes": "review",
+          "no": "next",
+          "reviewReason": "The conditional-card timing needs a different process or individual review; do not treat I-90 as a renewal of conditional residence."
+        },
+        {
+          "id": "abroad",
+          "text": "Are you outside the U.S. and missing the documents needed to board your return trip?",
+          "help": "Replacing a card and obtaining carrier documentation are different processes.",
+          "yes": "review",
+          "no": "next",
+          "reviewReason": "Review travel and carrier-documentation requirements before relying on I-90 for return travel."
+        }
+      ]
+    },
+    {
+      "id": "I-130",
+      "sourceUrl": "https://www.uscis.gov/i-130",
+      "pdfUrl": "https://www.uscis.gov/sites/default/files/document/forms/i-130.pdf",
+      "instructionsUrl": "https://www.uscis.gov/sites/default/files/document/forms/i-130instr.pdf",
+      "checkedAt": "2026-10-09",
+      "scope": "Preliminary family-petition routing. Approval of I-130 does not itself grant status or decide green-card eligibility.",
+      "sourceSections": [
+        "Who may file and non-citizen nationals",
+        "Restricted relationships and exceptions",
+        "Relationship evidence"
+      ],
+      "pdfVerification": {
+        "checkedAt": "2026-10-09",
+        "method": "Downloaded from the official USCIS URL; PDF signature, form title and interactive Widget annotations inspected with pdfplumber.",
+        "pageCount": 12,
+        "widgetCount": 450,
+        "downloadedFormEdition": "04/01/24",
+        "sha256": "7fc733d4639995d6ad4798f1031464d044bd0da4233caa4ada886e79e762a88f"
+      },
+      "questions": [
+        {
+          "id": "petitioner-status",
+          "text": "Is the petitioner a U.S. citizen, lawful permanent resident or non-citizen U.S. national?",
+          "help": "Answer about the family member signing the petition, not the intending immigrant.",
+          "yes": "next",
+          "no": "stop",
+          "stopReason": "The I-130 petitioner must hold one of these qualifying statuses."
+        },
+        {
+          "id": "relationship",
+          "text": "Is the beneficiary your spouse, child, son or daughter, parent, brother or sister?",
+          "help": "Other family relationships, such as a cousin or grandparent, do not create their own I-130 category.",
+          "yes": "next",
+          "no": "stop",
+          "stopReason": "The stated relationship does not match an I-130 family category."
+        },
+        {
+          "id": "category",
+          "text": "Does your status and age support the family category you selected?",
+          "help": "Citizens may petition for spouses and children; petitioning for a parent or sibling requires a citizen age 21 or older. Permanent residents and non-citizen nationals may petition for spouses and unmarried children or adult sons/daughters.",
+          "yes": "next",
+          "no": "review",
+          "reviewReason": "Check the petitioner status, age and beneficiary marital status before choosing a family category."
+        },
+        {
+          "id": "special-relationship",
+          "text": "Does this case involve adoption, a step-relationship, a proxy marriage or marriage during removal proceedings?",
+          "help": "These relationships have additional rules or exceptions.",
+          "yes": "review",
+          "no": "next",
+          "reviewReason": "Review the relationship-specific requirements; the relationship is not automatically disqualified."
+        },
+        {
+          "id": "prior-issues",
+          "text": "Are there prior marriage-based immigration issues, a marriage-fraud finding or a potentially relevant criminal history?",
+          "help": "Special restrictions and exceptions can depend on the exact facts.",
+          "yes": "review",
+          "no": "next",
+          "reviewReason": "Individual review is needed before continuing with this family petition."
+        }
+      ]
+    },
+    {
+      "id": "I-485",
+      "sourceUrl": "https://www.uscis.gov/i-485",
+      "pdfUrl": "https://www.uscis.gov/sites/default/files/document/forms/i-485.pdf",
+      "instructionsUrl": "https://www.uscis.gov/sites/default/files/document/forms/i-485instr.pdf",
+      "checkedAt": "2026-10-09",
+      "scope": "Preliminary adjustment-of-status routing for a person physically in the U.S. It does not evaluate admissibility, current visa availability or every statutory exception.",
+      "sourceSections": [
+        "Who may file, bars and exceptions",
+        "When to file and category-specific requirements"
+      ],
+      "pdfVerification": {
+        "checkedAt": "2026-10-09",
+        "method": "Downloaded from the official USCIS URL; PDF signature, form title and interactive Widget annotations inspected with pdfplumber.",
+        "pageCount": 24,
+        "widgetCount": 730,
+        "downloadedFormEdition": "09/18/26",
+        "sha256": "b028a43ca191a963d2193d896394feba4b20c4958a0ca5631322c6760cf96100"
+      },
+      "questions": [
+        {
+          "id": "inside-us",
+          "text": "Are you physically present in the United States?",
+          "help": "I-485 requests adjustment of status from within the U.S.",
+          "yes": "next",
+          "no": "stop",
+          "stopReason": "I-485 is filed by a person physically in the U.S.; review the immigrant-visa process for a person abroad."
+        },
+        {
+          "id": "new-residence",
+          "text": "Are you applying for permanent residence rather than only replacing or renewing a green card?",
+          "help": "Card replacement usually uses I-90; removing conditions has a separate process.",
+          "yes": "next",
+          "no": "stop",
+          "stopReason": "Choose the card-replacement or removal-of-conditions process if that is your only request."
+        },
+        {
+          "id": "filing-basis",
+          "text": "Have you identified a specific adjustment category for yourself or as a qualifying derivative?",
+          "help": "Family, employment, refugee/asylee and other categories have different rules. A relative in the U.S. alone does not establish a filing basis.",
+          "yes": "next",
+          "no": "review",
+          "reviewReason": "Identify and review the legal filing basis before starting I-485."
+        },
+        {
+          "id": "filing-time",
+          "text": "Have you confirmed that your category permits filing now, including any visa-availability requirement?",
+          "help": "Some categories permit concurrent filing; others require an approved petition, an available visa number or a category-specific waiting period.",
+          "yes": "next",
+          "no": "review",
+          "reviewReason": "Review the current category and filing-date rules. This check does not calculate visa availability."
+        },
+        {
+          "id": "entry",
+          "text": "Were you inspected and admitted or paroled at your most recent entry?",
+          "help": "A No answer needs review: special categories and provisions such as INA 245(i) may have different rules.",
+          "yes": "next",
+          "no": "review",
+          "reviewReason": "Review the entry history and any applicable exception; this answer does not automatically rule out adjustment."
+        },
+        {
+          "id": "individual-history",
+          "text": "Is your case free of issues such as immigration-court proceedings, prior removal, unauthorized work, status violations, arrests or misrepresentation?",
+          "help": "Some issues have exceptions or waivers; others affect who has authority to decide the case.",
+          "yes": "next",
+          "no": "review",
+          "reviewReason": "Individual review is needed for possible bars, waivers, exceptions or court jurisdiction."
+        }
+      ]
+    },
+    {
+      "id": "I-765",
+      "sourceUrl": "https://www.uscis.gov/i-765",
+      "pdfUrl": "https://www.uscis.gov/sites/default/files/document/forms/i-765.pdf",
+      "instructionsUrl": "https://www.uscis.gov/sites/default/files/document/forms/i-765instr.pdf",
+      "checkedAt": "2026-10-09",
+      "scope": "Preliminary routing for employment authorization or an EAD. An identified eligibility category and its current filing rules are required; this screen does not grant work authorization.",
+      "sourceSections": [
+        "Purpose, exclusions and eligibility-category requirement",
+        "Eligibility categories and category-specific requirements"
+      ],
+      "pdfVerification": {
+        "checkedAt": "2026-10-09",
+        "method": "Downloaded from the official USCIS URL; PDF signature, form title and interactive Widget annotations inspected with pdfplumber.",
+        "pageCount": 7,
+        "widgetCount": 161,
+        "downloadedFormEdition": "08/21/25",
+        "sha256": "9ac0eae287749d4c2dfa0a591f464cc2124c18647c10e999b59484f090e0dc7d"
+      },
+      "questions": [
+        {
+          "id": "ead-purpose",
+          "text": "Are you requesting an initial, renewed or replacement Employment Authorization Document (EAD)?",
+          "help": "An EAD is a work-authorization card; I-765 does not itself request a green card.",
+          "yes": "next",
+          "no": "stop",
+          "stopReason": "I-765 is for employment authorization or an EAD, not another immigration document."
+        },
+        {
+          "id": "already-resident",
+          "text": "Are you a U.S. citizen or a lawful permanent resident, including a conditional resident?",
+          "help": "Citizens and permanent residents do not use I-765 to document their ordinary right to work.",
+          "yes": "stop",
+          "no": "next",
+          "stopReason": "Use your appropriate citizenship or permanent-resident evidence of work authorization rather than I-765."
+        },
+        {
+          "id": "location",
+          "text": "Are you currently in the United States?",
+          "help": "Some processing situations require a closer review of the category and location.",
+          "yes": "next",
+          "no": "review",
+          "reviewReason": "Review the filing category and location rules before choosing I-765."
+        },
+        {
+          "id": "category",
+          "text": "Have you identified your exact I-765 eligibility category in the current USCIS instructions?",
+          "help": "The category code in Part 2, Item 27 depends on the underlying status or benefit. Employer-specific work authorization alone is not an I-765 category.",
+          "yes": "next",
+          "no": "review",
+          "reviewReason": "Review the underlying status and category code; a desire to work alone is not a filing basis."
+        },
+        {
+          "id": "basis-evidence",
+          "text": "Can you document the status, pending application or other basis required for that category?",
+          "help": "A pending benefit and an approved benefit can use different categories.",
+          "yes": "next",
+          "no": "review",
+          "reviewReason": "Confirm the underlying basis and required documents before starting the EAD request."
+        },
+        {
+          "id": "category-timing",
+          "text": "Have you checked the filing window and category-specific requirements for this initial, renewal or replacement request?",
+          "help": "Student employment, pending asylum, DACA and other categories have distinct timing and evidence rules.",
+          "yes": "next",
+          "no": "review",
+          "reviewReason": "Review the exact category instructions and current USCIS guidance before continuing."
+        }
+      ]
+    },
+    {
+      "id": "I-751",
+      "sourceUrl": "https://www.uscis.gov/i-751",
+      "pdfUrl": "https://www.uscis.gov/sites/default/files/document/forms/i-751.pdf",
+      "instructionsUrl": "https://www.uscis.gov/sites/default/files/document/forms/i-751instr.pdf",
+      "checkedAt": "2026-10-09",
+      "scope": "Preliminary routing for removal of marriage-based conditions. Waivers, children filing separately and late filings are sent for review rather than marked ineligible.",
+      "sourceSections": [
+        "Who may file, children and individual/waiver routes",
+        "Joint-filing window and late-filing explanation"
+      ],
+      "pdfVerification": {
+        "checkedAt": "2026-10-09",
+        "method": "Downloaded from the official USCIS URL; PDF signature, form title and interactive Widget annotations inspected with pdfplumber.",
+        "pageCount": 11,
+        "widgetCount": 329,
+        "downloadedFormEdition": "04/01/24",
+        "sha256": "064f773369f0bda068e3a4fbe1a1c6447a8830cfd6777a8d5a81148be5a36510"
+      },
+      "questions": [
+        {
+          "id": "marriage-conditional",
+          "text": "Did you obtain conditional residence through your marriage or your parent’s marriage?",
+          "help": "Investment-based conditional residence uses a different petition.",
+          "yes": "next",
+          "no": "stop",
+          "stopReason": "I-751 is for marriage-based conditional residence, including qualifying children."
+        },
+        {
+          "id": "remove-conditions",
+          "text": "Are you asking to remove the conditions on that residence?",
+          "help": "Replacing a lost card is different from removing conditions.",
+          "yes": "next",
+          "no": "stop",
+          "stopReason": "I-751 is the removal-of-conditions petition; choose the document-replacement process if that is your only need."
+        },
+        {
+          "id": "joint",
+          "text": "Is this a routine joint petition with the spouse through whom conditional residence was obtained?",
+          "help": "Divorce, a spouse’s death, battery or extreme cruelty, hardship and children filing separately may allow other routes.",
+          "yes": "next",
+          "no": "review",
+          "reviewReason": "Review an individual filing or waiver route. A spouse’s unwillingness or inability to join is not an automatic denial."
+        },
+        {
+          "id": "timing",
+          "text": "Will you file during the 90 days immediately before conditional residence expires?",
+          "help": "This timing question applies to a routine joint filing. Waivers and justified late filings have different rules.",
+          "yes": "next",
+          "no": "review",
+          "reviewReason": "Review the correct filing date or grounds for a late-filing request; do not assume there is no available route."
+        },
+        {
+          "id": "history",
+          "text": "Is the case free of immigration-court proceedings or other circumstances that need individual review?",
+          "help": "A pending removal case or other complication can affect how to proceed.",
+          "yes": "next",
+          "no": "review",
+          "reviewReason": "Review the case history and procedure before continuing."
+        }
+      ]
+    },
+    {
+      "id": "I-129F",
+      "sourceUrl": "https://www.uscis.gov/i-129f",
+      "pdfUrl": "https://www.uscis.gov/sites/default/files/document/forms/i-129f.pdf",
+      "instructionsUrl": "https://www.uscis.gov/sites/default/files/document/forms/i-129finstr.pdf",
+      "checkedAt": "2026-10-09",
+      "scope": "Preliminary K-1 fiancé(e) petition routing, with K-3 spouse petitions expressly sent for review. It does not screen all IMBRA, criminal-history or waiver rules.",
+      "sourceSections": [
+        "K-1 and K-3 purposes and who may file",
+        "Criminal-history disclosures and multiple-filer waivers"
+      ],
+      "pdfVerification": {
+        "checkedAt": "2026-10-09",
+        "method": "Downloaded from the official USCIS URL; PDF signature, form title and interactive Widget annotations inspected with pdfplumber.",
+        "pageCount": 12,
+        "widgetCount": 445,
+        "downloadedFormEdition": "01/20/25",
+        "sha256": "a130977a518cbea52ced097c4e95aac9655a1c6d4342eafe2ccfb7c2fb31e881"
+      },
+      "questions": [
+        {
+          "id": "citizen-petitioner",
+          "text": "Is the petitioner a U.S. citizen?",
+          "help": "Answer about the person signing the petition, not the beneficiary.",
+          "yes": "next",
+          "no": "stop",
+          "stopReason": "I-129F is filed by a U.S. citizen petitioner."
+        },
+        {
+          "id": "k-purpose",
+          "text": "Is this for a fiancé(e) seeking K-1 status or a spouse seeking K-3 status?",
+          "help": "Both uses appear in the USCIS I-129F instructions.",
+          "yes": "next",
+          "no": "stop",
+          "stopReason": "This request does not match the K-1 or K-3 purpose of I-129F."
+        },
+        {
+          "id": "k3",
+          "text": "Are you petitioning for a spouse under the K-3 route?",
+          "help": "The K-3 route involves a spouse and a filed or concurrently filing I-130; it does not use the K-1 unmarried-fiancé requirements.",
+          "yes": "review",
+          "no": "next",
+          "reviewReason": "Review the K-3 spouse route and the I-130 filing. Being married is not a reason to reject this I-129F use."
+        },
+        {
+          "id": "k1-marriage",
+          "text": "Are you both legally free to marry and intending to marry within 90 days after the fiancé(e)’s U.S. admission?",
+          "help": "This question applies only to the K-1 fiancé(e) route.",
+          "yes": "next",
+          "no": "review",
+          "reviewReason": "Review the K-1 marriage requirements and timing before continuing."
+        },
+        {
+          "id": "meeting",
+          "text": "Have you met in person during the two years immediately before filing?",
+          "help": "Limited exceptions exist for extreme hardship to the petitioner or qualifying long-established customs.",
+          "yes": "next",
+          "no": "review",
+          "reviewReason": "Review whether a meeting exception applies; a No answer is not an automatic finding of ineligibility."
+        },
+        {
+          "id": "special-history",
+          "text": "Is the case free of prior K-1 filings or relevant criminal-history issues requiring extra review?",
+          "help": "Multiple-filing limits, disclosure duties and possible waivers may apply.",
+          "yes": "next",
+          "no": "review",
+          "reviewReason": "Review prior petitions, criminal-history disclosures and any waiver requirements."
+        }
+      ]
+    },
+    {
+      "id": "I-864",
+      "sourceUrl": "https://www.uscis.gov/i-864",
+      "pdfUrl": "https://www.uscis.gov/sites/default/files/document/forms/i-864.pdf",
+      "instructionsUrl": "https://www.uscis.gov/sites/default/files/document/forms/i-864instr.pdf",
+      "checkedAt": "2026-10-09",
+      "scope": "Preliminary financial-sponsor routing. This screen does not compute household income, assess asset sufficiency or decide an exemption from sponsorship.",
+      "sourceSections": [
+        "Purpose, thresholds and required categories",
+        "Who completes and signs",
+        "Domicile and sponsor status",
+        "Household income, assets and joint sponsors"
+      ],
+      "pdfVerification": {
+        "checkedAt": "2026-10-09",
+        "method": "Downloaded from the official USCIS URL; PDF signature, form title and interactive Widget annotations inspected with pdfplumber.",
+        "pageCount": 12,
+        "widgetCount": 219,
+        "downloadedFormEdition": "08/24/26",
+        "sha256": "ddf0b845399ef4ad252468f41820eddf8a726bb982d032bb6fc4a861f2c08130"
+      },
+      "questions": [
+        {
+          "id": "sponsor-role",
+          "text": "Are you preparing this affidavit for the person who will sign as a financial sponsor?",
+          "help": "Answer the remaining questions about that sponsor. Petitioning, joint and substitute sponsors may have distinct requirements.",
+          "yes": "next",
+          "no": "stop",
+          "stopReason": "I-864 is completed and signed by a qualifying financial sponsor."
+        },
+        {
+          "id": "sponsor-status",
+          "text": "Is the signing sponsor at least 18 and a U.S. citizen, U.S. national or lawful permanent resident?",
+          "help": "These are sponsor requirements, separate from the intending immigrant’s eligibility.",
+          "yes": "next",
+          "no": "stop",
+          "stopReason": "The signing I-864 sponsor must meet the age and qualifying-status requirements."
+        },
+        {
+          "id": "required",
+          "text": "Have you confirmed that the intending immigrant needs an I-864 for this case?",
+          "help": "Most family cases and some employment cases require it, but certain immigrants are exempt.",
+          "yes": "next",
+          "no": "review",
+          "reviewReason": "Review whether I-864 is required, an exemption applies or another support form is appropriate."
+        },
+        {
+          "id": "domicile",
+          "text": "Can the sponsor document a U.S. domicile or a permitted way to establish it by the required time?",
+          "help": "Living abroad does not automatically fail this requirement; retained domicile, qualifying employment and reestablishing domicile need evidence.",
+          "yes": "next",
+          "no": "review",
+          "reviewReason": "Review domicile and any permitted exception or plan to reestablish it."
+        },
+        {
+          "id": "finances",
+          "text": "Can the sponsor document sufficient qualifying income or assets for the household-size requirement?",
+          "help": "The general standard is 125% of the applicable poverty guideline; qualifying active-duty sponsors of a spouse or child may use 100%. Household members or a joint sponsor may help under separate rules.",
+          "yes": "next",
+          "no": "review",
+          "reviewReason": "Review income, assets, household size and possible additional sponsorship; low individual income is not an automatic end to the case."
+        },
+        {
+          "id": "routine",
+          "text": "Is this a routine petitioning-sponsor case without a joint sponsor, substitute sponsor, household-member contract or exemption issue?",
+          "help": "These situations may be permitted, but require more detailed checks.",
+          "yes": "next",
+          "no": "review",
+          "reviewReason": "Review the applicable additional sponsor, I-864A or exemption requirements."
+        }
+      ]
+    }
+  ]
+}
