@@ -43,7 +43,7 @@ export function Field({ label, help, error, multiline, ...props }: TextInputProp
 
 export function BrandMark({ compact = false }: { compact?: boolean }) {
   return <View style={{ flexDirection: 'row', alignItems: 'center', gap: 11 }}>
-    <Image source={require('../../assets/immigration-eagle-transparent.png')} style={{ width: compact ? 36 : 49, height: compact ? 40 : 54 }} resizeMode="contain" accessibilityLabel="Immigration Eagle logo" />
+    <Image source={require('../../assets/eagle-logo.png')} style={{ width: compact ? 36 : 49, height: compact ? 40 : 54 }} resizeMode="contain" accessibilityLabel="Immigration Eagle logo" />
     {!compact && <View><Text style={styles.brand}>IMMIGRATION</Text><Text style={[styles.brand, { letterSpacing: 4, fontSize: 21 }]}>EAGLE</Text></View>}
   </View>;
 }

@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import {
   AccessibilityInfo,
   BackHandler,
-  Image,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
@@ -14,6 +13,7 @@ import {
   View,
 } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { submitLocalRequest, useLocalDelivery } from '../localRequests';
 
 export type AssistantScreenProps = {
   /** Increment to open Contact us, including when this screen is already mounted. */
@@ -60,6 +60,11 @@ export function AssistantScreen({ contactRequest = 0, isActive = true }: Assista
   const [draft, setDraft] = useState<ContactDraft>({ ...EMPTY_CONTACT });
   const [errors, setErrors] = useState<ContactErrors>({});
   const [preview, setPreview] = useState<ContactDraft | null>(null);
+  const delivery = useLocalDelivery();
+  const [sending, setSending] = useState(false);
+  const [receipt, setReceipt] = useState('');
+  const [sendError, setSendError] = useState('');
+  const submitting = useRef(false);
   const [message, setMessage] = useState('');
   const [turns, setTurns] = useState<ChatTurn[]>([]);
   const lastContactRequest = useRef(0);
@@ -75,6 +80,7 @@ export function AssistantScreen({ contactRequest = 0, isActive = true }: Assista
     if (contactRequest > 0 && contactRequest !== lastContactRequest.current) {
       lastContactRequest.current = contactRequest;
       setPreview(null);
+      setReceipt(''); setSendError('');
       setContactOpen(true);
       Keyboard.dismiss();
       scrollRef.current?.scrollTo({ y: 0, animated: false });
@@ -84,6 +90,7 @@ export function AssistantScreen({ contactRequest = 0, isActive = true }: Assista
   useEffect(() => {
     if (!contactOpen || !isActive) return;
     const subscription = BackHandler.addEventListener('hardwareBackPress', () => {
+      if (submitting.current) return true;
       Keyboard.dismiss();
       if (preview) setPreview(null);
       else setContactOpen(false);
@@ -95,12 +102,14 @@ export function AssistantScreen({ contactRequest = 0, isActive = true }: Assista
 
   const openContact = () => {
     setPreview(null);
+    setReceipt(''); setSendError('');
     setContactOpen(true);
     Keyboard.dismiss();
     scrollRef.current?.scrollTo({ y: 0, animated: false });
   };
 
   const closeContact = () => {
+    if (submitting.current) return;
     Keyboard.dismiss();
     setContactOpen(false);
     setPreview(null);
@@ -123,6 +132,7 @@ export function AssistantScreen({ contactRequest = 0, isActive = true }: Assista
       return;
     }
     Keyboard.dismiss();
+    setReceipt(''); setSendError('');
     setPreview({ name: draft.name.trim(), email: draft.email.trim(), phone: draft.phone.trim(), question: draft.question.trim() });
     scrollRef.current?.scrollTo({ y: 0, animated: false });
     AccessibilityInfo.announceForAccessibility('Request preview. No request has been sent.');
@@ -141,8 +151,23 @@ export function AssistantScreen({ contactRequest = 0, isActive = true }: Assista
   };
 
   const backToForm = () => {
+    if (submitting.current) return;
     setPreview(null);
+    setReceipt(''); setSendError('');
     scrollRef.current?.scrollTo({ y: 0, animated: false });
+  };
+
+  const sendContact = async () => {
+    if (!preview || submitting.current || receipt || !delivery.available) return;
+    submitting.current = true; setSending(true); setSendError('');
+    try {
+      const result = await submitLocalRequest({ type:'contact', ...preview });
+      setReceipt(result.id);
+      setDraft({ ...EMPTY_CONTACT });
+      AccessibilityInfo.announceForAccessibility('Request saved to the local team inbox.');
+    } catch (error) {
+      setSendError(error instanceof Error ? error.message : 'The request could not be saved. Please try again.');
+    } finally { submitting.current=false; setSending(false); }
   };
 
   return (
@@ -166,10 +191,10 @@ export function AssistantScreen({ contactRequest = 0, isActive = true }: Assista
               <Text style={styles.textButton}>{preview ? 'Back to form' : 'Eagle AI'}</Text>
             </Pressable>
             <Text style={styles.eyebrow}>WE’RE HERE TO HELP</Text>
-            <Text accessibilityRole="header" style={styles.title}>{preview ? 'Your request preview' : 'Contact us'}</Text>
+            <Text accessibilityRole="header" style={styles.title}>{receipt ? 'Request received locally' : preview ? 'Review your request' : 'Contact us'}</Text>
             <View style={styles.notice}>
               <Ionicons name="information-circle-outline" size={20} color="#092653" />
-              <Text style={styles.noticeText}>Local preview only. Requests are not sent, and the team will not receive these details.</Text>
+              <Text style={styles.noticeText}>{delivery.available ? 'Requests are saved to the team inbox on this Mac. No email, call or external notification is sent during local testing.' : 'Request delivery is not connected here. You can review your details without sending them.'}</Text>
             </View>
 
             {preview ? (
@@ -180,15 +205,19 @@ export function AssistantScreen({ contactRequest = 0, isActive = true }: Assista
                   {preview.phone ? <PreviewField label="Phone" value={preview.phone} /> : null}
                   <PreviewField label="Question" value={preview.question} />
                 </View>
-                <Pressable accessibilityRole="button" onPress={backToForm} style={({ pressed }) => [styles.primaryButton, pressed && styles.pressed]}>
+                {!!receipt && <View style={styles.notice}><Text selectable style={styles.noticeText}>Saved to the local team inbox. Reference: {receipt}</Text></View>}
+                {!!sendError && <Text accessibilityRole="alert" style={[styles.error,{marginBottom:14}]}>{sendError}</Text>}
+                {delivery.available && !receipt && <Pressable accessibilityRole="button" disabled={sending} accessibilityState={{disabled:sending}} onPress={()=>void sendContact()} style={({pressed})=>[styles.primaryButton,{marginBottom:12},sending&&styles.disabled,pressed&&styles.pressed]}><Text style={styles.primaryButtonText}>{sending?'Sending…':'Send request to local team'}</Text><Ionicons name="send-outline" size={20} color="#092653"/></Pressable>}
+                {!receipt && <Pressable accessibilityRole="button" disabled={sending} onPress={backToForm} style={({ pressed }) => [styles.primaryButton,sending&&styles.disabled, pressed && styles.pressed]}>
                   <Text style={styles.primaryButtonText}>Edit request</Text>
                   <Ionicons name="create-outline" size={20} color="#092653" />
-                </Pressable>
-                <Text style={styles.footnote}>This temporary draft clears when the screen resets or the app reloads. Nothing has been submitted.</Text>
+                </Pressable>}
+                {!!receipt && <Pressable accessibilityRole="button" onPress={closeContact} style={styles.primaryButton}><Text style={styles.primaryButtonText}>Back to Eagle AI</Text></Pressable>}
+                <Text style={styles.footnote}>{receipt ? 'This local receipt does not book an appointment or establish an attorney-client relationship.' : delivery.available ? 'Review your contact details before sending. Your question and contact details will be visible in the local team inbox.' : 'This is a request preview. Nothing has been submitted.'}</Text>
               </>
             ) : (
               <>
-                <Text style={styles.intro}>Add your question and an email address or phone number for the team to use when contact delivery is connected.</Text>
+                <Text style={styles.intro}>Tell our team what you need and how you would like us to reach you. An email address or phone number is enough.</Text>
                 <FieldLabel label="Your name" error={errors.name} />
                 <TextInput ref={nameRef} accessibilityLabel="Your name, required" accessibilityHint={errors.name} style={[styles.input, errors.name && styles.invalidInput]} value={draft.name} onChangeText={value => updateDraft('name', value)} placeholder="Full name" placeholderTextColor="#738094" autoComplete="off" textContentType="none" autoCorrect={false} maxLength={100} returnKeyType="next" onSubmitEditing={() => emailRef.current?.focus()} />
 
@@ -204,10 +233,10 @@ export function AssistantScreen({ contactRequest = 0, isActive = true }: Assista
                 <Text style={styles.characterCount}>{draft.question.length}/1,500</Text>
 
                 <Pressable accessibilityRole="button" accessibilityHint="Validates your details and shows a local preview. Does not send a request." onPress={previewContact} style={({ pressed }) => [styles.primaryButton, pressed && styles.pressed]}>
-                  <Text style={styles.primaryButtonText}>Preview request</Text>
+                  <Text style={styles.primaryButtonText}>Review request</Text>
                   <Ionicons name="arrow-forward" size={20} color="#092653" />
                 </Pressable>
-                <Text style={styles.footnote}>This temporary draft clears when the screen resets or the app reloads. No information is submitted.</Text>
+                <Text style={styles.footnote}>Use sample details for local testing. Nothing is sent until you review and choose Send request.</Text>
               </>
             )}
           </>
@@ -215,7 +244,6 @@ export function AssistantScreen({ contactRequest = 0, isActive = true }: Assista
           <>
             <View style={styles.header}>
               <View style={styles.brand}>
-                <Image source={require('../../assets/immigration-eagle-transparent.png')} style={styles.logo} accessibilityIgnoresInvertColors accessible={false} />
                 <Text accessibilityRole="header" style={styles.aiTitle}>Eagle AI</Text>
               </View>
               <Pressable accessibilityRole="button" onPress={openContact} style={({ pressed }) => [styles.contactButton, pressed && styles.pressed]}>
@@ -226,7 +254,7 @@ export function AssistantScreen({ contactRequest = 0, isActive = true }: Assista
               <View style={styles.demoDot} />
               <Text style={styles.demoBadgeText}>DEMO · SCRIPTED RESPONSES</Text>
             </View>
-            <Text style={styles.demoDescription}>Explore example guidance. Live AI is not connected, and messages are not sent.</Text>
+            <Text style={styles.demoDescription}>Explore example guidance. Live AI is not connected, and chat messages are not sent.</Text>
 
             {turns.length ? (
               <View style={styles.conversation}>
@@ -266,7 +294,7 @@ export function AssistantScreen({ contactRequest = 0, isActive = true }: Assista
                 <Ionicons name="arrow-up" size={23} color="#092653" />
               </Pressable>
             </View>
-            <Text style={styles.footnote}>Session only · No messages or contact details are saved.</Text>
+            <Text style={styles.footnote}>Chat stays in this session. Contact requests are saved only when you choose Send request.</Text>
           </>
         )}
       </ScrollView>
@@ -289,7 +317,6 @@ const styles = StyleSheet.create({
   content: { flexGrow: 1, paddingHorizontal: 20, paddingTop: 18, paddingBottom: 28 },
   header: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, alignItems: 'center', justifyContent: 'space-between', marginBottom: 18 },
   brand: { flexDirection: 'row', alignItems: 'center', gap: 8, flexShrink: 1 },
-  logo: { width: 34, height: 39, resizeMode: 'contain' },
   aiTitle: { color: '#092653', fontWeight: '800', fontSize: 25, lineHeight: 33, flexShrink: 1 },
   contactButton: { minHeight: 44, justifyContent: 'center', paddingHorizontal: 10 },
   contactButtonText: { color: '#092653', fontSize: 13, lineHeight: 20, fontWeight: '700' },

@@ -1,82 +1,57 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import type { DraftSummary } from '../types';
 
 export type ApplicationScreenProps = {
-  onStart?: () => void;
-  draft?: DraftSummary;
-  onResume?: () => void;
+  onStart: () => void;
+  drafts: DraftSummary[];
+  loading?: boolean;
+  error?: string;
+  onRetry: () => void;
+  onResume: (formId: string) => void;
+  onRemove: (formId: string) => Promise<void>;
 };
 
-export function ApplicationScreen({ onStart, draft, onResume }: ApplicationScreenProps) {
-  return (
-    <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
-      <Text style={styles.eyebrow}>YOUR PAPERWORK, IN ONE PLACE</Text>
-      <Text accessibilityRole="header" style={styles.title}>My Application</Text>
-      <Text style={styles.intro}>{draft ? 'Pick up your preparation where you left off.' : 'Start with the form that fits your next step.'}</Text>
-
-      {draft ? (
-        <View style={styles.draftCard}>
-          <View style={styles.draftHeading}>
-            <View style={styles.formBadge}><Text style={styles.formBadgeText}>{draft.formId}</Text></View>
-            <Text style={styles.sessionLabel}>SESSION DRAFT</Text>
-          </View>
-          <Text accessibilityRole="header" style={styles.draftTitle}>{draft.title}</Text>
-          <Text style={styles.draftProgress}>{draft.answered} of {draft.total} introductory questions answered</Text>
-          <Text style={styles.draftDescription}>This is your preparation draft. It is not a complete USCIS application and has not been submitted.</Text>
-          <Pressable
-            accessibilityRole="button"
-            accessibilityHint={onResume ? 'Returns to this form’s preparation flow.' : 'Preparation navigation is not available in this view.'}
-            accessibilityState={{ disabled: !onResume }}
-            disabled={!onResume}
-            onPress={onResume}
-            style={({ pressed }) => [styles.startButton, !onResume && styles.disabled, pressed && styles.pressed]}
-          >
-            <Text style={styles.buttonText}>Return to preparation</Text>
-            <Ionicons name="arrow-forward" size={20} color="#061B49" />
-          </Pressable>
-          <Pressable
-            accessibilityRole="button"
-            accessibilityHint="Opens the form catalog."
-            accessibilityState={{ disabled: !onStart }}
-            disabled={!onStart}
-            onPress={onStart}
-            style={({ pressed }) => [styles.secondaryButton, !onStart && styles.disabled, pressed && styles.pressed]}
-          >
-            <Text style={styles.buttonText}>Start another form</Text>
-          </Pressable>
-        </View>
-      ) : <View style={styles.emptyCard}>
-        <View style={styles.iconCircle} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
-          <Ionicons name="document-text-outline" size={38} color="#061B49" />
-        </View>
-        <Text accessibilityRole="header" style={styles.emptyTitle}>Your next step starts here</Text>
-        <Text style={styles.body}>You haven’t started an application yet. Browse the forms, compare preparation options, and choose where to begin.</Text>
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel="Start a form"
-          accessibilityHint={onStart ? 'Opens the form catalog.' : 'Form navigation is not available in this view.'}
-          accessibilityState={{ disabled: !onStart }}
-          disabled={!onStart}
-          onPress={onStart}
-          style={({ pressed }) => [styles.startButton, !onStart && styles.disabled, pressed && styles.pressed]}
-        >
-          <Text style={styles.buttonText}>Start a form</Text>
-          <Ionicons name="arrow-forward" size={20} color="#061B49" />
-        </Pressable>
-      </View>}
-
-      <View style={styles.note}>
-        <Ionicons name="information-circle-outline" size={21} color="#061B49" />
-        <View style={styles.noteCopy}>
-          <Text style={styles.noteTitle}>For this session only</Text>
-          <Text style={styles.noteText}>Preparation drafts are kept in memory during this session. Closing or reloading the app clears them. Your information is not submitted or saved to an account.</Text>
-        </View>
-      </View>
-      <Text style={styles.footnote}>No account or filing service is connected in this version.</Text>
-    </ScrollView>
-  );
+export function ApplicationScreen({ onStart, drafts, loading, error, onRetry, onResume, onRemove }: ApplicationScreenProps) {
+  const [removing, setRemoving] = useState<string>();
+  const [busy, setBusy] = useState(false);
+  const [removeError, setRemoveError] = useState('');
+  const remove = async (formId: string) => {
+    if (busy) return;
+    setBusy(true); setRemoveError('');
+    try { await onRemove(formId); setRemoving(undefined); }
+    catch { setRemoveError('Could not remove the saved draft. Please try again.'); }
+    finally { setBusy(false); }
+  };
+  return <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
+    <Text style={styles.eyebrow}>YOUR PAPERWORK, IN ONE PLACE</Text>
+    <Text accessibilityRole="header" style={styles.title}>My Application</Text>
+    <Text style={styles.intro}>{drafts.length ? 'Continue a draft saved on this device.' : 'Start with the form that fits your next step.'}</Text>
+    {loading && <Text style={styles.body}>Loading saved drafts…</Text>}
+    {!!error && <View style={styles.note}><View style={styles.noteCopy}><Text accessibilityRole="alert" style={styles.noteText}>{error}</Text><Pressable accessibilityRole="button" onPress={onRetry} style={styles.secondaryButton}><Text style={styles.buttonText}>Try again</Text></Pressable></View></View>}
+    {drafts.map(draft => <View key={draft.formId} style={[styles.draftCard, {marginBottom:16}]}>
+      <View style={styles.draftHeading}><View style={styles.formBadge}><Text style={styles.formBadgeText}>{draft.formId}</Text></View><Text style={styles.sessionLabel}>SAVED ON THIS DEVICE</Text></View>
+      <Text accessibilityRole="header" style={styles.draftTitle}>{draft.title}</Text>
+      <Text style={styles.draftProgress}>{draft.answered} of {draft.total} introductory questions answered</Text>
+      <Text style={styles.draftDescription}>Saved {new Date(draft.updatedAt).toLocaleDateString()}. This draft is not a completed USCIS application and has not been filed.</Text>
+      <Pressable accessibilityRole="button" accessibilityLabel={`Continue application ${draft.formId}`} onPress={()=>onResume(draft.formId)} style={({pressed})=>[styles.startButton,pressed&&styles.pressed]}><Text style={styles.buttonText}>Continue application</Text><Ionicons name="arrow-forward" size={20} color="#061B49"/></Pressable>
+      {removing===draft.formId ? <View>
+        <Text style={[styles.noteText,{marginTop:18}]}>Remove the saved {draft.formId} draft from this device? This cannot be undone.</Text>
+        {!!removeError && <Text accessibilityRole="alert" style={styles.noteText}>{removeError}</Text>}
+        <Pressable accessibilityRole="button" disabled={busy} onPress={()=>void remove(draft.formId)} style={[styles.secondaryButton,busy&&styles.disabled]}><Text style={styles.buttonText}>{busy?'Removing…':'Remove saved draft'}</Text></Pressable>
+        <Pressable accessibilityRole="button" disabled={busy} onPress={()=>{setRemoving(undefined);setRemoveError('');}} style={styles.secondaryButton}><Text style={styles.buttonText}>Keep draft</Text></Pressable>
+      </View> : <Pressable accessibilityRole="button" accessibilityLabel={`Remove draft ${draft.formId}`} onPress={()=>{setRemoving(draft.formId);setRemoveError('');}} style={styles.secondaryButton}><Text style={styles.buttonText}>Remove draft</Text></Pressable>}
+    </View>)}
+    {!loading && !error && !drafts.length && <View style={styles.emptyCard}>
+      <View style={styles.iconCircle}><Ionicons name="document-text-outline" size={38} color="#061B49"/></View>
+      <Text accessibilityRole="header" style={styles.emptyTitle}>Your next step starts here</Text>
+      <Text style={styles.body}>Choose a form and begin the guided questions. Tap Save for later to keep your draft here.</Text>
+    </View>}
+    <Pressable accessibilityRole="button" onPress={onStart} style={({pressed})=>[styles.startButton,pressed&&styles.pressed]}><Text style={styles.buttonText}>{drafts.length?'Start another form':'Start a form'}</Text><Ionicons name="arrow-forward" size={20} color="#061B49"/></Pressable>
+    <View style={styles.note}><Ionicons name="information-circle-outline" size={21} color="#061B49"/><View style={styles.noteCopy}><Text style={styles.noteTitle}>Your device, your draft</Text><Text style={styles.noteText}>Drafts are saved only when you choose Save for later. They stay on this browser or device until removed or its storage is cleared. Use sample details while testing on a shared computer.</Text></View></View>
+    <Text style={styles.footnote}>No cloud account, automatic backup or government filing is connected.</Text>
+  </ScrollView>;
 }
 
 export default ApplicationScreen;

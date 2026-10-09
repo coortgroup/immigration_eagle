@@ -6,7 +6,9 @@ import {
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Badge, BrandMark, Button, Card, Field, Notice, RowLink, SectionTitle } from '../components/UI';
 import { colors, radius } from '../theme';
-import { evaluateQualification, validateField } from '../qualification';
+import { draftProgress, draftResume, evaluateQualification, matchesFormSearch, validateField } from '../qualification';
+import { loadDraft, saveDraft, SavedDraft } from '../draftStorage';
+import { submitLocalRequest, useLocalDelivery } from '../localRequests';
 import { DraftSummary, FormRecord, PreparationField, PreparationMode, QualificationAnswer, QualificationSchema } from '../types';
 import catalogFile from '../../data/forms-catalog.json';
 import finderFile from '../../data/form-finder.json';
@@ -18,7 +20,14 @@ import interviewFile from '../../data/preparation-fields.json';
 
 type Route = 'home' | 'catalog' | 'finder' | 'detail' | 'check' | 'result' | 'aiIntro' | 'interview' | 'interviewReview' | 'attorney' | 'attorneyPreview';
 type PickerKind = 'status' | 'goal' | null;
-type Props = { onContact: () => void; onDraftSaved?: (draft: DraftSummary) => void; isActive?: boolean };
+type Props = {
+  onContact: () => void;
+  onDraftSaved?: (draft: DraftSummary) => void;
+  isActive?: boolean;
+  initialFormId?: string;
+  resumeFormId?: string;
+  resumeRequest?: number;
+};
 
 const forms = catalogFile.forms as FormRecord[];
 const checks = [...mainChecksFile.forms, ...otherChecksFile.forms] as QualificationSchema[];
@@ -62,10 +71,11 @@ async function openOfficial(url?: string | null) {
   catch { Alert.alert('Unable to open this link', 'Please try again when your connection is available.'); }
 }
 
-export function FormsFlow({ onContact, onDraftSaved, isActive = true }: Props) {
-  const [route, setRoute] = useState<Route>('home');
-  const [returnTo, setReturnTo] = useState<Route>('catalog');
-  const [formId, setFormId] = useState('N-400');
+export function FormsFlow({ onContact, onDraftSaved, isActive = true, initialFormId, resumeFormId, resumeRequest }: Props) {
+  const initialForm = forms.find(item => item.id === initialFormId);
+  const [route, setRoute] = useState<Route>(initialForm ? 'detail' : 'home');
+  const [returnTo, setReturnTo] = useState<Route>('home');
+  const [formId, setFormId] = useState(initialForm?.id || 'N-400');
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('All');
   const [otherFormsOpen, setOtherFormsOpen] = useState(false);
@@ -81,8 +91,18 @@ export function FormsFlow({ onContact, onDraftSaved, isActive = true }: Props) {
   const [fieldError, setFieldError] = useState('');
   const [editingDraft, setEditingDraft] = useState(false);
   const [draftFinished, setDraftFinished] = useState(false);
+  const [savingDraft, setSavingDraft] = useState(false);
+  const [draftMessage, setDraftMessage] = useState('');
+  const [draftError, setDraftError] = useState('');
+  const [loadingDraft, setLoadingDraft] = useState(false);
   const [lawyer, setLawyer] = useState({ name: '', email: '', phone: '', note: '' });
   const [lawyerErrors, setLawyerErrors] = useState<Record<string, string>>({});
+  const [sendingRequest, setSendingRequest] = useState(false);
+  const [requestReceipt, setRequestReceipt] = useState('');
+  const [requestError, setRequestError] = useState('');
+  const savingDraftRef = useRef(false);
+  const sendingRequestRef = useRef(false);
+  const delivery = useLocalDelivery();
   const scroll = useRef<ScrollView>(null);
 
   const form = forms.find(item => item.id === formId) || forms[0];
@@ -95,18 +115,52 @@ export function FormsFlow({ onContact, onDraftSaved, isActive = true }: Props) {
   const fields = (interview?.fields || []) as PreparationField[];
   const field = fields[fieldIndex];
   const draft = drafts[form.id] || {};
+  const progress = draftProgress(fields, draft);
   const selectedStatus = finder.statuses.find((item: any) => item.id === statusId);
   const selectedGoal = selectedStatus?.goals.find((item: any) => item.id === goalId);
   const visibleForms = useMemo(() => forms.filter(item => {
-    const query = search.trim().toLowerCase();
-    return (category === 'All' || item.category === category) && (!query || `${item.id} ${item.title} ${item.summary} ${item.category}`.toLowerCase().includes(query));
+    return (category === 'All' || item.category === category) && matchesFormSearch(item, search, formLabels[item.id]);
   }), [search, category]);
 
   useEffect(() => { scroll.current?.scrollTo({ y: 0, animated: false }); }, [route, formId, questionIndex, fieldIndex]);
 
+  useEffect(() => {
+    if (!resumeRequest) return;
+    let active = true;
+    setLoadingDraft(true); setDraftError(''); setDraftMessage(''); setPicker(null);
+    loadDraft(resumeFormId).then(saved => {
+      if (!active) return;
+      if (!saved) throw new Error('This saved draft is no longer available. Choose a form to start again.');
+      const restoredForm = forms.find(item => item.id === saved.formId);
+      if (!restoredForm) throw new Error('This saved form is not in the current catalog. Your stored draft has not been changed.');
+      const restoredSchema = checks.find(item => item.id === saved.formId);
+      const restoredFields = (interviews.forms.find((item: any) => item.id === saved.formId)?.fields || []) as PreparationField[];
+      const restored = draftResume(restoredSchema, saved.checks, restoredFields, saved.answers);
+      const restoredOffer = aiOffer(saved.formId);
+      setFormId(saved.formId); setReturnTo('home'); setMode('ai');
+      setDrafts(previous => ({ ...previous, [saved.formId]: { ...saved.answers } }));
+      setAnswers({ ...saved.checks }); setQuestionIndex(restored.qualification.index);
+      setFieldIndex(Math.max(0, restored.progress.firstInvalid)); setFieldError('');
+      setEditingDraft(false); setShowCheckAnswers(false); setDraftFinished(restored.progress.complete);
+      setDraftMessage('Loaded your saved draft. Changes are saved only when you choose Save.');
+      setRequestReceipt(''); setRequestError('');
+      if (restored.qualification.status === 'passed' && !restoredOffer.unavailable && !restoredOffer.target) {
+        setRoute(restored.progress.complete ? 'interviewReview' : 'interview');
+      } else {
+        setRoute(restored.qualification.status === 'checking' ? 'check' : 'result');
+      }
+    }).catch(error => {
+      if (active) setDraftError(error instanceof Error ? error.message : 'Your saved draft could not be opened. Please try again.');
+    }).finally(() => { if (active) setLoadingDraft(false); });
+    return () => { active = false; };
+  }, [resumeFormId, resumeRequest]);
+
   function openForm(id: string, origin: Route = route) {
     setFormId(id); setReturnTo(origin === 'detail' ? 'catalog' : origin); setRoute('detail');
     setAnswers({}); setQuestionIndex(0); setShowCheckAnswers(false); setFieldError('');
+    setDraftFinished(false); setDraftMessage(''); setDraftError(''); setEditingDraft(false);
+    setRequestReceipt(''); setRequestError(''); setLawyerErrors({});
+    if (id !== formId) setLawyer(previous => ({ ...previous, note: '' }));
   }
 
   function editCheck(index: number) {
@@ -116,6 +170,7 @@ export function FormsFlow({ onContact, onDraftSaved, isActive = true }: Props) {
   }
 
   function goBack() {
+    if (savingDraftRef.current || sendingRequestRef.current || loadingDraft) return true;
     if (route === 'home') return false;
     if (route === 'catalog' || route === 'finder') setRoute('home');
     else if (route === 'detail') setRoute(returnTo === 'home' || returnTo === 'finder' ? returnTo : 'catalog');
@@ -132,10 +187,11 @@ export function FormsFlow({ onContact, onDraftSaved, isActive = true }: Props) {
     if (!isActive) return;
     const subscription = BackHandler.addEventListener('hardwareBackPress', goBack);
     return () => subscription.remove();
-  }, [isActive, route, questionIndex, fieldIndex, editingDraft, returnTo, qualification.index, answers]);
+  }, [isActive, route, questionIndex, fieldIndex, editingDraft, returnTo, qualification.index, answers, loadingDraft]);
 
   function startCheck(selectedMode: PreparationMode) {
     setMode(selectedMode); setAnswers({}); setQuestionIndex(0); setShowCheckAnswers(false);
+    setRequestReceipt(''); setRequestError('');
     setRoute(schema?.questions.length ? 'check' : 'result');
   }
 
@@ -166,21 +222,57 @@ export function FormsFlow({ onContact, onDraftSaved, isActive = true }: Props) {
     else setFieldIndex(fieldIndex + 1);
   }
 
-  function finishDraft() {
-    const invalid = fields.findIndex(item => validateField(item, draft[item.id] || '') !== null);
-    if (invalid >= 0) { setFieldIndex(invalid); setFieldError('Please complete this answer.'); setEditingDraft(true); setRoute('interview'); return; }
-    setDraftFinished(true);
-    onDraftSaved?.({ formId: form.id, title: form.title, answered: fields.length, total: fields.length, updatedAt: new Date().toISOString() });
+  async function persistDraft(finish = false) {
+    if (savingDraftRef.current) return;
+    if (qualification.status !== 'passed') { setDraftError('Complete the form check before saving this preparation draft.'); return; }
+    if (finish && progress.firstInvalid >= 0) {
+      const invalid = fields[progress.firstInvalid];
+      setFieldIndex(progress.firstInvalid); setFieldError(validateField(invalid, draft[invalid.id] || '') || 'Please complete this answer.');
+      setEditingDraft(true); setRoute('interview'); return;
+    }
+    const saved: SavedDraft = {
+      version: 1, formId: form.id, title: form.title, answered: progress.answered, total: fields.length,
+      updatedAt: new Date().toISOString(), answers: { ...draft }, checks: { ...answers },
+    };
+    savingDraftRef.current = true; setSavingDraft(true); setDraftError(''); setDraftMessage('');
+    try {
+      await saveDraft(saved);
+      setDraftFinished(finish);
+      setDraftMessage('Saved on this device. Resume this draft from My Application.');
+      onDraftSaved?.(saved);
+    } catch (error) {
+      setDraftError(error instanceof Error ? error.message : 'Your draft could not be saved. Keep this screen open and try again.');
+    } finally {
+      savingDraftRef.current = false; setSavingDraft(false);
+    }
   }
 
   function previewAttorney() {
     const errors: Record<string, string> = {};
+    const phone = lawyer.phone.trim();
+    const phoneDigits = phone.replace(/\D/g, '').length;
     if (!lawyer.name.trim()) errors.name = 'Enter your name.';
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(lawyer.email.trim())) errors.email = 'Enter a valid email address.';
-    if (lawyer.phone && lawyer.phone.replace(/\D/g, '').length < 7) errors.phone = 'Enter a valid phone number, or leave this blank.';
+    if (phone && (phoneDigits < 7 || phoneDigits > 15 || !/^\+?[\d\s().-]+$/.test(phone))) errors.phone = 'Enter a phone number with 7–15 digits, or leave this blank.';
     if (!lawyer.note.trim()) errors.note = 'Briefly describe the help you need.';
     setLawyerErrors(errors);
-    if (!Object.keys(errors).length) setRoute('attorneyPreview');
+    if (!Object.keys(errors).length) { setRequestReceipt(''); setRequestError(''); setRoute('attorneyPreview'); }
+  }
+
+  async function sendAttorneyRequest() {
+    if (sendingRequestRef.current || requestReceipt || !delivery.available) return;
+    sendingRequestRef.current = true; setSendingRequest(true); setRequestError('');
+    try {
+      const receipt = await submitLocalRequest({
+        type: 'attorney', name: lawyer.name.trim(), email: lawyer.email.trim(), phone: lawyer.phone.trim() || undefined,
+        question: lawyer.note.trim(), formId: form.id,
+      });
+      setRequestReceipt(receipt.id);
+    } catch (error) {
+      setRequestError(error instanceof Error ? error.message : 'The request could not be saved. Please try again.');
+    } finally {
+      sendingRequestRef.current = false; setSendingRequest(false);
+    }
   }
 
   function formPriceSummary(item: FormRecord) {
@@ -212,6 +304,7 @@ export function FormsFlow({ onContact, onDraftSaved, isActive = true }: Props) {
     const otherForms = forms.filter(item => !mainFormIds.includes(item.id));
     return <View style={{ gap: 17 }}>
       <SectionTitle title="Immigration forms" subtitle="Self-preparation is free. Choose AI or attorney assistance below." />
+      <Button title="Search by form number or name" variant="secondary" icon="search-outline" onPress={() => setRoute('catalog')} />
       <Text accessibilityRole="header" style={styles.label}>Main forms</Text>
       <Card style={{ paddingVertical: 0 }}>{mainForms.map(item => pricedFormRow(item, true))}</Card>
       <Card style={{ paddingVertical: 0 }}>
@@ -275,6 +368,7 @@ export function FormsFlow({ onContact, onDraftSaved, isActive = true }: Props) {
       <Button title="Help me choose a form" variant="secondary" icon="search-outline" onPress={() => setRoute('finder')} />
       <Text accessibilityLiveRegion="polite" style={styles.small}>{visibleForms.length} {visibleForms.length === 1 ? 'document' : 'documents'}</Text>
       {visibleForms.length ? <Card style={{ paddingVertical: 2 }}>{visibleForms.map(formRow)}</Card> : <Notice title="No forms found">Try a form number or a broader search, such as family or travel.</Notice>}
+      {(!!search || category !== 'All') && <Button title="Clear search and filters" variant="quiet" onPress={() => { setSearch(''); setCategory('All'); }} />}
       <Text style={styles.footnote}>Government filing fees are separate from preparation services.</Text>
     </>;
   }
@@ -314,30 +408,41 @@ export function FormsFlow({ onContact, onDraftSaved, isActive = true }: Props) {
   }
 
   function aiIntro() {
-    const completed = fields.filter(item => draft[item.id]?.trim()).length;
-    return <><Badge gold>{form.id} · GUIDED PREPARATION</Badge><SectionTitle title="One question at a time" subtitle="Build a clear draft of your information before completing your application." /><Card><View style={styles.sectionHeading}><BrandMark compact /><View style={{ flex: 1 }}><Text style={styles.cardTitle}>Eagle preparation</Text><Text style={styles.small}>{interview?.subject}</Text></View></View><View style={styles.metaRow}><Text style={styles.body}>{fields.length} starting questions</Text><Text style={styles.label}>{offer.price}</Text></View><Text style={styles.small}>{completed ? `${completed} answers saved for this session.` : 'You can review and edit every answer.'}</Text><Button title={completed ? 'Continue my draft' : 'Start the questions'} variant="gold" icon="arrow-forward" onPress={() => { const missing = fields.findIndex(item => !draft[item.id]?.trim()); setFieldIndex(missing < 0 ? 0 : missing); setEditingDraft(false); setFieldError(''); setDraftFinished(false); setRoute(missing < 0 && completed ? 'interviewReview' : 'interview'); }} /></Card><Notice title="About this preview">This is a guided intake, not a live AI conversation. Your answers stay in this app session. Nothing is sent, charged or filed, and the draft does not generate a completed USCIS form.</Notice></>;
+    return <><Badge gold>{form.id} · GUIDED PREPARATION</Badge><SectionTitle title="One question at a time" subtitle="Build a clear draft of your information before completing your application." />
+      <Card><View style={styles.sectionHeading}><BrandMark compact /><View style={{ flex: 1 }}><Text style={styles.cardTitle}>Eagle preparation</Text><Text style={styles.small}>{interview?.subject}</Text></View></View>
+        <View style={styles.metaRow}><Text style={styles.body}>{fields.length} starting questions</Text><Text style={styles.label}>{offer.price}</Text></View>
+        <Text style={styles.small}>{progress.answered ? `${progress.answered} of ${fields.length} answers completed.` : 'You can review and edit every answer.'}</Text>
+        <Button title={Object.keys(draft).length ? 'Continue my draft' : 'Start the questions'} variant="gold" icon="arrow-forward" onPress={() => {
+          setFieldIndex(Math.max(0, progress.firstInvalid)); setEditingDraft(false); setFieldError('');
+          setRoute(progress.complete ? 'interviewReview' : 'interview');
+        }} />
+      </Card>
+      <Notice title="About this preview">This is a guided intake, not a live AI conversation. Choose Save for later to keep a draft on this device. Nothing is sent, charged or filed, and the draft does not generate a completed USCIS form.</Notice>
+    </>;
   }
 
   function interviewScreen() {
     if (!field) return <Notice title="Draft unavailable">Contact our team for help with this document.</Notice>;
     const inputType = field.type;
-    return <><Badge gold>{form.id} · PREPARATION DRAFT</Badge><View style={styles.metaRow}><Text style={styles.small}>{editingDraft ? 'Edit your answer' : `Question ${fieldIndex + 1} of ${fields.length}`}</Text><Text style={styles.small}>Session only</Text></View><View style={styles.progressTrack}><View style={[styles.progressFill, { width: `${(fieldIndex + 1) / fields.length * 100}%` }]} /></View><SectionTitle title={field.label} />
-      <Field label={inputType === 'date' ? 'Date · MM/DD/YYYY' : 'Your answer'} help={field.help} value={draft[field.id] || ''} onChangeText={value => { setDrafts(previous => ({ ...previous, [form.id]: { ...(previous[form.id] || {}), [field.id]: value } })); if (fieldError) setFieldError(''); setDraftFinished(false); }}
+    return <><Badge gold>{form.id} · PREPARATION DRAFT</Badge><View style={styles.metaRow}><Text style={styles.small}>{editingDraft ? 'Edit your answer' : `Question ${fieldIndex + 1} of ${fields.length}`}</Text><Text style={styles.small}>Save to keep your draft</Text></View><View style={styles.progressTrack}><View style={[styles.progressFill, { width: `${(fieldIndex + 1) / fields.length * 100}%` }]} /></View><SectionTitle title={field.label} />
+      <Field label={inputType === 'date' ? 'Date · MM/DD/YYYY' : 'Your answer'} help={field.help} value={draft[field.id] || ''} editable={!savingDraft} onChangeText={value => { setDrafts(previous => ({ ...previous, [form.id]: { ...(previous[form.id] || {}), [field.id]: value } })); if (fieldError) setFieldError(''); setDraftFinished(false); setDraftMessage(''); setDraftError(''); }}
         placeholder={inputType === 'date' ? 'MM/DD/YYYY' : inputType === 'email' ? 'name@example.com' : inputType === 'tel' ? '+1 (555) 000-0000' : 'Enter your answer'}
         multiline={inputType === 'textarea'} autoCapitalize={inputType === 'email' ? 'none' : 'sentences'} keyboardType={inputType === 'email' ? 'email-address' : inputType === 'tel' ? 'phone-pad' : inputType === 'date' ? 'numbers-and-punctuation' : 'default'}
         maxLength={inputType === 'textarea' ? 2000 : inputType === 'date' ? 10 : 300} error={fieldError} />
-      <Button title={editingDraft ? 'Save answer' : fieldIndex === fields.length - 1 ? 'Review my answers' : 'Next question'} variant="gold" icon="arrow-forward" onPress={saveField} /><Text style={styles.footnote}>Enter accurate information. If a question does not fit your situation, contact our team for help.</Text>
+      <Button title={editingDraft ? 'Update answer' : fieldIndex === fields.length - 1 ? 'Review my answers' : 'Next question'} disabled={savingDraft} variant="gold" icon="arrow-forward" onPress={saveField} />
+      <Button title={savingDraft ? 'Saving…' : 'Save for later'} disabled={savingDraft} variant="secondary" icon="bookmark-outline" onPress={() => void persistDraft()} />
+      <Text style={styles.footnote}>Enter accurate information. If a question does not fit your situation, contact our team for help.</Text>
     </>;
   }
 
   function interviewReview() {
     return <><Badge gold>{form.id} · PREPARATION DRAFT</Badge><SectionTitle title={draftFinished ? 'Your draft is ready to revisit' : 'Review your answers'} subtitle="Tap an answer to make a correction." />
-      {draftFinished && <Notice tone="success" title="Draft reviewed">Your answers remain available during this app session. No application has been generated or filed.</Notice>}
-      <Card style={{ paddingVertical: 3 }}>{fields.map((item, index) => <RowLink key={item.id} title={item.label} subtitle={draft[item.id] || 'Not answered'} onPress={() => { setFieldIndex(index); setEditingDraft(true); setFieldError(''); setDraftFinished(false); setRoute('interview'); }} icon="create-outline" />)}</Card>
-      {!draftFinished && <Button title="Finish reviewing my draft" variant="gold" onPress={finishDraft} />}
-      <Button title="Contact us about next steps" variant="secondary" onPress={onContact} />
-      <Button title="Back to this form" variant="quiet" onPress={() => setRoute('detail')} />
-      <Text style={styles.footnote}>A preparation draft is not a completed USCIS form. Closing or reloading the app can clear this session.</Text>
+      {draftFinished && <Notice tone="success" title="Draft saved on this device">You can reopen your answers from My Application. No application has been generated or filed.</Notice>}
+      <Card style={{ paddingVertical: 3 }}>{fields.map((item, index) => <RowLink key={item.id} title={item.label} subtitle={draft[item.id] || 'Not answered'} onPress={() => { if (savingDraft) return; setFieldIndex(index); setEditingDraft(true); setFieldError(''); setDraftMessage(''); setRoute('interview'); }} icon="create-outline" />)}</Card>
+      {!draftFinished && <><Button title={savingDraft ? 'Saving…' : 'Save reviewed draft'} disabled={savingDraft} variant="gold" onPress={() => void persistDraft(true)} /><Button title="Save for later" disabled={savingDraft} variant="secondary" onPress={() => void persistDraft()} /></>}
+      <Button title="Contact us about next steps" disabled={savingDraft} variant="secondary" onPress={onContact} />
+      <Button title="Back to this form" disabled={savingDraft} variant="quiet" onPress={() => setRoute('detail')} />
+      <Text style={styles.footnote}>A preparation draft is not a completed USCIS form. Only saved answers remain after closing the app; deleting app or browser data removes local drafts.</Text>
     </>;
   }
 
@@ -352,7 +457,18 @@ export function FormsFlow({ onContact, onDraftSaved, isActive = true }: Props) {
   }
 
   function attorneyPreview() {
-    return <><Badge>{form.id} · REQUEST PREVIEW</Badge><SectionTitle title="Your request is ready to review" subtitle="Nothing has been sent. Confirm your details before using a connected support channel." /><Card><Text style={styles.cardTitle}>{lawyer.name}</Text><Text style={styles.body}>{lawyer.email}</Text>{!!lawyer.phone && <Text style={styles.body}>{lawyer.phone}</Text>}<View style={styles.divider} /><Text style={styles.label}>{form.id} · {form.title}</Text><Text style={styles.body}>{lawyer.note}</Text><View style={styles.metaRow}><Text style={styles.small}>Service price</Text><Text style={styles.compactPrice}>{money(attorney?.servicePriceUsd)}</Text></View></Card><Button title="Edit my request" variant="secondary" icon="create-outline" onPress={() => setRoute('attorney')} /><Button title="Contact us" onPress={onContact} /><Text style={styles.footnote}>Request preview only · Sending and scheduling are not connected.</Text></>;
+    return <><Badge>{form.id} · {requestReceipt ? 'REQUEST SAVED' : 'REQUEST PREVIEW'}</Badge>
+      <SectionTitle title={requestReceipt ? 'Your request is saved locally' : 'Your request is ready to review'} subtitle={requestReceipt ? 'Your request is in the local inbox on this computer.' : 'Review your details before sending your request.'} />
+      {!!requestReceipt && <Notice tone="success" title="Local receipt"><Text selectable style={styles.small}>Reference: {requestReceipt}</Text><Text style={styles.small}>No email was sent. An attorney has not been booked or assigned.</Text></Notice>}
+      <Card><Text style={styles.cardTitle}>{lawyer.name}</Text><Text style={styles.body}>{lawyer.email}</Text>{!!lawyer.phone && <Text style={styles.body}>{lawyer.phone}</Text>}<View style={styles.divider} /><Text style={styles.label}>{form.id} · {form.title}</Text><Text style={styles.body}>{lawyer.note}</Text><View style={styles.metaRow}><Text style={styles.small}>Service price</Text><Text style={styles.compactPrice}>{money(attorney?.servicePriceUsd)}</Text></View></Card>
+      {!!requestError && <Text accessibilityRole="alert" style={styles.error}>{requestError}</Text>}
+      {!requestReceipt && <>
+        {delivery.available && <Button title={sendingRequest ? 'Saving request…' : 'Send request'} disabled={sendingRequest} icon="send-outline" onPress={() => void sendAttorneyRequest()} />}
+        <Button title="Edit my request" disabled={sendingRequest} variant="secondary" icon="create-outline" onPress={() => setRoute('attorney')} />
+      </>}
+      <Button title="Contact us" disabled={sendingRequest} variant="secondary" onPress={onContact} />
+      <Text style={styles.footnote}>{delivery.checking ? 'Checking whether the local inbox is connected…' : delivery.available ? 'Send request saves your details to the inbox on this computer. It does not email a lawyer, schedule a consultation or collect payment.' : 'Request preview only. Sending is available from the locally hosted website; external delivery and scheduling are not connected.'}</Text>
+    </>;
   }
 
   const pickerOptions: { id: string; label: string }[] = picker === 'status' ? finder.statuses : selectedStatus?.goals || [];
@@ -360,7 +476,10 @@ export function FormsFlow({ onContact, onDraftSaved, isActive = true }: Props) {
   return <KeyboardAvoidingView style={styles.root} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
     <ScrollView ref={scroll} keyboardShouldPersistTaps="handled" keyboardDismissMode="on-drag" contentContainerStyle={styles.scrollContent}>
       <View style={styles.content}>
-        {route !== 'home' && <Pressable accessibilityRole="button" accessibilityLabel={backLabels[route] || 'Back'} onPress={goBack} style={styles.back}><Ionicons name="arrow-back" size={21} color={colors.navy} /><Text style={styles.backText}>{backLabels[route] || 'Back'}</Text></Pressable>}
+        {route !== 'home' && <Pressable accessibilityRole="button" accessibilityLabel={backLabels[route] || 'Back'} accessibilityState={{ disabled: loadingDraft || savingDraft || sendingRequest }} disabled={loadingDraft || savingDraft || sendingRequest} onPress={goBack} style={styles.back}><Ionicons name="arrow-back" size={21} color={colors.navy} /><Text style={styles.backText}>{backLabels[route] || 'Back'}</Text></Pressable>}
+        {!!draftError && <Text accessibilityRole="alert" style={styles.error}>{draftError}</Text>}
+        {!!draftMessage && (route === 'interview' || route === 'interviewReview' || route === 'aiIntro') && <Notice tone="success">{draftMessage}</Notice>}
+        {loadingDraft ? <Notice title="Opening your saved draft">Checking your saved answers against the current questions…</Notice> : <>
         {route === 'home' && home()}
         {route === 'catalog' && catalog()}
         {route === 'finder' && <><SectionTitle eyebrow="A GOOD PLACE TO START" title="Find your form" subtitle="Choose the situation that applies to you." />{finderCard()}<Button title="Browse all forms" variant="secondary" onPress={() => setRoute('catalog')} /></>}
@@ -372,6 +491,7 @@ export function FormsFlow({ onContact, onDraftSaved, isActive = true }: Props) {
         {route === 'interviewReview' && interviewReview()}
         {route === 'attorney' && attorneyIntake()}
         {route === 'attorneyPreview' && attorneyPreview()}
+        </>}
       </View>
     </ScrollView>
     <Modal visible={picker !== null} animationType="slide" transparent onRequestClose={() => setPicker(null)}>
@@ -422,6 +542,7 @@ const styles = StyleSheet.create({
   rowTitle: { color: colors.navy, fontSize: 15, fontWeight: '700', lineHeight: 21 },
   benefitIcon: { width: 40, height: 40, borderRadius: 11, backgroundColor: colors.goldLight, justifyContent: 'center', alignItems: 'center' },
   footnote: { color: colors.muted, fontSize: 12, lineHeight: 19 },
+  error: { color: colors.error, fontSize: 14, lineHeight: 21 },
   back: { flexDirection: 'row', alignItems: 'center', gap: 8, minHeight: 42, alignSelf: 'flex-start' },
   backText: { color: colors.navy, fontSize: 14, fontWeight: '600' },
   chip: { paddingVertical: 10, paddingHorizontal: 17, backgroundColor: colors.paper, borderWidth: 1, borderColor: colors.border, borderRadius: 25 },

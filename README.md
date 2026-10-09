@@ -8,7 +8,20 @@ An Expo / React Native app for exploring immigration forms, with a small GitHub 
 
 These addresses become live after the Pages workflow successfully deploys. See the repository Actions tab for deployment status.
 
-## Run locally
+## Review locally
+
+```sh
+npm ci
+npm run local
+```
+
+- Website: **http://127.0.0.1:4177/immigration_eagle/**
+- App: **http://127.0.0.1:4177/immigration_eagle/app/**
+- Local team inbox: **http://127.0.0.1:4177/local-inbox/**
+
+This local server lets contact and attorney requests be saved and viewed on this Mac. It accepts loopback connections only, sends no email or external notification, and stores requests in the Git-ignored `.local/requests.json`. Use sample details. The static GitHub Pages build does not expose this server or its inbox. See [local review guide](docs/LOCAL_REVIEW.md).
+
+## Run the Expo app
 
 Requires Node.js 22.14+ and npm.
 
@@ -48,13 +61,13 @@ Open **http://127.0.0.1:4176/immigration_eagle/**. This preview uses the same su
 - A catalog of 21 forms, status/goal finder, and free / AI / attorney preparation choices with whole-dollar prices.
 - Form-specific preliminary yes/no checks, stop/review/pass outcomes, and correction of previous answers.
 - Direct links to official fillable USCIS PDFs for self-preparation.
-- Introductory guided interviews, editable answer review and a session-only draft summary.
-- Attorney/contact intake with validation and local review; minimal Eagle AI chat with clearly labeled example responses.
-- Responsive static website and automatic GitHub Pages deployment workflow.
+- Introductory guided interviews, editable answer review, explicit device saves and resumable drafts in My Application.
+- Attorney/contact intake with validation, review, local inbox delivery and visible receipts; minimal Eagle AI chat with clearly labeled example responses.
+- Responsive static website with the shared 21-form finder and prices, direct form links, and an automatic GitHub Pages deployment workflow.
 
 ## Preview limits
 
-This is an initial implementation, not a production immigration service. Live AI, full USCIS PDF generation, payments, accounts, durable storage, actual attorney intake delivery, shipping and government filing are not connected. Use sample information when evaluating it. Answers and contacts stay in memory and disappear on reload/app restart; they are not transmitted to a server.
+This is an initial implementation, not a production immigration service. Live AI, full USCIS PDF generation, payments, accounts, cloud storage, external attorney intake delivery, shipping and government filing are not connected. Use sample information when evaluating it. Unsaved answers and chat stay in memory. Explicitly saved drafts persist on the device/browser until removed. On the local website, requests submitted after review are sent only to the loopback server and saved in its local inbox. Static GitHub Pages and Expo Go remain request-preview-only until a production delivery service is configured.
 
 The form check is preliminary and does not determine legal eligibility or guarantee USCIS approval. Exceptions and uncertain cases go to review. TPS/DACA paths require individual review. Form rules, service scopes and displayed business claims need legal/product validation before a public service launch. Pricing is the approved design data, not an active checkout.
 
@@ -85,6 +98,7 @@ See [release instructions](docs/RELEASE.md). `eas.json` includes development, si
 - `data/` — form catalog, preliminary checks, interview schemas and source/pricing records
 - `web/` — public landing page
 - `scripts/` — builds, asset generation, local preview and checks
+- `server/` — loopback-only request API and local team inbox
 - `prototype/`, `preview/` — earlier interactive design, retained as reference
 - [Prototype notes](docs/PROTOTYPE.md) — design decisions and source history
 

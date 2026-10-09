@@ -1,4 +1,4 @@
-import { PreparationField, QualificationAnswer, QualificationResult, QualificationSchema } from './types';
+import { FormRecord, PreparationField, QualificationAnswer, QualificationResult, QualificationSchema } from './types';
 
 // This evaluates a preliminary routing screen, never USCIS eligibility.
 export function evaluateQualification(
@@ -37,4 +37,30 @@ export function validateField(field: PreparationField, value: string): string | 
     if (field.id.includes('birth') && date > new Date()) return 'A date of birth cannot be in the future.';
   }
   return null;
+}
+
+export function draftProgress(fields: PreparationField[], answers: Record<string, string>) {
+  const firstInvalid = fields.findIndex(field => validateField(field, answers[field.id] || '') !== null);
+  const answered = fields.filter(field => !!answers[field.id]?.trim() && validateField(field, answers[field.id]) === null).length;
+  return { answered, total: fields.length, firstInvalid, complete: fields.length > 0 && firstInvalid < 0 };
+}
+
+// Resume against today's questions instead of trusting a previously saved result.
+export function draftResume(
+  schema: QualificationSchema | undefined,
+  checks: Record<string, QualificationAnswer>,
+  fields: PreparationField[],
+  answers: Record<string, string>,
+) {
+  return { qualification: evaluateQualification(schema, checks), progress: draftProgress(fields, answers) };
+}
+
+export function matchesFormSearch(form: FormRecord, query: string, alternateTitle = ''): boolean {
+  // Treat I-130, I 130 and I130 alike, including pasted typographic dashes.
+  const normalize = (value: string) => value.toLowerCase()
+    .replace(/[\u2010-\u2015\u2212]/g, '-')
+    .replace(/\b([a-z]{1,2})[\s-]*(\d+)([a-z]*)\b/g, '$1$2$3')
+    .replace(/[^a-z0-9]+/g, ' ').trim();
+  const haystack = normalize(`${form.id} ${form.title} ${form.summary} ${form.category} ${alternateTitle}`);
+  return normalize(query).split(/\s+/).every(word => haystack.includes(word));
 }
