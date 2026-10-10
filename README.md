@@ -6,7 +6,7 @@ An Expo / React Native app for exploring immigration forms, with a small GitHub 
 - Browser app: **https://fillout.net/app/**
 - Repository: https://github.com/coortgroup/immigration_eagle
 - Expo project: https://expo.dev/accounts/coortgroup/projects/immigration-eagle
-- [Open the published SDK 57 preview in Expo Go](https://expo.dev/preview/update/expo-go?projectId=9fc8959b-6ce7-436b-b512-8d0f7fe2e081&group=b719349c-1095-457a-8f98-19ee9e315940)
+- [Open the published SDK 57 preview in Expo Go](https://expo.dev/preview/update/expo-go?projectId=9fc8959b-6ce7-436b-b512-8d0f7fe2e081&group=ecf20fd0-3512-4f5d-8476-32c93ccdafa6)
 
 The custom domain is live with a valid HTTPS certificate and **Enforce HTTPS** enabled. The website and `/app/` load securely, HTTP redirects to HTTPS, and the website-to-app form link has been verified in a browser. See [custom domain setup](docs/CUSTOM_DOMAIN.md).
 
@@ -102,7 +102,7 @@ If Pages already exists, use `PUT` instead of `POST` to update its build type. C
 
 ## TestFlight
 
-Version **0.1.0 (2)** is available for internal testing in [TestFlight / App Store Connect](https://appstoreconnect.apple.com/apps/6821241435/testflight). On October 10, 2026, the signed [EAS iOS build](https://expo.dev/accounts/coortgroup/projects/immigration-eagle/builds/8b476f1d-652c-4d2a-a850-3ed4f3da0a6d) and [Apple submission](https://expo.dev/accounts/coortgroup/projects/immigration-eagle/submissions/61bd8a68-15db-41a0-9108-9eb7b8e3b370) finished successfully; Apple reports `VALID` and `IN_BETA_TESTING`. Internal access is configured through **Team (Expo)**. External testing still requires Apple's beta review; this is not a public App Store release.
+Version **0.2.0 (3)**, including the redesigned homepage, is available for internal testing in [TestFlight / App Store Connect](https://appstoreconnect.apple.com/apps/6821241435/testflight). On October 10, 2026, the signed [EAS iOS build](https://expo.dev/accounts/coortgroup/projects/immigration-eagle/builds/5425b130-5c8f-41ba-ad7c-856141f50bc1) and [Apple submission](https://expo.dev/accounts/coortgroup/projects/immigration-eagle/submissions/d1f15da4-6a34-4743-b4c2-7d1c3afda78f) finished successfully; Apple reports `VALID`, `IN_BETA_TESTING`, and `expired: false`. Internal access is configured through **Team (Expo)**. External testing still requires Apple's beta review; this is not a public App Store release.
 
 See [release instructions](docs/RELEASE.md) for the configured app, future builds and what to test. `eas.json` includes development, simulator, preview and production profiles. EAS manages the real signing credentials; private keys are not committed. The TestFlight version has the preview limits described above, and installation on a physical iPhone still needs tester confirmation.
 
