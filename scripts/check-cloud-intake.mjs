@@ -67,7 +67,7 @@ try {
     grant usage on schema auth to authenticated;
     grant execute on function auth.uid() to authenticated;
   `);
-  const migration = await readFile(new URL('../supabase/migrations/202610100001_cloud_intake.sql', import.meta.url), 'utf8');
+  const migration = await readFile(new URL('../supabase/migrations/20261010000100_cloud_intake.sql', import.meta.url), 'utf8');
   await db.exec(migration);
   for (const [id, confirmed, anonymous] of [[userId, true, false], [otherId, true, false], [pendingId, false, false], [anonymousId, true, true]]) {
     await db.query('insert into auth.users values($1, $2, $3, $4)', [id, `${id}@example.test`, confirmed ? new Date().toISOString() : null, anonymous]);

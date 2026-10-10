@@ -24,9 +24,11 @@ Prepared locally; no hosted project, production credentials, or email notificati
    npx supabase link --project-ref YOUR_PROJECT_REF
    npx supabase db push --dry-run
    npx supabase db push
-   npx supabase functions deploy submit-request
-   npx supabase functions deploy ai-assistant
+   npx supabase functions deploy submit-request --project-ref YOUR_PROJECT_REF --use-api
+   npx supabase functions deploy ai-assistant --project-ref YOUR_PROJECT_REF --use-api
    ```
+
+   `--use-api` bundles functions on Supabase and does not require Docker. CLI login is separate from dashboard login. If the database password is unavailable to the CLI, apply `migrations/20261010000100_cloud_intake.sql` once in the project's SQL Editor as `postgres`, with the entire script wrapped in `BEGIN;` / `COMMIT;`. Record that manual application and reconcile migration history with `supabase migration repair` before subsequently using `db push`; do not apply the same migration twice. The Edge Function deployment commands above need CLI account authorization, but do not require database credentials or project linking.
 
 5. Configure server secrets in Supabase. Do not put them in Expo, GitHub Pages, a public environment variable, or source control. Hosted functions receive Supabase URL/key variables automatically. `_shared/http.mjs` supports singular/plural publishable and secret keys, with legacy anon/service-role fallbacks. Use the AI handler's documented provider settings for that function.
 6. Configure only the public Supabase URL and publishable key in the app build. Keep the service disabled in published clients until the following checks pass against the staging project, then production.
@@ -73,3 +75,5 @@ References: [OpenAI Responses](https://developers.openai.com/api/docs/guides/tex
 `node scripts/check-cloud-intake.mjs` exercises the handler through mocked Auth/network calls and executes the actual migration and SQL functions in PGlite's PostgreSQL engine. It verifies RLS/grants, receipts, replay/conflict behavior, database validation, intake limits and both AI quotas. PGlite uses minimal Auth fixtures; this does not verify hosted Supabase Auth, SMTP, the Edge gateway or multiple database sessions. No live credentials or real customer information are required for these tests.
 
 Official references: [Auth on Edge Functions](https://supabase.com/docs/guides/functions/auth), [API keys](https://supabase.com/docs/guides/api/api-keys), [RLS](https://supabase.com/docs/guides/database/postgres/row-level-security), [database functions](https://supabase.com/docs/guides/database/functions), [email templates](https://supabase.com/docs/guides/auth/auth-email-templates), [passwordless email](https://supabase.com/docs/guides/auth/auth-email-passwordless).
+
+Deployment references: [CLI function deployment](https://supabase.com/docs/reference/cli/supabase-functions-deploy), [migration naming](https://supabase.com/docs/guides/ai-tools/ai-prompts/database-create-migration).
