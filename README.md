@@ -2,11 +2,13 @@
 
 An Expo / React Native app for exploring immigration forms, with a small GitHub Pages website. The native app and browser preview share the same React Native screens and reviewed form data.
 
-- Website deployment target: **https://coortgroup.github.io/immigration_eagle/**
-- Browser app: **https://coortgroup.github.io/immigration_eagle/app/**
+- Website: **https://fillout.net/**
+- Browser app: **https://fillout.net/app/**
 - Repository: https://github.com/coortgroup/immigration_eagle
 - Expo project: https://expo.dev/accounts/coortgroup/projects/immigration-eagle
 - [Open the published SDK 57 preview in Expo Go](https://expo.dev/preview/update/expo-go?projectId=9fc8959b-6ce7-436b-b512-8d0f7fe2e081&group=b719349c-1095-457a-8f98-19ee9e315940)
+
+The custom domain is configured in GitHub Pages. DNS and HTTPS verification are pending; the website addresses above are not yet confirmed live. See [custom domain setup](docs/CUSTOM_DOMAIN.md).
 
 The Expo preview is hosted by EAS Update and works without a running Mac or a shared Wi-Fi network. Sign in as `coortgroup` in Expo Go and on Expo's launch page if asked. This is an update under the Expo project's `preview` branch, not a signed iOS build under Builds. See the repository Actions tab for website deployment status.
 
@@ -55,7 +57,7 @@ npm run build               # Export web app, assemble website + app into site/
 npm run preview:site
 ```
 
-Open **http://127.0.0.1:4176/immigration_eagle/**. This preview uses the same subpath as GitHub Pages, including the `/app/` asset paths.
+Open **http://127.0.0.1:4176/immigration_eagle/**. This preview uses the default GitHub project subpath. For the custom domain's root layout, build and preview with `PAGES_BASE_PATH=''` as described in [custom domain setup](docs/CUSTOM_DOMAIN.md).
 
 ## What is implemented
 
@@ -80,12 +82,12 @@ The project uses SDK 57, with unresolved audit findings in its dependency tree. 
 
 `.github/workflows/pages.yml` builds and deploys on pushes to `main` and manual runs. Repository **Settings → Pages → Source** must be **GitHub Actions**. The workflow reads the configured Pages URL before building, so Expo assets work at either `/immigration_eagle/app/` on the default address or `/app/` on a custom domain.
 
-The requested custom domain is **fillout.net**. Domain ownership, GitHub Pages settings, DNS and HTTPS still need to be connected and verified before it replaces the live links above. See [custom domain setup](docs/CUSTOM_DOMAIN.md).
+The custom domain **fillout.net** is saved in GitHub Pages. DNS and HTTPS verification remain pending. After saving the domain, a new deployment must rebuild Expo assets for `/app/`. See [custom domain setup](docs/CUSTOM_DOMAIN.md).
 
 After authenticating with `gh auth login`, an administrator can configure Pages and the About link:
 
 ```sh
-gh repo edit coortgroup/immigration_eagle --homepage https://coortgroup.github.io/immigration_eagle/ --description "FILLOUT IMMIGRATION FORMS — Expo app and immigration form preparation preview"
+gh repo edit coortgroup/immigration_eagle --homepage https://fillout.net/ --description "FILLOUT IMMIGRATION FORMS — Expo app and immigration form preparation preview"
 gh api --method POST repos/coortgroup/immigration_eagle/pages -f build_type=workflow
 gh workflow run pages.yml --repo coortgroup/immigration_eagle
 ```

@@ -5,7 +5,7 @@
   "main": "index.ts",
   "description": "FILLOUT IMMIGRATION FORMS — Expo app and GitHub Pages website",
   "repository": "https://github.com/coortgroup/immigration_eagle.git",
-  "homepage": "https://coortgroup.github.io/immigration_eagle/",
+  "homepage": "https://fillout.net/",
   "scripts": {
     "start": "expo start",
     "ios": "expo start --ios",
