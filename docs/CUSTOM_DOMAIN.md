@@ -4,13 +4,15 @@ Configured website: **https://fillout.net/**
 
 Configured browser app: **https://fillout.net/app/**
 
-The custom domain **fillout.net** is saved in the repository's GitHub Pages settings, and GitHub reports **DNS check successful**. [Deployment 38020674959](https://github.com/coortgroup/immigration_eagle/actions/runs/38020674959) for commit `3edbcaa` succeeded after the domain switch. HTTPS certificate provisioning and the final live-site check are pending. The previous GitHub address, https://coortgroup.github.io/immigration_eagle/, now redirects to the custom domain.
+The custom domain **fillout.net** is saved in the repository's GitHub Pages settings, and GitHub reports **DNS check successful**. [Deployment 38020674959](https://github.com/coortgroup/immigration_eagle/actions/runs/38020674959) for commit `3edbcaa` succeeded after the domain switch. Certificate issuance has completed and **Enforce HTTPS** is enabled, confirmed after reloading Pages settings. The previous GitHub address, https://coortgroup.github.io/immigration_eagle/, now redirects to the custom domain.
 
-Using current public DNS (`1.1.1.1`), HTTP checks returned 200 for both `/` and `/app/`, with the FILLOUT page titles and an app bundle under `/app/_expo/static/js/web/`. This Mac's default resolver still returned the former parking IP during the last check. GitHub accepted a certificate provisioning restart and now reports **Certificate Requested: Detected a change to DNS settings. Requesting a new certificate.** Strict HTTPS checks do not yet validate a certificate for this domain; no certificate validation was bypassed. Enable **Enforce HTTPS** and verify the three HTTPS addresses below once issuance completes.
+Live checks confirmed HTTP 200 over strictly validated HTTPS for both `/` and `/app/`, the app JavaScript bundle, and the logo. HTTP requests for the website and app redirect to their HTTPS addresses. Browser verification loaded the landing page, followed its I-129F link to `/app/?form=I-129F`, and displayed all three preparation choices with no captured console errors or warnings. No certificate validation was bypassed.
+
+The HTTPS `www` address also passed strict TLS verification and returned a 301 redirect to `https://fillout.net/`, followed by HTTP 200. This check used the address returned by `1.1.1.1` while preserving the `www.fillout.net` hostname and SNI, because this Mac still cached the old parking IP for `www`. The apex address already resolved correctly on this Mac. Checks were completed around midnight on October 9–10, 2026 (America/New_York).
 
 ## GitHub Pages
 
-The domain setting has been completed. To review it and finish deployment:
+The domain setting and deployment have been completed. To review or repeat the setup:
 
 1. Open [repository Pages settings](https://github.com/coortgroup/immigration_eagle/settings/pages).
 2. Keep **Source: GitHub Actions**.
@@ -39,9 +41,9 @@ On October 9, 2026, both authoritative nameservers (`dns1.registrar-servers.com`
 
 1. Confirm the workflow completes successfully after the custom domain was saved.
 2. Confirm DNS resolves to GitHub Pages and its Pages settings report a successful DNS check.
-3. When GitHub finishes provisioning the certificate, enable **Enforce HTTPS**. DNS changes and certificate availability can take up to 24 hours.
+3. Keep **Enforce HTTPS** enabled. If configuring a new domain, DNS changes and certificate availability can take up to 24 hours.
 4. Open `https://fillout.net/` and `https://fillout.net/app/?form=I-129F`. Confirm the website, app, images and form choice screen load, then confirm `https://www.fillout.net/` redirects to the apex domain.
-5. The repository **About → Website**, `package.json`'s `homepage`, `app.config.ts`'s `extra.website`, and README addresses already use `https://fillout.net/`. Remove the pending-verification notes only after completing the checks above.
+5. Keep the repository **About → Website**, `package.json`'s `homepage`, `app.config.ts`'s `extra.website`, and README addresses set to `https://fillout.net/`.
 
 The published Expo Go preview and Expo project identity are independent of website DNS. Changing the website domain does not require renaming the Expo project.
 
