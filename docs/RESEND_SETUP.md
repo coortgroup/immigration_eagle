@@ -6,9 +6,13 @@ Prepared on 2026-10-10 for the `fillout-staging` Supabase project (`ceoliqoctkgw
 
 All three DNS records below are saved in Namecheap. The Resend dashboard confirms `auth.fillout.net` is **Verified**, and TLS is set to **Enforced**. Public DNS checks confirmed the DKIM TXT and `rsend.auth` CNAME; both authoritative nameservers confirmed the `send.auth` CNAME while the public resolver was still catching up. Existing website A/CNAME records, root forwarding MX records and root SPF matched the previous baseline.
 
-The **Sending access** key restricted to `auth.fillout.net` has been created; Resend is displaying its one-time **View API Key** dialog. SMTP remains unsaved pending the owner's credential entry, and no test email has been sent. Browser approval review rejected programmatic transfer of the new credential, requiring the owner to copy it into the prepared Supabase SMTP Password field and submit **Save changes**. The owner has been asked to do this without posting the key in chat. Keep the Resend dialog and prepared Supabase form open until the transfer is complete.
+The **Sending access** key restricted to `auth.fillout.net` has been created. The owner entered it directly into Supabase SMTP and saved the settings. A fresh browser tab confirmed SMTP enabled, a stored password hidden by the UI, and no unsaved changes. No key value was recorded in chat or the repository.
 
-## Prepared sender
+Both **Confirm signup** and **Magic Link** templates have been saved, reloaded and previewed with the exact body from `supabase/templates/email-code.html`. Their subjects are `Your FILLOUT verification code` and `Your FILLOUT sign-in code`. The body displays the eight-digit `{{ .Token }}` with a ten-minute expiry and contains no old sign-in links.
+
+Exactly one authorized OTP request to `coortgroup@gmail.com` returned **HTTP 200** at **2026-10-10T06:48:07.752Z**. There were no retries. The Resend dashboard confirms message **`01a12491-a6fa-794d-8d4a-457e3041fe7a`**, subject `Your FILLOUT verification code`, as **Delivered**. Owner receipt, inbox placement and successful verified-user sign-in have not yet been confirmed.
+
+## Configured sender
 
 - Resend account: `coortgroup`.
 - Sending subdomain: `auth.fillout.net`, North Virginia (`us-east-1`).
@@ -18,7 +22,7 @@ The **Sending access** key restricted to `auth.fillout.net` has been created; Re
 - SMTP: `smtp.resend.com`, port `465`, username `resend`, password supplied by the restricted API key. No key is stored in this document or source control.
 - Disable open/click tracking for authentication emails. Receiving mail is not required.
 
-The Supabase SMTP form has these nonsecret fields prepared but has not been saved. Its password field is blank. The hosted UI shows port 465, resend interval 60 seconds, and an initial custom-SMTP limit of 30 emails/hour.
+The saved Supabase SMTP configuration uses port 465, a resend interval of 60 seconds, and an initial custom-SMTP limit of 30 emails/hour. SMTP and both email templates are configured; no paid plan has been selected.
 
 Use the dashboard's narrow SMTP and email-template forms for this change. Do **not** use `supabase config push` as either a deployment or preview: CLI 2.90.0 builds a whole Auth update from local settings/defaults, lacks field selection and dry-run flags, and noninteractive confirmations can default to approval. It could overwrite unrelated hosted settings. Source: [config updater](https://github.com/supabase/cli/blob/v2.90.0/pkg/config/updater.go), [Auth conversion](https://github.com/supabase/cli/blob/v2.90.0/pkg/config/auth.go).
 
@@ -37,9 +41,9 @@ This account's dashboard requests CNAME-based sending records, not the MX/TXT co
 ## Authentication configuration and verification
 
 - Keep confirmed email required, anonymous sign-in disabled, eight-digit OTP, ten-minute expiry and a minimum one-minute resend interval.
-- Apply `supabase/templates/email-code.html` to **Confirm signup** and **Magic Link**. The client requires the numeric code, not a sign-in link.
-- Verify SMTP delivery with the owner-approved test email before enabling connected clients.
-- Review actual sender identity, expiry text, code entry, repeat request throttling and invalid-code rejection.
+- Both templates now use `supabase/templates/email-code.html`; preserve the numeric code expected by the client.
+- Provider delivery is confirmed for the single authorized test. Confirm owner receipt, inbox placement and eight-digit code sign-in before enabling connected clients.
+- Review the received sender identity and expiry text, then test repeat request throttling and invalid/expired-code rejection.
 - Test a synthetic request receipt and database persistence only after successful verified-user sign-in.
 - This SMTP configuration delivers sign-in emails. Customer request notifications require a separate confirmed team recipient and outbox worker.
 

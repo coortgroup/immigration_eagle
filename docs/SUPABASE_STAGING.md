@@ -20,19 +20,19 @@ Recorded on 2026-10-10. This environment is for acceptance testing, not producti
 - `ai-assistant`: ACTIVE, version 1; function ID `4451fd3f-7448-44be-b589-0c6a44a4cdea`.
 - Both deployed with official Supabase CLI 2.90.0 and `--use-api`. Gateway `verify_jwt=false` is intentional: both handlers validate user tokens using Supabase Auth before any action.
 - Both functions passed allowed preflight (204), missing/invalid authentication (401), and unrelated-origin rejection (403). Responses have `Cache-Control: no-store` and `X-Content-Type-Options: nosniff`.
-- Using only the publishable key, anonymous request reads and privileged RPC calls returned permission denied (401 / `42501`); the private schema returned not exposed (406 / `PGRST106`). No authenticated writes, user creation or provider calls were made.
+- Using only the publishable key, anonymous request reads and privileged RPC calls returned permission denied (401 / `42501`); the private schema returned not exposed (406 / `PGRST106`). These boundary checks made no authenticated writes, user creation or provider calls.
 - Auth: email confirmation on; anonymous sign-in off; eight-digit OTP retained; expiration changed to 600 seconds. Site URL set to `https://fillout.net/app/`.
 - Resend registration is complete. All three sending-domain DNS records are saved in Namecheap, `auth.fillout.net` is **Verified** in Resend, and TLS is **Enforced**. Public/authoritative DNS checks confirmed the records and the existing website and root mail settings remain unchanged. See [Resend setup](RESEND_SETUP.md).
-- Created `FILLOUT staging Supabase SMTP`, a **Sending access** key restricted to `auth.fillout.net`. Its one-time key dialog remains open. Supabase SMTP remains unsaved pending the owner's credential entry and submission, as required by browser approval review; no test OTP email has been sent.
+- Created `FILLOUT staging Supabase SMTP`, a **Sending access** key restricted to `auth.fillout.net`. The owner entered and saved it directly in Supabase SMTP. A fresh browser tab confirmed SMTP enabled, the stored password hidden, and no unsaved changes. No key value was recorded in chat or the repository; no paid plan has been selected.
+- Both **Confirm signup** and **Magic Link** email templates were saved, reloaded and previewed with the exact local `supabase/templates/email-code.html` body. Subjects are `Your FILLOUT verification code` and `Your FILLOUT sign-in code`; the body uses the eight-digit token with a ten-minute expiry and no old sign-in links.
+- Exactly one authorized OTP request to `coortgroup@gmail.com` returned **HTTP 200** at **2026-10-10T06:48:07.752Z**, with no retries. Resend confirms message **`01a12491-a6fa-794d-8d4a-457e3041fe7a`**, subject `Your FILLOUT verification code`, as **Delivered**. Owner receipt, inbox placement and verified-user sign-in remain unconfirmed.
 - Local cloud tests, TypeScript checking, complete website build and generated-site checks passed after the eight-digit OTP update.
 
 ## Remaining before connected testing
 
-1. The owner must copy the created restricted Resend key into the prepared Supabase SMTP Password field and select **Save changes**. Registration, DNS verification and key creation are complete. No paid plan has been selected.
-2. Set both signup and magic-link email templates to `supabase/templates/email-code.html`. The Free dashboard requires custom SMTP for template editing; its default email contains a link, not the code expected by the app.
-3. Verify actual email delivery, eight-digit code sign-in and invalid/expired code handling.
-4. Submit synthetic contact and attorney requests through authenticated clients; check receipts, idempotent retry, two-user isolation and simultaneous quota enforcement.
-5. Configure the OpenAI project/key/model and test answers before enabling AI. The deployed function currently fails closed without provider configuration; no live provider request has been made.
-6. Confirm the team's notification destination and implement the outbox worker. A saved request currently does not send an email.
+1. Confirm owner receipt and inbox placement of the delivered test email, then verify eight-digit code sign-in, repeat request throttling and invalid/expired code handling.
+2. Submit synthetic contact and attorney requests through authenticated clients; check receipts, idempotent retry, two-user isolation and simultaneous quota enforcement.
+3. Configure the OpenAI project/key/model and test answers before enabling AI. The deployed function currently fails closed without provider configuration; no live AI provider request has been made.
+4. Confirm the team's notification destination and implement the outbox worker. A saved request currently does not send an email.
 
 No production website or TestFlight client was switched to this backend. The existing TestFlight binary needs replacement before distributing the new native dependency. Production readiness, PDF completion and payment work remain separately documented.
