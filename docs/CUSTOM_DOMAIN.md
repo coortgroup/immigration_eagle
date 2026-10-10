@@ -6,6 +6,8 @@ Configured browser app: **https://fillout.net/app/**
 
 The custom domain **fillout.net** is saved in the repository's GitHub Pages settings, and GitHub reports **DNS check successful**. [Deployment 38020674959](https://github.com/coortgroup/immigration_eagle/actions/runs/38020674959) for commit `3edbcaa` succeeded after the domain switch. HTTPS certificate provisioning and the final live-site check are pending. The previous GitHub address, https://coortgroup.github.io/immigration_eagle/, now redirects to the custom domain.
 
+Using current public DNS (`1.1.1.1`), HTTP checks returned 200 for both `/` and `/app/`, with the FILLOUT page titles and an app bundle under `/app/_expo/static/js/web/`. This Mac's default resolver still returned the former parking IP during the last check. GitHub accepted a certificate provisioning restart and now reports **Certificate Requested: Detected a change to DNS settings. Requesting a new certificate.** Strict HTTPS checks do not yet validate a certificate for this domain; no certificate validation was bypassed. Enable **Enforce HTTPS** and verify the three HTTPS addresses below once issuance completes.
+
 ## GitHub Pages
 
 The domain setting has been completed. To review it and finish deployment:
