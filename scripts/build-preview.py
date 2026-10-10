@@ -1,8 +1,9 @@
-"""Embed the transparent eagle logo in the interactive design preview."""
+"""Build the FILLOUT interactive design preview and its standalone wrapper."""
 from pathlib import Path
 import base64
 import argparse
 import json
+import html
 
 root = Path(__file__).resolve().parents[1]
 parser = argparse.ArgumentParser()
@@ -22,4 +23,8 @@ for token, filename in [("__FORM_CATALOG__", "forms-catalog.json"), ("__FORM_FIN
 assert len(result.encode()) < 1_000_000
 args.output.parent.mkdir(parents=True, exist_ok=True)
 args.output.write_text(result)
+if args.output == root / "preview/immigration-eagle.html":
+    document = '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>FILLOUT IMMIGRATION FORMS</title></head><body style="margin:0">' + result + '</body></html>'
+    wrapper = '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>FILLOUT IMMIGRATION FORMS</title><style>html,body{margin:0;height:100%;background:#f7f8fc}iframe{display:block;width:100%;height:100%;border:0}</style></head><body><iframe title="FILLOUT IMMIGRATION FORMS preview" sandbox="allow-scripts" referrerpolicy="no-referrer" srcdoc="' + html.escape(document, quote=True) + '"></iframe></body></html>'
+    (root / "preview/index.html").write_text(wrapper)
 print(args.output)

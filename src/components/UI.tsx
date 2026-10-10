@@ -42,10 +42,12 @@ export function Field({ label, help, error, multiline, ...props }: TextInputProp
 }
 
 export function BrandMark({ compact = false }: { compact?: boolean }) {
-  return <View style={{ flexDirection: 'row', alignItems: 'center', gap: 11 }}>
-    <Image source={require('../../assets/eagle-logo.png')} style={{ width: compact ? 36 : 49, height: compact ? 40 : 54 }} resizeMode="contain" accessibilityLabel="Immigration Eagle logo" />
-    {!compact && <View><Text style={styles.brand}>IMMIGRATION</Text><Text style={[styles.brand, { letterSpacing: 4, fontSize: 21 }]}>EAGLE</Text></View>}
-  </View>;
+  return <Image
+    source={compact ? require('../../assets/eagle-logo.png') : require('../../assets/fillout-wordmark.png')}
+    style={compact ? styles.brandEmblem : styles.brandWordmark}
+    resizeMode="contain"
+    accessibilityLabel="FILLOUT IMMIGRATION FORMS logo"
+  />;
 }
 
 export function Notice({ children, tone = 'neutral', title }: { children: React.ReactNode; tone?: 'neutral' | 'success' | 'warning'; title?: string }) {
@@ -77,7 +79,8 @@ const styles = StyleSheet.create({
   help: { color: colors.muted, fontSize: 13, lineHeight: 20 },
   input: { minHeight: 52, borderRadius: radius.sm, borderWidth: 1, borderColor: colors.border, padding: 14, backgroundColor: colors.paper, color: colors.text, fontSize: 16 },
   error: { color: colors.error, fontSize: 13, lineHeight: 19 },
-  brand: { color: colors.navy, fontSize: 10, fontWeight: '800', letterSpacing: 1.7 },
+  brandEmblem: { width: 36, height: 40, flexShrink: 0 },
+  brandWordmark: { width: 238, aspectRatio: 1264 / 485, flexShrink: 1 },
   notice: { borderRadius: radius.sm, padding: 15, gap: 6 },
   row: { paddingVertical: 16, paddingHorizontal: 2, flexDirection: 'row', alignItems: 'center', gap: 16 },
 });

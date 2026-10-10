@@ -1,0 +1,12 @@
+{
+  "tool": "Built-in image_gen.imagegen",
+  "mode": "background-extraction",
+  "source": "assets/fillout-logo-source.jpg",
+  "wordmark": "assets/fillout-wordmark.png",
+  "emblem": "assets/fillout-emblem.png",
+  "uiEmblem": "assets/eagle-logo.png",
+  "transparentBackground": true,
+  "wordmarkPrompt": "Use case: background-extraction. Edit target: the attached FILLOUT IMMIGRATION FORMS eagle-and-wordmark logo. Create a faithful transparent-background cutout for the app and website header/footer. Change ONLY the blank white background to true alpha transparency. Preserve the exact eagle, shield, gold, navy, red and white interior artwork. Keep ALL lettering intact and exactly spelled: FILLOUT (F I L L O U T), with IMMIGRATION FORMS below the gold horizontal rule. Keep the original horizontal layout, relative proportions, typography, and navy/gold gradients unchanged. Do not reinterpret, redesign, recolor, add or delete any foreground elements. No shadow outside the artwork, no white rectangle, no checkerboard painted into pixels, no mockup. Output one wide transparent PNG, logo centered with a small clear margin, aspect ratio approximately 2.6:1.",
+  "emblemPrompt": "Use case: background-extraction. Edit target: the attached FILLOUT IMMIGRATION FORMS logo. Extract ONLY its existing eagle and American flag shield emblem, with true transparent alpha background. Remove the blank white background, every word and the horizontal gold rule on the right. Keep the eagle and shield exactly faithful to the original reference: the same shape, pose, proportions, internal white feathers, navy outlines, yellow/gold gradients, American flag stars and red-white stripes. Do not redesign the bird. Center the complete intact eagle/shield in a square transparent PNG with modest clear margins suitable for resizing into an app icon. No lettering, no rectangular plate, no added shadow, no visible checkerboard. This is an extraction of the provided eagle, not a new logo design.",
+  "deploymentExports": "256px UI emblem; app/adaptive/splash/favicon from scripts/generate-icons.mjs; full wordmark used in native and web headers."
+}

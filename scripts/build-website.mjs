@@ -77,7 +77,9 @@ await writeFile(path.join(output, 'index.html'), html);
 for (const file of files) {
   await copyFile(path.join(root, 'web', file), path.join(output, file));
 }
-await copyFile(path.join(root, 'assets', 'eagle-logo.png'), path.join(output, 'assets', 'eagle-logo.png'));
+for (const name of ['eagle-logo.png', 'fillout-wordmark.png']) {
+  await copyFile(path.join(root, 'assets', name), path.join(output, 'assets', name));
+}
 
 // Use the small browser icon instead of loading the full-size native app tile.
 let favicon = path.join(root, 'assets', 'eagle-logo.png');

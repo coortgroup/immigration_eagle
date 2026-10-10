@@ -188,7 +188,7 @@ export function AssistantScreen({ contactRequest = 0, isActive = true }: Assista
           <>
             <Pressable accessibilityRole="button" onPress={preview ? backToForm : closeContact} style={({ pressed }) => [styles.backButton, pressed && styles.pressed]}>
               <Ionicons name="chevron-back" size={20} color="#092653" />
-              <Text style={styles.textButton}>{preview ? 'Back to form' : 'Eagle AI'}</Text>
+              <Text style={styles.textButton}>{preview ? 'Back to form' : 'FILLOUT AI'}</Text>
             </Pressable>
             <Text style={styles.eyebrow}>WE’RE HERE TO HELP</Text>
             <Text accessibilityRole="header" style={styles.title}>{receipt ? 'Request received locally' : preview ? 'Review your request' : 'Contact us'}</Text>
@@ -212,7 +212,7 @@ export function AssistantScreen({ contactRequest = 0, isActive = true }: Assista
                   <Text style={styles.primaryButtonText}>Edit request</Text>
                   <Ionicons name="create-outline" size={20} color="#092653" />
                 </Pressable>}
-                {!!receipt && <Pressable accessibilityRole="button" onPress={closeContact} style={styles.primaryButton}><Text style={styles.primaryButtonText}>Back to Eagle AI</Text></Pressable>}
+                {!!receipt && <Pressable accessibilityRole="button" onPress={closeContact} style={styles.primaryButton}><Text style={styles.primaryButtonText}>Back to FILLOUT AI</Text></Pressable>}
                 <Text style={styles.footnote}>{receipt ? 'This local receipt does not book an appointment or establish an attorney-client relationship.' : delivery.available ? 'Review your contact details before sending. Your question and contact details will be visible in the local team inbox.' : 'This is a request preview. Nothing has been submitted.'}</Text>
               </>
             ) : (
@@ -244,7 +244,7 @@ export function AssistantScreen({ contactRequest = 0, isActive = true }: Assista
           <>
             <View style={styles.header}>
               <View style={styles.brand}>
-                <Text accessibilityRole="header" style={styles.aiTitle}>Eagle AI</Text>
+                <Text accessibilityRole="header" style={styles.aiTitle}>FILLOUT AI</Text>
               </View>
               <Pressable accessibilityRole="button" onPress={openContact} style={({ pressed }) => [styles.contactButton, pressed && styles.pressed]}>
                 <Text style={styles.contactButtonText}>Contact us</Text>
@@ -266,7 +266,7 @@ export function AssistantScreen({ contactRequest = 0, isActive = true }: Assista
                   <View key={turn.id} style={styles.turn}>
                     <View style={styles.userBubble}><Text style={styles.userText}>{turn.question}</Text></View>
                     <View style={styles.assistantBubble}>
-                      <Text style={styles.author}>EAGLE AI · DEMO</Text>
+                      <Text style={styles.author}>FILLOUT AI · DEMO</Text>
                       <Text style={styles.answer}>{turn.answer}</Text>
                     </View>
                   </View>
@@ -289,7 +289,7 @@ export function AssistantScreen({ contactRequest = 0, isActive = true }: Assista
               ))}
             </View>
             <View style={styles.composer}>
-              <TextInput accessibilityLabel="Message Eagle AI demo" accessibilityHint="Messages receive a scripted response and are not sent to an AI service." style={styles.composerInput} value={message} onChangeText={setMessage} multiline textAlignVertical="top" maxLength={2000} placeholder="Message Eagle AI…" placeholderTextColor="#738094" autoComplete="off" textContentType="none" />
+              <TextInput accessibilityLabel="Message FILLOUT AI demo" accessibilityHint="Messages receive a scripted response and are not sent to an AI service." style={styles.composerInput} value={message} onChangeText={setMessage} multiline textAlignVertical="top" maxLength={2000} placeholder="Message FILLOUT AI…" placeholderTextColor="#738094" autoComplete="off" textContentType="none" />
               <Pressable accessibilityRole="button" accessibilityLabel="Show demo response" accessibilityState={{ disabled: !message.trim() }} disabled={!message.trim()} onPress={() => addTurn(message)} style={({ pressed }) => [styles.sendButton, !message.trim() && styles.disabled, pressed && styles.pressed]}>
                 <Ionicons name="arrow-up" size={23} color="#092653" />
               </Pressable>

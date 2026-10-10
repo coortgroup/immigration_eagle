@@ -1,4 +1,4 @@
-# Immigration Eagle
+# FILLOUT IMMIGRATION FORMS
 
 An Expo / React Native app for exploring immigration forms, with a small GitHub Pages website. The native app and browser preview share the same React Native screens and reviewed form data.
 
@@ -65,7 +65,7 @@ Open **http://127.0.0.1:4176/immigration_eagle/**. This preview uses the same su
 - Form-specific preliminary yes/no checks, stop/review/pass outcomes, and correction of previous answers.
 - Direct links to official fillable USCIS PDFs for self-preparation.
 - Introductory guided interviews, editable answer review, explicit device saves and resumable drafts in My Application.
-- Attorney/contact intake with validation, review, local inbox delivery and visible receipts; minimal Eagle AI chat with clearly labeled example responses.
+- Attorney/contact intake with validation, review, local inbox delivery and visible receipts; minimal FILLOUT AI chat with clearly labeled example responses.
 - Responsive static website with the shared 21-form finder and prices, direct form links, and an automatic GitHub Pages deployment workflow.
 
 ## Preview limits
@@ -83,7 +83,7 @@ The project uses SDK 57, with unresolved audit findings in its dependency tree. 
 After authenticating with `gh auth login`, an administrator can configure Pages and the About link:
 
 ```sh
-gh repo edit coortgroup/immigration_eagle --homepage https://coortgroup.github.io/immigration_eagle/ --description "Immigration Eagle — Expo app and immigration form preparation preview"
+gh repo edit coortgroup/immigration_eagle --homepage https://coortgroup.github.io/immigration_eagle/ --description "FILLOUT IMMIGRATION FORMS — Expo app and immigration form preparation preview"
 gh api --method POST repos/coortgroup/immigration_eagle/pages -f build_type=workflow
 gh workflow run pages.yml --repo coortgroup/immigration_eagle
 ```

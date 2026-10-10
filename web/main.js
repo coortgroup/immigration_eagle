@@ -55,7 +55,7 @@ async function updateLocalServiceStatus() {
 
     const copy = {
       '[data-status-label]': 'Local testing',
-      '[data-status-copy]': 'Contact and attorney requests can be saved to the local team inbox for testing. Eagle AI responses are scripted. Live AI, full PDF generation, payments, and government filing are not connected. A preliminary form check does not confirm every filing requirement.',
+      '[data-status-copy]': 'Contact and attorney requests can be saved to the local team inbox for testing. FILLOUT AI responses are scripted. Live AI, full PDF generation, payments, and government filing are not connected. A preliminary form check does not confirm every filing requirement.',
       '[data-privacy-delivery]': 'Submitted contact and attorney requests are stored in the local team inbox on this computer for testing. They are not sent to an outside legal team, AI service, or government agency.',
       '[data-support-label]': 'Local team inbox',
       '[data-support-copy]': 'Use the app’s contact or attorney request form to send a test request to the local team inbox. You can open that inbox below to review it. This local test does not book an attorney or promise a reply.',

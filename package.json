@@ -1,9 +1,9 @@
 {
-  "name": "immigration-eagle",
+  "name": "fillout-immigration-forms",
   "version": "0.1.0",
   "private": true,
   "main": "index.ts",
-  "description": "Immigration Eagle — Expo app and GitHub Pages website",
+  "description": "FILLOUT IMMIGRATION FORMS — Expo app and GitHub Pages website",
   "repository": "https://github.com/coortgroup/immigration_eagle.git",
   "homepage": "https://coortgroup.github.io/immigration_eagle/",
   "scripts": {

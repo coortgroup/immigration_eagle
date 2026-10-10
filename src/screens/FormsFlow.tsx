@@ -409,7 +409,7 @@ export function FormsFlow({ onContact, onDraftSaved, isActive = true, initialFor
 
   function aiIntro() {
     return <><Badge gold>{form.id} · GUIDED PREPARATION</Badge><SectionTitle title="One question at a time" subtitle="Build a clear draft of your information before completing your application." />
-      <Card><View style={styles.sectionHeading}><BrandMark compact /><View style={{ flex: 1 }}><Text style={styles.cardTitle}>Eagle preparation</Text><Text style={styles.small}>{interview?.subject}</Text></View></View>
+      <Card><View style={styles.sectionHeading}><BrandMark compact /><View style={{ flex: 1 }}><Text style={styles.cardTitle}>FILLOUT preparation</Text><Text style={styles.small}>{interview?.subject}</Text></View></View>
         <View style={styles.metaRow}><Text style={styles.body}>{fields.length} starting questions</Text><Text style={styles.label}>{offer.price}</Text></View>
         <Text style={styles.small}>{progress.answered ? `${progress.answered} of ${fields.length} answers completed.` : 'You can review and edit every answer.'}</Text>
         <Button title={Object.keys(draft).length ? 'Continue my draft' : 'Start the questions'} variant="gold" icon="arrow-forward" onPress={() => {
@@ -514,8 +514,8 @@ const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: colors.background },
   scrollContent: { flexGrow: 1, padding: 20, paddingBottom: 36, alignItems: 'center' },
   content: { width: '100%', maxWidth: 680, gap: 22 },
-  topLine: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 16 },
-  contactIcon: { width: 44, height: 44, borderRadius: 22, borderWidth: 1, borderColor: colors.border, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.paper },
+  topLine: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 12 },
+  contactIcon: { width: 44, height: 44, flexShrink: 0, borderRadius: 22, borderWidth: 1, borderColor: colors.border, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.paper },
   hero: { backgroundColor: colors.navy, borderRadius: radius.lg, padding: 25, gap: 20 },
   heroEyebrow: { color: colors.gold, fontSize: 10, lineHeight: 17, fontWeight: '800', letterSpacing: 1.5 },
   heroTitle: { color: colors.paper, fontWeight: '800', fontSize: 33, lineHeight: 41, letterSpacing: -0.8 },

@@ -17,13 +17,13 @@ The original design prototype on port 4175 and static preview on port 4176 are o
 3. Open I-129F and choose any preparation option. Answer **No** to “Is the petitioner a U.S. citizen?” to see the stopped path. **I’m not sure** leads to individual review. No preparation action opens until the preliminary check passes.
 4. For a sample K-1 path, answer **Yes, Yes, No, Yes, Yes, Yes**. The congratulations screen leads to the official fillable PDF, the guided interview, or attorney intake depending on your chosen option. These are test answers, not advice about a real case.
 5. In guided preparation enter sample details and choose **Save for later**. Open **My Application**, reload the browser, and continue the saved form. Multiple different forms can be saved on the device. Removing a saved draft asks for confirmation.
-6. Open **Eagle AI → Contact us**, enter a sample name, an email address or phone number, and a question. Review it, then choose **Send request to local team**. Its receipt ID should appear in the local inbox. The attorney path follows the same local delivery pattern.
+6. Open **FILLOUT AI → Contact us**, enter a sample name, an email address or phone number, and a question. Review it, then choose **Send request to local team**. Its receipt ID should appear in the local inbox. The attorney path follows the same local delivery pattern.
 
 ## Data and service boundaries
 
 - Saved drafts use browser/device storage. They are not backed up to a cloud account. Use sample details on shared computers.
 - Requests are stored in `.local/requests.json`, which is excluded from Git and the website build. The inbox shows their local receipt IDs and makes no claim that an email or call occurred.
-- Eagle AI chat uses clearly labeled example responses. Guided interviews collect introductory answers; they do not yet create a complete USCIS filing PDF. Self-preparation opens the official USCIS PDF or service.
+- FILLOUT AI chat uses clearly labeled example responses. Guided interviews collect introductory answers; they do not yet create a complete USCIS filing PDF. Self-preparation opens the official USCIS PDF or service.
 - Qualification checks are preliminary. Complicated or uncertain cases require review; the app does not issue legal eligibility decisions.
 - No payments, government submission, shipping, live AI provider, production contact delivery, or cloud accounts are connected.
 - GitHub Pages can serve the website and browser app. It cannot run the local inbox API. Deployment can be completed after normal GitHub sign-in.
