@@ -27,10 +27,11 @@ Requires Node.js 22.14+ and npm.
 
 ```sh
 npm ci
+npx expo login
 npm start -- --go
 ```
 
-Scan the QR code with Expo Go. This project deliberately uses **Expo SDK 54** for compatibility with the current Apple App Store version of Expo Go. See [Expo's current compatibility instructions](https://docs.expo.dev/troubleshooting/expo-go-version-mismatch/). Depending on your installed version, Expo Go may require signing in to the same Expo account as the development server.
+Scan the QR code with **Expo Go for SDK 57**. On a physical iPhone, Expo Go and the Mac's Expo CLI must be signed in to the **same Expo account**. For a phone on another network, use `npm run start:remote`. For remote Mac authentication, use `npx eas-cli login --device` and complete Expo's sign-in in your phone's browser. See [Expo's compatibility instructions](https://docs.expo.dev/troubleshooting/expo-go-version-mismatch/) and [iPhone sign-in requirement](https://docs.expo.dev/troubleshooting/expo-go-sign-in-required/).
 
 ```sh
 npm run web                 # React Native web development
@@ -71,7 +72,7 @@ This is an initial implementation, not a production immigration service. Live AI
 
 The form check is preliminary and does not determine legal eligibility or guarantee USCIS approval. Exceptions and uncertain cases go to review. TPS/DACA paths require individual review. Form rules, service scopes and displayed business claims need legal/product validation before a public service launch. Pricing is the approved design data, not an active checkout.
 
-SDK 54 keeps the easy Expo Go path, but its build-tool dependency tree has unresolved audit findings. The static exported website has no server-side document/CSS upload processor; do not use this starter as a production upload/processing backend. The icon tool was updated to the patched sharp release. Reassess dependencies and move to a supported development-build SDK before a production release.
+The project uses SDK 57, with unresolved audit findings in its dependency tree. The static exported website has no server-side document/CSS upload processor; do not use this starter as a production upload/processing backend. The icon tool uses the patched sharp release. Reassess dependencies and use a signed development build before a production release.
 
 ## GitHub Pages
 

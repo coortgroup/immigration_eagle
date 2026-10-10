@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "main": "index.ts",
-  "description": "Immigration Eagle \u2014 Expo app and GitHub Pages website",
+  "description": "Immigration Eagle — Expo app and GitHub Pages website",
   "repository": "https://github.com/coortgroup/immigration_eagle.git",
   "homepage": "https://coortgroup.github.io/immigration_eagle/",
   "scripts": {
@@ -32,22 +32,22 @@
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",
     "@react-native-async-storage/async-storage": "^2.2.0",
-    "expo": "~54.0.37",
-    "expo-dev-client": "~6.0.21",
-    "expo-font": "~14.0.12",
-    "expo-splash-screen": "~31.0.13",
-    "expo-status-bar": "~3.0.9",
-    "react": "19.1.0",
-    "react-dom": "19.1.0",
-    "react-native": "0.81.5",
-    "react-native-safe-area-context": "~5.6.0",
+    "expo": "~57.0.27",
+    "expo-dev-client": "~57.0.19",
+    "expo-font": "~57.0.4",
+    "expo-splash-screen": "~57.0.9",
+    "expo-status-bar": "~57.0.1",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "react-native": "0.86.3",
+    "react-native-safe-area-context": "~5.7.0",
     "react-native-web": "^0.21.0"
   },
   "devDependencies": {
     "@expo/ngrok": "^4.1.3",
-    "@types/react": "~19.1.0",
+    "@types/react": "~19.2.4",
     "sharp": "^0.35.5",
-    "typescript": "~5.9.2"
+    "typescript": "~6.0.3"
   },
   "engines": {
     "node": ">=22.14.0"
