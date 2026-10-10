@@ -94,9 +94,11 @@ gh workflow run pages.yml --repo coortgroup/immigration_eagle
 
 If Pages already exists, use `PUT` instead of `POST` to update its build type. Confirm the workflow's successful deployment before sharing the URL as live.
 
-## TestFlight later
+## TestFlight
 
-See [release instructions](docs/RELEASE.md). `eas.json` includes development, simulator, preview and production profiles. No Expo project ID or Apple credentials are invented or committed. TestFlight requires your Expo project, Apple Developer membership, App Store Connect record, signing credentials and an actual successful iOS build.
+Version **0.1.0 (2)** is available for internal testing in [TestFlight / App Store Connect](https://appstoreconnect.apple.com/apps/6821241435/testflight). On October 10, 2026, the signed [EAS iOS build](https://expo.dev/accounts/coortgroup/projects/immigration-eagle/builds/8b476f1d-652c-4d2a-a850-3ed4f3da0a6d) and [Apple submission](https://expo.dev/accounts/coortgroup/projects/immigration-eagle/submissions/61bd8a68-15db-41a0-9108-9eb7b8e3b370) finished successfully; Apple reports `VALID` and `IN_BETA_TESTING`. Internal access is configured through **Team (Expo)**. External testing still requires Apple's beta review; this is not a public App Store release.
+
+See [release instructions](docs/RELEASE.md) for the configured app, future builds and what to test. `eas.json` includes development, simulator, preview and production profiles. EAS manages the real signing credentials; private keys are not committed. The TestFlight version has the preview limits described above, and installation on a physical iPhone still needs tester confirmation.
 
 ## Source map
 

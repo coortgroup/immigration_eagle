@@ -67,8 +67,12 @@ After installing the development build, use `npm start -- --dev-client`.
 
 ## TestFlight
 
-1. Verify ownership/availability of the bundle ID `com.coortgroup.immigrationeagle` in your Apple account, and change it in `app.config.ts` if necessary before the first release.
-2. Create the corresponding App Store Connect app and configure your Apple team/signing through EAS's secure prompts.
+The bundle ID `com.coortgroup.immigrationeagle` is registered, its distribution certificate and provisioning profile are active, and the app record is [FILLOUT IMMIGRATION FORMS in App Store Connect](https://appstoreconnect.apple.com/apps/6821241435/testflight). The verified app ID is saved in `submit.production.ios.ascAppId`. EAS manages the signing credentials and an App Store Connect API key with the App Manager role; no private signing files or key material belong in this repository. Internal testing uses the **Team (Expo)** group.
+
+The first signed release, **0.1.0 (2)**, was verified on October 10, 2026 (America/New_York): [EAS build](https://expo.dev/accounts/coortgroup/projects/immigration-eagle/builds/8b476f1d-652c-4d2a-a850-3ed4f3da0a6d) and [submission](https://expo.dev/accounts/coortgroup/projects/immigration-eagle/submissions/61bd8a68-15db-41a0-9108-9eb7b8e3b370) are both `FINISHED`; Apple reports processing state `VALID`, internal state `IN_BETA_TESTING`, and `expired: false`. External state is `READY_FOR_BETA_SUBMISSION`: external beta review and a public App Store release have not been requested. A tester must still confirm installation and behavior on a physical device.
+
+1. Preserve the registered bundle ID and App Store Connect app ID for subsequent releases.
+2. Use the existing EAS-managed credentials. Run `npx eas-cli credentials --platform ios` only if credentials need renewal or repair.
 3. Review current SDK and dependency support, privacy disclosures, legal claims, accessibility, data handling and feature limitations before inviting testers. This initial build sends no form data or payments.
 4. Build and then submit:
 
@@ -77,7 +81,17 @@ npm run eas:testflight
 npm run eas:submit
 ```
 
-EAS asks for the App Store Connect app identifier when it is not configured. Production uses EAS-managed remote build numbers and auto-increments them for subsequent builds. Remote versioning avoids trying to rewrite the dynamic `app.config.ts` configuration, which the CLI cannot auto-increment locally. A successful upload still requires Apple's processing and, for external testers, applicable beta review.
+To build and schedule submission together, use `npm run eas:testflight -- --auto-submit` instead of the two separate commands above. Do not submit the same build again while its automatic submission is pending.
+
+Production uses EAS-managed remote build numbers and auto-increments them for subsequent builds. Remote versioning avoids trying to rewrite the dynamic `app.config.ts` configuration, which the CLI cannot auto-increment locally. A successful upload still requires Apple's processing and, for external testers, applicable beta review.
+
+Check a submission with `npx eas-cli submit:list --platform ios` and read Apple's processing/TestFlight state with `npx eas-cli submit:status --platform ios --profile production`. The latter uses the configured EAS-managed API key.
+
+### What to test
+
+Use sample information only. Test the 21-form catalog and status/goal finder; compare free, AI and attorney choices; try pass, stop and review outcomes in the preliminary form check; open an official USCIS PDF; complete a guided interview, edit answers, save a draft and resume it from My Application. Try the contact/attorney intake previews and example AI chat. Report crashes, broken links, clipped content and keyboard problems with the device model and iOS version.
+
+Live AI, payments, full PDF generation, external attorney delivery and government filing are not connected in this preview. Preliminary checks do not determine legal eligibility.
 
 No TestFlight upload is performed by simply exporting the JavaScript bundle or committing this configuration.
 
