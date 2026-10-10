@@ -43,7 +43,7 @@ export function Field({ label, help, error, multiline, ...props }: TextInputProp
 
 export function BrandMark({ compact = false, width = 280 }: { compact?: boolean; width?: number }) {
   return <Image
-    source={compact ? require('../../assets/eagle-logo.png') : require('../../assets/fillout-logo-v2.png')}
+    source={compact ? require('../../assets/eagle-logo.png') : require('../../assets/fillout-logo-v3.png')}
     style={compact ? styles.brandEmblem : [styles.brandWordmark, { width, height: width * 494 / 1200 }]}
     resizeMode="contain"
     accessibilityLabel="FILLOUT IMMIGRATION FORMS logo"
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
   primary: { backgroundColor: colors.navy }, gold: { backgroundColor: colors.gold },
   secondary: { backgroundColor: colors.paper, borderWidth: 1, borderColor: colors.border }, quiet: { backgroundColor: 'transparent' },
   buttonText: { fontSize: 15, fontWeight: '700', textAlign: 'center', flexShrink: 1 },
-  card: { backgroundColor: colors.paper, borderWidth: 1, borderColor: colors.border, borderRadius: radius.md, padding: 20, gap: 16 },
+  card: { backgroundColor: colors.paper, borderWidth: 1, borderColor: colors.border, borderRadius: radius.md, padding: 16, gap: 12 },
   badge: { backgroundColor: '#EDF1F7', borderRadius: 8, paddingVertical: 6, paddingHorizontal: 9, alignSelf: 'flex-start' },
   badgeText: { color: colors.navy, fontSize: 12, fontWeight: '800', letterSpacing: 0.3 },
   eyebrow: { color: '#8E6E2B', fontWeight: '800', fontSize: 11, letterSpacing: 1.4 },

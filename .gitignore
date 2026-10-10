@@ -24,3 +24,5 @@ android/
 supabase/.temp/
 supabase/.branches/
 dist/
+tmp/
+output/pdf/

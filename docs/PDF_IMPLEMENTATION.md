@@ -1,6 +1,32 @@
 # USCIS PDF implementation readiness
 
-Read-only audit: October 10, 2026. No USCIS PDF was modified or generated in this audit.
+## Free manual PDF editor — October 10, 2026
+
+A passed free/self form check now opens a full-screen PDF workspace immediately. A result-screen action reopens it. Existing stopped/uncertain checks and AI/attorney routes remain unchanged. The workspace offers page navigation, zoom, manual entry directly over the PDF, an editable PDF download, and printing of the current filled PDF. Native save/share and printing use the device system dialogs.
+
+The editor is a bundled, offline HTML runtime using PDF.js for rendering and a separate `freePdfEngine.ts` AcroForm path for manual edits. `build:pdf-editor` regenerates the HTML asset; web/native export and development commands run it before bundling. All 21 existing blank templates are bundled and hash checked; they retain their original page content, and the original USCIS files are not modified. The derived sources already exclude XFA and its scripts. The manual editor makes ordinary conditional fields editable without emulating those scripts or inferring answers. Signature, signing-date, barcode and identified government-use fields stay protected. Users follow the official instructions and complete the applicable items themselves; this is not a new guided interview or eligibility determination.
+
+Saving preserves the AcroForm and widget values/appearances so the downloaded copy can be edited in a compatible PDF reader. Export rejects unsupported characters and text that cannot fit legibly rather than silently truncating it. Save and print always generate from the latest values. Answers remain in the open session, with exit/reload protection; closing clears the session, while user-saved files remain. Printing opens the filled PDF in a browser tab on web, or the system print sheet on native. No form answers are sent to a server or AI service.
+
+The free editor adds `pdfjs-dist`, `react-native-webview`, and build-time `esbuild`. An existing native binary needs a new build to include WebView. Physical-device printing still needs device verification. Automated route/engine regressions are included in `npm run test:pdf`.
+
+## Implementation update — October 10, 2026
+
+The current source adds an I-90 questionnaire and deterministic static PDF print flow. `data/uscis-i90-questionnaire.json` maps all 195 official widgets to confirmed answers, derived repeated identifiers, blank signature/date areas, or preserved barcodes. Its conditional questions cover Parts 1–8, including interpreter/preparer sections and the five official additional-information areas. This is engineering coverage, not legal approval of a filing packet.
+
+The I-90 AI preparation choice now opens this full questionnaire after the existing preliminary check. Explanations appear below the inputs. Review precedes PDF generation, and long/invalid answers block export instead of being truncated. The exact official vector pages, footer, and barcode appearances are retained. The output is a static copy for printing and handwritten signing, as requested; the official source remains separate.
+
+`src/pdfEngine.ts` verifies the template hash and approved field mapping before filling. `src/officialPdfDocument.ts` provides download/print on web and temporary cache + native save/share/print. Full questionnaire answers are session-only and are not sent to the AI provider or stored in the older device draft store. Native temporary files are deleted when the screen closes, subject to any active system share/print operation; user-saved copies remain. OS cache cleanup also applies after an abrupt process termination.
+
+All 21 blank templates have a source/hash inventory and derived print template. Only I-90 has a full guided questionnaire connected to the app. Other AI forms remain introductory intake or official resources; the separate free workspace supports manual editing. This distinction must remain visible until each form has complete mapping, conditional validation, and output checks.
+
+The final document screen offers self-mailing and a separate FILLOUT mailing service preview. No mailing price or destination was supplied, so no mailing request, charge, fulfillment, or USCIS submission is enabled. Payment integration, physical-device print testing, production storage, filing-support checklists and legal/content review remain separate work.
+
+Validation: `npm run test:pdf` covers the mapping, conditional answers, static PDF structure, invalid input/hash/overflow failures, local document handling and mailing gates. Blank engine output for I-90 (7 pages), G-1145 (1 page), and I-485 (24 pages) matches the official originals pixel-for-pixel at the rendered test resolution. Synthetic completed examples are kept under ignored `tmp/pdfs/`; they must never be used for filing.
+
+## Earlier read-only audit
+
+The following audit describes the introductory implementation before the full I-90 work above. No PDFs were generated during that earlier audit.
 
 ## Current behavior and coverage
 

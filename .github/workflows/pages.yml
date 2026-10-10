@@ -25,6 +25,7 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm test
+      - run: npm run test:pdf
       - name: Read GitHub Pages URL
         id: pages
         uses: actions/configure-pages@v5

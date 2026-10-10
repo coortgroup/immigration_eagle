@@ -1,0 +1,5758 @@
+{
+  "schemaVersion": 1,
+  "id": "I-90",
+  "formId": "I-90",
+  "title": "Application to Replace Permanent Resident Card",
+  "edition": "01/20/25",
+  "originalSha256": "fd436062284fd572224509e0e17a795f915734f7e7c0fca8a161d0a9976f83a0",
+  "sourceUrl": "https://www.uscis.gov/i-90",
+  "pdfUrl": "https://www.uscis.gov/sites/default/files/document/forms/i-90.pdf",
+  "instructionsUrl": "https://www.uscis.gov/sites/default/files/document/forms/i-90instr.pdf",
+  "instructionsSha256": "86904a56f7c971d736d9298b98fa42b2a4ae752725b19cb5973796bea1f5669c",
+  "sourceVerifiedAt": "2026-10-10T16:50:11.873997+00:00",
+  "coverageStatus": "mapped-input-locations",
+  "coverageDescription": "Every widget in the verified seven-page blank I-90 has an explicit input mapping, derived-copy mapping, signing disposition or barcode exclusion. This establishes input-location coverage, not legal eligibility, evidence sufficiency or filing acceptance.",
+  "generalHelp": "Answer fully and accurately. Follow the official directions for items that do not apply: generally N/A for a text response and None for a numeric zero/none, unless the item directs otherwise. Use Part 8 or a signed additional sheet if an answer does not fit. Review every page of the generated form, all instructions and supporting evidence before signing.",
+  "questions": [
+    {
+      "id": "alien-number",
+      "part": 1,
+      "item": "1",
+      "title": "What is your Alien Registration Number (A-Number)?",
+      "help": "Your A-Number identifies your immigration record and appears on USCIS or DHS documents. Enter the digits after A. If you do not have one, the instructions say to enter N/A.",
+      "fields": [
+        {
+          "id": "alien_number",
+          "label": "A-Number",
+          "type": "text",
+          "required": true,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[0].#area[1].P1_Line1_AlienNumber[0]"
+            }
+          ],
+          "maxLength": 9,
+          "validation": "a-number"
+        }
+      ],
+      "source": {
+        "formPages": [
+          1
+        ],
+        "instructionPages": [
+          3
+        ]
+      }
+    },
+    {
+      "id": "account-number",
+      "part": 1,
+      "item": "2",
+      "title": "What is your USCIS Online Account Number, if any?",
+      "help": "This is different from your A-Number. Find it in your USCIS account profile or Account Access Notice; do not enter a receipt number.",
+      "fields": [
+        {
+          "id": "online_account",
+          "label": "USCIS Online Account Number",
+          "type": "text",
+          "required": false,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[0].P1_Line2_AcctIdentifier[0]"
+            }
+          ],
+          "maxLength": 12,
+          "validation": "online-account"
+        }
+      ],
+      "source": {
+        "formPages": [
+          1
+        ],
+        "instructionPages": [
+          3
+        ]
+      }
+    },
+    {
+      "id": "legal-name",
+      "part": 1,
+      "item": "3.a–3.c",
+      "title": "What is your full legal name?",
+      "help": "Use your current full legal name. USCIS states that your card will be issued in this name. Enter N/A for a name component that does not apply.",
+      "fields": [
+        {
+          "id": "family_name",
+          "label": "Family name (last name)",
+          "type": "text",
+          "required": true,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[0].P1_Line3a_FamilyName[0]"
+            }
+          ]
+        },
+        {
+          "id": "given_name",
+          "label": "Given name (first name)",
+          "type": "text",
+          "required": true,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[0].P1_Line3b_GivenName[0]"
+            }
+          ]
+        },
+        {
+          "id": "middle_name",
+          "label": "Middle name",
+          "type": "text",
+          "required": true,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[0].P1_Line3c_MiddleName[0]"
+            }
+          ]
+        }
+      ],
+      "source": {
+        "formPages": [
+          1
+        ],
+        "instructionPages": [
+          3
+        ]
+      }
+    },
+    {
+      "id": "name-changed",
+      "part": 1,
+      "item": "4",
+      "title": "Has your name legally changed since your Permanent Resident Card was issued?",
+      "help": "Choose the statement that matches your situation. A legal name change requires the supporting legal documents described in the instructions.",
+      "fields": [
+        {
+          "id": "name_changed",
+          "label": "Legal name change",
+          "type": "radio",
+          "required": true,
+          "options": [
+            {
+              "value": "yes",
+              "label": "Yes"
+            },
+            {
+              "value": "no",
+              "label": "No"
+            },
+            {
+              "value": "never-received",
+              "label": "N/A — I never received my previous card"
+            }
+          ],
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[0].P1_checkbox4[0]",
+              "option": "yes",
+              "exportValue": "Y"
+            },
+            {
+              "name": "form1[0].#subform[0].P1_checkbox4[1]",
+              "option": "no",
+              "exportValue": "N"
+            },
+            {
+              "name": "form1[0].#subform[0].P1_checkbox4[2]",
+              "option": "never-received",
+              "exportValue": "NA"
+            }
+          ]
+        }
+      ],
+      "source": {
+        "formPages": [
+          1
+        ],
+        "instructionPages": [
+          3
+        ]
+      }
+    },
+    {
+      "id": "previous-card-name",
+      "part": 1,
+      "item": "5.a–5.c",
+      "title": "What name is printed on your current Permanent Resident Card?",
+      "help": "Copy the name exactly as it appears on your existing card, even though your legal name has changed. Include evidence of the legal name change with your application.",
+      "fields": [
+        {
+          "id": "card_family_name",
+          "label": "Family name (last name)",
+          "type": "text",
+          "required": true,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[0].P1_Line5a_FamilyName[0]"
+            }
+          ]
+        },
+        {
+          "id": "card_given_name",
+          "label": "Given name (first name)",
+          "type": "text",
+          "required": true,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[0].P1_Line5b_GivenName[0]"
+            }
+          ]
+        },
+        {
+          "id": "card_middle_name",
+          "label": "Middle name",
+          "type": "text",
+          "required": true,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[0].P1_Line5c_MiddleName[0]"
+            }
+          ]
+        }
+      ],
+      "source": {
+        "formPages": [
+          1
+        ],
+        "instructionPages": [
+          3
+        ]
+      },
+      "when": {
+        "field": "name_changed",
+        "equals": "yes"
+      }
+    },
+    {
+      "id": "mail-address",
+      "part": 1,
+      "item": "6.a–6.i",
+      "title": "Where should USCIS mail correspondence?",
+      "help": "Provide your mailing address. USCIS generally sends cards only to a valid U.S. mailing address; the instructions give special directions for commuters. Complete the state and ZIP for a U.S. address, or province and postal code for a foreign address. Do not shorten an answer to fit; use Part 8 if needed.",
+      "fields": [
+        {
+          "id": "mail_care_of",
+          "label": "In care of name, if applicable",
+          "type": "text",
+          "required": false,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[0].P1_Line6a_InCareofName[0]"
+            }
+          ],
+          "maxLength": 34
+        },
+        {
+          "id": "mail_street",
+          "label": "Street number and name",
+          "type": "text",
+          "required": true,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[0].P1_Line6b_StreetNumberName[0]"
+            }
+          ],
+          "maxLength": 25
+        },
+        {
+          "id": "mail_unit_type",
+          "label": "Apartment, suite or floor",
+          "type": "radio",
+          "required": true,
+          "options": [
+            {
+              "value": "none",
+              "label": "No apartment, suite or floor"
+            },
+            {
+              "value": "apt",
+              "label": "Apartment"
+            },
+            {
+              "value": "ste",
+              "label": "Suite"
+            },
+            {
+              "value": "flr",
+              "label": "Floor"
+            }
+          ],
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[0].P1_checkbox6c_Unit[0]",
+              "option": "apt",
+              "exportValue": " APT "
+            },
+            {
+              "name": "form1[0].#subform[0].P1_checkbox6c_Unit[1]",
+              "option": "ste",
+              "exportValue": " STE "
+            },
+            {
+              "name": "form1[0].#subform[0].P1_checkbox6c_Unit[2]",
+              "option": "flr",
+              "exportValue": " FLR "
+            }
+          ]
+        },
+        {
+          "id": "mail_unit",
+          "label": "Apartment, suite or floor number",
+          "type": "text",
+          "required": false,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[0].P1_Line6c_AptSteFlrNumber[0]"
+            }
+          ],
+          "maxLength": 6,
+          "requiredWhen": {
+            "field": "mail_unit_type",
+            "oneOf": [
+              "apt",
+              "ste",
+              "flr"
+            ]
+          }
+        },
+        {
+          "id": "mail_city",
+          "label": "City or town",
+          "type": "text",
+          "required": true,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[0].P1_Line6d_CityOrTown[0]"
+            }
+          ],
+          "maxLength": 20
+        },
+        {
+          "id": "mail_state",
+          "label": "State (for a U.S. address)",
+          "type": "select",
+          "required": false,
+          "options": [
+            {
+              "value": "AA",
+              "label": "AA"
+            },
+            {
+              "value": "AE",
+              "label": "AE"
+            },
+            {
+              "value": "AK",
+              "label": "AK"
+            },
+            {
+              "value": "AL",
+              "label": "AL"
+            },
+            {
+              "value": "AP",
+              "label": "AP"
+            },
+            {
+              "value": "AR",
+              "label": "AR"
+            },
+            {
+              "value": "AS",
+              "label": "AS"
+            },
+            {
+              "value": "AZ",
+              "label": "AZ"
+            },
+            {
+              "value": "CA",
+              "label": "CA"
+            },
+            {
+              "value": "CO",
+              "label": "CO"
+            },
+            {
+              "value": "CT",
+              "label": "CT"
+            },
+            {
+              "value": "DC",
+              "label": "DC"
+            },
+            {
+              "value": "DE",
+              "label": "DE"
+            },
+            {
+              "value": "FL",
+              "label": "FL"
+            },
+            {
+              "value": "FM",
+              "label": "FM"
+            },
+            {
+              "value": "GA",
+              "label": "GA"
+            },
+            {
+              "value": "GU",
+              "label": "GU"
+            },
+            {
+              "value": "HI",
+              "label": "HI"
+            },
+            {
+              "value": "IA",
+              "label": "IA"
+            },
+            {
+              "value": "ID",
+              "label": "ID"
+            },
+            {
+              "value": "IL",
+              "label": "IL"
+            },
+            {
+              "value": "IN",
+              "label": "IN"
+            },
+            {
+              "value": "KS",
+              "label": "KS"
+            },
+            {
+              "value": "KY",
+              "label": "KY"
+            },
+            {
+              "value": "LA",
+              "label": "LA"
+            },
+            {
+              "value": "MA",
+              "label": "MA"
+            },
+            {
+              "value": "MD",
+              "label": "MD"
+            },
+            {
+              "value": "ME",
+              "label": "ME"
+            },
+            {
+              "value": "MH",
+              "label": "MH"
+            },
+            {
+              "value": "MI",
+              "label": "MI"
+            },
+            {
+              "value": "MN",
+              "label": "MN"
+            },
+            {
+              "value": "MO",
+              "label": "MO"
+            },
+            {
+              "value": "MP",
+              "label": "MP"
+            },
+            {
+              "value": "MS",
+              "label": "MS"
+            },
+            {
+              "value": "MT",
+              "label": "MT"
+            },
+            {
+              "value": "NC",
+              "label": "NC"
+            },
+            {
+              "value": "ND",
+              "label": "ND"
+            },
+            {
+              "value": "NE",
+              "label": "NE"
+            },
+            {
+              "value": "NH",
+              "label": "NH"
+            },
+            {
+              "value": "NJ",
+              "label": "NJ"
+            },
+            {
+              "value": "NM",
+              "label": "NM"
+            },
+            {
+              "value": "NV",
+              "label": "NV"
+            },
+            {
+              "value": "NY",
+              "label": "NY"
+            },
+            {
+              "value": "OH",
+              "label": "OH"
+            },
+            {
+              "value": "OK",
+              "label": "OK"
+            },
+            {
+              "value": "OR",
+              "label": "OR"
+            },
+            {
+              "value": "PA",
+              "label": "PA"
+            },
+            {
+              "value": "PR",
+              "label": "PR"
+            },
+            {
+              "value": "PW",
+              "label": "PW"
+            },
+            {
+              "value": "RI",
+              "label": "RI"
+            },
+            {
+              "value": "SC",
+              "label": "SC"
+            },
+            {
+              "value": "SD",
+              "label": "SD"
+            },
+            {
+              "value": "TN",
+              "label": "TN"
+            },
+            {
+              "value": "TX",
+              "label": "TX"
+            },
+            {
+              "value": "UT",
+              "label": "UT"
+            },
+            {
+              "value": "VA",
+              "label": "VA"
+            },
+            {
+              "value": "VI",
+              "label": "VI"
+            },
+            {
+              "value": "VT",
+              "label": "VT"
+            },
+            {
+              "value": "WA",
+              "label": "WA"
+            },
+            {
+              "value": "WI",
+              "label": "WI"
+            },
+            {
+              "value": "WV",
+              "label": "WV"
+            },
+            {
+              "value": "WY",
+              "label": "WY"
+            }
+          ],
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[0].P1_Line6e_State[0]"
+            }
+          ]
+        },
+        {
+          "id": "mail_zip",
+          "label": "ZIP code (for a U.S. address)",
+          "type": "text",
+          "required": false,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[0].P1_Line6f_ZipCode[0]"
+            }
+          ],
+          "maxLength": 5,
+          "validation": "zip"
+        },
+        {
+          "id": "mail_province",
+          "label": "Province (for a foreign address)",
+          "type": "text",
+          "required": false,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[0].P1_Line6g_Province[0]"
+            }
+          ],
+          "maxLength": 20
+        },
+        {
+          "id": "mail_postal",
+          "label": "Postal code (for a foreign address)",
+          "type": "text",
+          "required": false,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[0].P1_Line6h_PostalCode[0]"
+            }
+          ],
+          "maxLength": 9
+        },
+        {
+          "id": "mail_country",
+          "label": "Country",
+          "type": "text",
+          "required": true,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[0].P1_Line6i_Country[0]"
+            }
+          ]
+        }
+      ],
+      "source": {
+        "formPages": [
+          1
+        ],
+        "instructionPages": [
+          3
+        ]
+      }
+    },
+    {
+      "id": "physical-different",
+      "part": 1,
+      "item": "7.a–7.h",
+      "title": "Is your physical address different from your mailing address?",
+      "help": "The printed form asks for a physical address only when it differs from your mailing address. Current commuters should provide their foreign physical residence address.",
+      "fields": [
+        {
+          "id": "physical_different",
+          "label": "Different physical address?",
+          "type": "radio",
+          "required": true,
+          "options": [
+            {
+              "value": "yes",
+              "label": "Yes"
+            },
+            {
+              "value": "no",
+              "label": "No"
+            }
+          ],
+          "pdfFields": []
+        }
+      ],
+      "source": {
+        "formPages": [],
+        "instructionPages": [
+          3
+        ]
+      }
+    },
+    {
+      "id": "physical-address",
+      "part": 1,
+      "item": "7.a–7.h",
+      "title": "Where do you physically live?",
+      "help": "Use the address where you live. Complete state and ZIP for a U.S. address, or province and postal code for a foreign address.",
+      "fields": [
+        {
+          "id": "physical_street",
+          "label": "Street number and name",
+          "type": "text",
+          "required": true,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[0].P1_Line7a_StreetNumberName[0]"
+            }
+          ],
+          "maxLength": 25
+        },
+        {
+          "id": "physical_unit_type",
+          "label": "Apartment, suite or floor",
+          "type": "radio",
+          "required": true,
+          "options": [
+            {
+              "value": "none",
+              "label": "No apartment, suite or floor"
+            },
+            {
+              "value": "apt",
+              "label": "Apartment"
+            },
+            {
+              "value": "ste",
+              "label": "Suite"
+            },
+            {
+              "value": "flr",
+              "label": "Floor"
+            }
+          ],
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[0].P1_checkbox7b_Unit[0]",
+              "option": "apt",
+              "exportValue": " APT "
+            },
+            {
+              "name": "form1[0].#subform[0].P1_checkbox7b_Unit[1]",
+              "option": "ste",
+              "exportValue": " STE "
+            },
+            {
+              "name": "form1[0].#subform[0].P1_checkbox7b_Unit[2]",
+              "option": "flr",
+              "exportValue": " FLR "
+            }
+          ]
+        },
+        {
+          "id": "physical_unit",
+          "label": "Apartment, suite or floor number",
+          "type": "text",
+          "required": false,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[0].P1_Line7b_AptSteFlrNumber[0]"
+            }
+          ],
+          "maxLength": 6,
+          "requiredWhen": {
+            "field": "physical_unit_type",
+            "oneOf": [
+              "apt",
+              "ste",
+              "flr"
+            ]
+          }
+        },
+        {
+          "id": "physical_city",
+          "label": "City or town",
+          "type": "text",
+          "required": true,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[0].P1_Line7c_CityOrTown[0]"
+            }
+          ],
+          "maxLength": 20
+        },
+        {
+          "id": "physical_state",
+          "label": "State (for a U.S. address)",
+          "type": "select",
+          "required": false,
+          "options": [
+            {
+              "value": "AA",
+              "label": "AA"
+            },
+            {
+              "value": "AE",
+              "label": "AE"
+            },
+            {
+              "value": "AK",
+              "label": "AK"
+            },
+            {
+              "value": "AL",
+              "label": "AL"
+            },
+            {
+              "value": "AP",
+              "label": "AP"
+            },
+            {
+              "value": "AR",
+              "label": "AR"
+            },
+            {
+              "value": "AS",
+              "label": "AS"
+            },
+            {
+              "value": "AZ",
+              "label": "AZ"
+            },
+            {
+              "value": "CA",
+              "label": "CA"
+            },
+            {
+              "value": "CO",
+              "label": "CO"
+            },
+            {
+              "value": "CT",
+              "label": "CT"
+            },
+            {
+              "value": "DC",
+              "label": "DC"
+            },
+            {
+              "value": "DE",
+              "label": "DE"
+            },
+            {
+              "value": "FL",
+              "label": "FL"
+            },
+            {
+              "value": "FM",
+              "label": "FM"
+            },
+            {
+              "value": "GA",
+              "label": "GA"
+            },
+            {
+              "value": "GU",
+              "label": "GU"
+            },
+            {
+              "value": "HI",
+              "label": "HI"
+            },
+            {
+              "value": "IA",
+              "label": "IA"
+            },
+            {
+              "value": "ID",
+              "label": "ID"
+            },
+            {
+              "value": "IL",
+              "label": "IL"
+            },
+            {
+              "value": "IN",
+              "label": "IN"
+            },
+            {
+              "value": "KS",
+              "label": "KS"
+            },
+            {
+              "value": "KY",
+              "label": "KY"
+            },
+            {
+              "value": "LA",
+              "label": "LA"
+            },
+            {
+              "value": "MA",
+              "label": "MA"
+            },
+            {
+              "value": "MD",
+              "label": "MD"
+            },
+            {
+              "value": "ME",
+              "label": "ME"
+            },
+            {
+              "value": "MH",
+              "label": "MH"
+            },
+            {
+              "value": "MI",
+              "label": "MI"
+            },
+            {
+              "value": "MN",
+              "label": "MN"
+            },
+            {
+              "value": "MO",
+              "label": "MO"
+            },
+            {
+              "value": "MP",
+              "label": "MP"
+            },
+            {
+              "value": "MS",
+              "label": "MS"
+            },
+            {
+              "value": "MT",
+              "label": "MT"
+            },
+            {
+              "value": "NC",
+              "label": "NC"
+            },
+            {
+              "value": "ND",
+              "label": "ND"
+            },
+            {
+              "value": "NE",
+              "label": "NE"
+            },
+            {
+              "value": "NH",
+              "label": "NH"
+            },
+            {
+              "value": "NJ",
+              "label": "NJ"
+            },
+            {
+              "value": "NM",
+              "label": "NM"
+            },
+            {
+              "value": "NV",
+              "label": "NV"
+            },
+            {
+              "value": "NY",
+              "label": "NY"
+            },
+            {
+              "value": "OH",
+              "label": "OH"
+            },
+            {
+              "value": "OK",
+              "label": "OK"
+            },
+            {
+              "value": "OR",
+              "label": "OR"
+            },
+            {
+              "value": "PA",
+              "label": "PA"
+            },
+            {
+              "value": "PR",
+              "label": "PR"
+            },
+            {
+              "value": "PW",
+              "label": "PW"
+            },
+            {
+              "value": "RI",
+              "label": "RI"
+            },
+            {
+              "value": "SC",
+              "label": "SC"
+            },
+            {
+              "value": "SD",
+              "label": "SD"
+            },
+            {
+              "value": "TN",
+              "label": "TN"
+            },
+            {
+              "value": "TX",
+              "label": "TX"
+            },
+            {
+              "value": "UT",
+              "label": "UT"
+            },
+            {
+              "value": "VA",
+              "label": "VA"
+            },
+            {
+              "value": "VI",
+              "label": "VI"
+            },
+            {
+              "value": "VT",
+              "label": "VT"
+            },
+            {
+              "value": "WA",
+              "label": "WA"
+            },
+            {
+              "value": "WI",
+              "label": "WI"
+            },
+            {
+              "value": "WV",
+              "label": "WV"
+            },
+            {
+              "value": "WY",
+              "label": "WY"
+            }
+          ],
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[0].P1_Line7d_State[0]"
+            }
+          ]
+        },
+        {
+          "id": "physical_zip",
+          "label": "ZIP code (for a U.S. address)",
+          "type": "text",
+          "required": false,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[0].P1_Line7e_ZipCode[0]"
+            }
+          ],
+          "maxLength": 5,
+          "validation": "zip"
+        },
+        {
+          "id": "physical_province",
+          "label": "Province (for a foreign address)",
+          "type": "text",
+          "required": false,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[0].P1_Line7f_Province[0]"
+            }
+          ],
+          "maxLength": 20
+        },
+        {
+          "id": "physical_postal",
+          "label": "Postal code (for a foreign address)",
+          "type": "text",
+          "required": false,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[0].P1_Line7g_PostalCode[0]"
+            }
+          ],
+          "maxLength": 9
+        },
+        {
+          "id": "physical_country",
+          "label": "Country",
+          "type": "text",
+          "required": true,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[0].P1_Line7h_Country[0]"
+            }
+          ]
+        }
+      ],
+      "source": {
+        "formPages": [
+          1
+        ],
+        "instructionPages": [
+          3
+        ]
+      },
+      "when": {
+        "field": "physical_different",
+        "equals": "yes"
+      }
+    },
+    {
+      "id": "sex",
+      "part": 1,
+      "item": "8",
+      "title": "Sex",
+      "help": "The instructions direct you to use the sex recorded on your birth certificate issued at or closest to birth, or the applicable secondary evidence provided to USCIS.",
+      "fields": [
+        {
+          "id": "sex",
+          "label": "Sex",
+          "type": "radio",
+          "required": true,
+          "options": [
+            {
+              "value": "male",
+              "label": "Male"
+            },
+            {
+              "value": "female",
+              "label": "Female"
+            }
+          ],
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[1].P1_Line8_male[0]",
+              "option": "male",
+              "exportValue": "Y"
+            },
+            {
+              "name": "form1[0].#subform[1].P1_Line8_female[0]",
+              "option": "female",
+              "exportValue": "Y"
+            }
+          ]
+        }
+      ],
+      "source": {
+        "formPages": [
+          2
+        ],
+        "instructionPages": [
+          4
+        ]
+      }
+    },
+    {
+      "id": "birth",
+      "part": 1,
+      "item": "9–11",
+      "title": "When and where were you born?",
+      "help": "Use MM/DD/YYYY for your date of birth. Provide the city, town or village and the country of your birth.",
+      "fields": [
+        {
+          "id": "birth_date",
+          "label": "Date of birth",
+          "type": "date",
+          "required": true,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[1].P1_Line9_DateOfBirth[0]"
+            }
+          ],
+          "placeholder": "MM/DD/YYYY",
+          "maxLength": 10,
+          "validation": "date"
+        },
+        {
+          "id": "birth_city",
+          "label": "City, town or village of birth",
+          "type": "text",
+          "required": true,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[1].P1_Line10_CityTownOfBirth[0]"
+            }
+          ],
+          "maxLength": 38
+        },
+        {
+          "id": "birth_country",
+          "label": "Country of birth",
+          "type": "text",
+          "required": true,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[1].P1_Line11_CountryofBirth[0]"
+            }
+          ]
+        }
+      ],
+      "source": {
+        "formPages": [
+          2
+        ],
+        "instructionPages": [
+          4
+        ]
+      }
+    },
+    {
+      "id": "parents",
+      "part": 1,
+      "item": "12–13",
+      "title": "What are your parents’ first names?",
+      "help": "These items ask for given (first) names, not full names. If an answer is not available, do not guess; check the official instructions before printing.",
+      "fields": [
+        {
+          "id": "mother_given_name",
+          "label": "Mother’s given name",
+          "type": "text",
+          "required": true,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[1].P1_Line12_MotherGivenName[0]"
+            }
+          ]
+        },
+        {
+          "id": "father_given_name",
+          "label": "Father’s given name",
+          "type": "text",
+          "required": true,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[1].P1_Line13_FatherGivenName[0]"
+            }
+          ]
+        }
+      ],
+      "source": {
+        "formPages": [
+          2
+        ],
+        "instructionPages": [
+          4
+        ]
+      }
+    },
+    {
+      "id": "admission",
+      "part": 1,
+      "item": "14–15",
+      "title": "What are your class and date of admission?",
+      "help": "Your class is the three-character immigrant category on your Permanent Resident Card, for example IR2. The admission date is when you were granted permanent or conditional permanent resident status.",
+      "fields": [
+        {
+          "id": "admission_class",
+          "label": "Class of admission",
+          "type": "text",
+          "required": true,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[1].P1_Line14_ClassOfAdmission[0]"
+            }
+          ]
+        },
+        {
+          "id": "admission_date",
+          "label": "Date of admission",
+          "type": "date",
+          "required": true,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[1].P1_Line15_DateOfAdmission[0]"
+            }
+          ],
+          "placeholder": "MM/DD/YYYY",
+          "maxLength": 10,
+          "validation": "date"
+        }
+      ],
+      "source": {
+        "formPages": [
+          2
+        ],
+        "instructionPages": [
+          4
+        ]
+      }
+    },
+    {
+      "id": "ssn",
+      "part": 1,
+      "item": "16",
+      "title": "What is your U.S. Social Security Number, if any?",
+      "help": "Enter nine digits if you have a U.S. Social Security Number.",
+      "fields": [
+        {
+          "id": "ssn",
+          "label": "U.S. Social Security Number",
+          "type": "text",
+          "required": false,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[1].P1_Line16_SSN[0]"
+            }
+          ],
+          "maxLength": 9,
+          "validation": "ssn"
+        }
+      ],
+      "source": {
+        "formPages": [
+          2
+        ],
+        "instructionPages": [
+          4
+        ]
+      }
+    },
+    {
+      "id": "status",
+      "part": 2,
+      "item": "1.a–1.c",
+      "title": "What is your current status?",
+      "help": "Choose one status. The printed form directs lawful permanent residents and commuters to Section A and conditional permanent residents to Section B. Read the I-90 instructions before continuing if conditional status is expiring within 90 days.",
+      "fields": [
+        {
+          "id": "resident_status",
+          "label": "Current status",
+          "type": "radio",
+          "required": true,
+          "options": [
+            {
+              "value": "lpr",
+              "label": "Lawful Permanent Resident"
+            },
+            {
+              "value": "commuter",
+              "label": "Permanent Resident — In Commuter Status"
+            },
+            {
+              "value": "conditional",
+              "label": "Conditional Permanent Resident"
+            }
+          ],
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[1].P2_checkbox1[0]",
+              "option": "lpr",
+              "exportValue": "1a"
+            },
+            {
+              "name": "form1[0].#subform[1].P2_checkbox1[1]",
+              "option": "commuter",
+              "exportValue": "1b"
+            },
+            {
+              "name": "form1[0].#subform[1].P2_checkbox1[2]",
+              "option": "conditional",
+              "exportValue": "1c"
+            }
+          ]
+        }
+      ],
+      "source": {
+        "formPages": [
+          2
+        ],
+        "instructionPages": [
+          1,
+          4
+        ]
+      }
+    },
+    {
+      "id": "reason-a",
+      "part": 2,
+      "item": "2.a–2.j",
+      "title": "What is your reason for applying? (Section A)",
+      "help": "Select only one reason and read its full instructions and evidence requirements. The instructions distinguish a card returned to USCIS as undeliverable from a lost card, and DHS error from other incorrect data. The age-14 reasons have additional timing conditions; do not choose based only on this short label.",
+      "fields": [
+        {
+          "id": "reason_a",
+          "label": "Reason for application",
+          "type": "radio",
+          "required": true,
+          "options": [
+            {
+              "value": "2a",
+              "label": "My previous card has been lost, stolen, or destroyed."
+            },
+            {
+              "value": "2b",
+              "label": "My previous card was issued but never received."
+            },
+            {
+              "value": "2c",
+              "label": "My existing card has been mutilated."
+            },
+            {
+              "value": "2d",
+              "label": "My existing card has incorrect data because of Department of Homeland Security (DHS) error."
+            },
+            {
+              "value": "2e",
+              "label": "My name or other biographic information has been legally changed since issuance of my existing card."
+            },
+            {
+              "value": "2f",
+              "label": "My existing card has already expired or will expire within six months."
+            },
+            {
+              "value": "2g1",
+              "label": "I have reached my 14th birthday and am registering as required. My existing card will expire AFTER my 16th birthday."
+            },
+            {
+              "value": "2g2",
+              "label": "I have reached my 14th birthday and am registering as required. My existing card will expire BEFORE my 16th birthday."
+            },
+            {
+              "value": "2h1",
+              "label": "I am a permanent resident who is taking up commuter status."
+            },
+            {
+              "value": "2h2",
+              "label": "I am a commuter who is taking up actual residence in the United States."
+            },
+            {
+              "value": "2i",
+              "label": "I have been automatically converted to lawful permanent resident status."
+            },
+            {
+              "value": "2j",
+              "label": "I have a prior edition of the Alien Registration Card, or I am applying to replace my current Permanent Resident Card for a reason that is not specified above."
+            }
+          ],
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[1].P2_checkbox2[5]",
+              "option": "2a",
+              "exportValue": "2a"
+            },
+            {
+              "name": "form1[0].#subform[1].P2_checkbox2[6]",
+              "option": "2b",
+              "exportValue": "2b"
+            },
+            {
+              "name": "form1[0].#subform[1].P2_checkbox2[7]",
+              "option": "2c",
+              "exportValue": "2c"
+            },
+            {
+              "name": "form1[0].#subform[1].P2_checkbox2[4]",
+              "option": "2d",
+              "exportValue": "2d"
+            },
+            {
+              "name": "form1[0].#subform[1].P2_checkbox2[0]",
+              "option": "2e",
+              "exportValue": "2e"
+            },
+            {
+              "name": "form1[0].#subform[1].P2_checkbox2[1]",
+              "option": "2f",
+              "exportValue": "2f"
+            },
+            {
+              "name": "form1[0].#subform[1].P2_checkbox2[2]",
+              "option": "2g1",
+              "exportValue": "2g1"
+            },
+            {
+              "name": "form1[0].#subform[1].P2_checkbox2[3]",
+              "option": "2g2",
+              "exportValue": "2g2"
+            },
+            {
+              "name": "form1[0].#subform[1].P2_checkbox2[11]",
+              "option": "2h1",
+              "exportValue": "2h1"
+            },
+            {
+              "name": "form1[0].#subform[1].P2_checkbox2[9]",
+              "option": "2h2",
+              "exportValue": "2h2"
+            },
+            {
+              "name": "form1[0].#subform[1].P2_checkbox2[10]",
+              "option": "2i",
+              "exportValue": "2i"
+            },
+            {
+              "name": "form1[0].#subform[1].P2_checkbox2[8]",
+              "option": "2j",
+              "exportValue": "2j"
+            }
+          ]
+        }
+      ],
+      "source": {
+        "formPages": [
+          2
+        ],
+        "instructionPages": [
+          4,
+          5,
+          6
+        ]
+      },
+      "when": {
+        "field": "resident_status",
+        "oneOf": [
+          "lpr",
+          "commuter"
+        ]
+      }
+    },
+    {
+      "id": "commuter-port",
+      "part": 2,
+      "item": "2.h.1.a",
+      "title": "Which U.S. port of entry do you use or plan to use?",
+      "help": "For reason 2.h.1, provide the city or town and state of your port of entry. Current commuters using a foreign mailing address are also directed by the instructions to provide this port for card pickup. Otherwise this item can remain blank.",
+      "fields": [
+        {
+          "id": "commuter_port",
+          "label": "Port of entry — city or town and state",
+          "type": "text",
+          "required": false,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[1].P2_Line2h1_CityandState[0]"
+            }
+          ],
+          "maxLength": 25,
+          "requiredWhen": {
+            "field": "reason_a",
+            "equals": "2h1"
+          }
+        }
+      ],
+      "source": {
+        "formPages": [
+          2
+        ],
+        "instructionPages": [
+          3,
+          6
+        ]
+      },
+      "when": {
+        "field": "resident_status",
+        "oneOf": [
+          "lpr",
+          "commuter"
+        ]
+      }
+    },
+    {
+      "id": "reason-b",
+      "part": 2,
+      "item": "3.a–3.e",
+      "title": "What is your reason for applying? (Section B)",
+      "help": "Select one reason for replacing a conditional resident card. Read its complete instructions and evidence requirements. I-90 is not the process to remove conditions on residence.",
+      "fields": [
+        {
+          "id": "reason_b",
+          "label": "Reason for application",
+          "type": "radio",
+          "required": true,
+          "options": [
+            {
+              "value": "3a",
+              "label": "My previous card has been lost, stolen, or destroyed."
+            },
+            {
+              "value": "3b",
+              "label": "My previous card was issued but never received."
+            },
+            {
+              "value": "3c",
+              "label": "My existing card has been mutilated."
+            },
+            {
+              "value": "3d",
+              "label": "My existing card has incorrect data because of Department of Homeland Security (DHS) error."
+            },
+            {
+              "value": "3e",
+              "label": "My name or other biographic information has legally changed since issuance of my existing card."
+            }
+          ],
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[2].P2_checkbox3[4]",
+              "option": "3a",
+              "exportValue": "3a"
+            },
+            {
+              "name": "form1[0].#subform[2].P2_checkbox3[0]",
+              "option": "3b",
+              "exportValue": "3b"
+            },
+            {
+              "name": "form1[0].#subform[2].P2_checkbox3[1]",
+              "option": "3c",
+              "exportValue": "3c"
+            },
+            {
+              "name": "form1[0].#subform[2].P2_checkbox3[2]",
+              "option": "3d",
+              "exportValue": "3d"
+            },
+            {
+              "name": "form1[0].#subform[2].P2_checkbox3[3]",
+              "option": "3e",
+              "exportValue": "3e"
+            }
+          ]
+        }
+      ],
+      "source": {
+        "formPages": [
+          3
+        ],
+        "instructionPages": [
+          1,
+          6,
+          7
+        ]
+      },
+      "when": {
+        "field": "resident_status",
+        "equals": "conditional"
+      }
+    },
+    {
+      "id": "processing-locations",
+      "part": 3,
+      "item": "1–2",
+      "title": "Where did you apply, and where was your visa issued or status granted?",
+      "help": "Provide the location of the U.S. Embassy, consulate or USCIS office for each item. These may be different locations.",
+      "fields": [
+        {
+          "id": "applied_location",
+          "label": "Location where you applied for an immigrant visa or adjustment of status",
+          "type": "text",
+          "required": true,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[2].P3_Line1_LocationAppliedVisa[0]"
+            }
+          ],
+          "maxLength": 38
+        },
+        {
+          "id": "granted_location",
+          "label": "Location where your visa was issued or adjustment of status was granted",
+          "type": "text",
+          "required": true,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[2].P3_Line2_LocationIssuedVisa[0]"
+            }
+          ],
+          "maxLength": 38
+        }
+      ],
+      "source": {
+        "formPages": [
+          3
+        ],
+        "instructionPages": [
+          7
+        ]
+      }
+    },
+    {
+      "id": "entry-route",
+      "part": 3,
+      "item": "3.a–3.a.1",
+      "title": "Did you enter the United States with an immigrant visa?",
+      "help": "The form asks for your destination and port of entry if you entered with an immigrant visa. If you were granted adjustment of status, it directs you to Item 4.",
+      "fields": [
+        {
+          "id": "immigrant_visa_entry",
+          "label": "Entered with an immigrant visa?",
+          "type": "radio",
+          "required": true,
+          "options": [
+            {
+              "value": "yes",
+              "label": "Yes"
+            },
+            {
+              "value": "no",
+              "label": "No"
+            }
+          ],
+          "pdfFields": []
+        }
+      ],
+      "source": {
+        "formPages": [],
+        "instructionPages": [
+          7
+        ]
+      }
+    },
+    {
+      "id": "entry-details",
+      "part": 3,
+      "item": "3.a–3.a.1",
+      "title": "What were your destination and port of entry when admitted?",
+      "help": "Give your destination in the United States at admission. For the port, provide the city or town and state and identify the type, such as airport, bridge or tunnel, as the instructions direct.",
+      "fields": [
+        {
+          "id": "entry_destination",
+          "label": "Destination in the United States at admission",
+          "type": "text",
+          "required": true,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[2].P3_Line3a_Destination[0]"
+            }
+          ]
+        },
+        {
+          "id": "entry_port",
+          "label": "Port of entry — city or town and state",
+          "type": "text",
+          "required": true,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[2].P3_Line3a1_CityandState[0]"
+            }
+          ],
+          "maxLength": 25
+        }
+      ],
+      "source": {
+        "formPages": [
+          3
+        ],
+        "instructionPages": [
+          7
+        ]
+      },
+      "when": {
+        "field": "immigrant_visa_entry",
+        "equals": "yes"
+      }
+    },
+    {
+      "id": "removal",
+      "part": 3,
+      "item": "4",
+      "title": "Have you ever been in exclusion, deportation, or removal proceedings or ordered removed from the United States?",
+      "help": "Answer the question as written. If Yes, the form requires a detailed explanation in Part 8. This app does not decide the legal effect of an answer.",
+      "fields": [
+        {
+          "id": "removal_history",
+          "label": "Answer",
+          "type": "radio",
+          "required": true,
+          "options": [
+            {
+              "value": "yes",
+              "label": "Yes"
+            },
+            {
+              "value": "no",
+              "label": "No"
+            }
+          ],
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[2].P3_checkbox4[1]",
+              "option": "yes",
+              "exportValue": "Y"
+            },
+            {
+              "name": "form1[0].#subform[2].P3_checkbox4[0]",
+              "option": "no",
+              "exportValue": "N"
+            }
+          ]
+        }
+      ],
+      "source": {
+        "formPages": [
+          3
+        ],
+        "instructionPages": [
+          8
+        ]
+      }
+    },
+    {
+      "id": "abandonment",
+      "part": 3,
+      "item": "5",
+      "title": "Since you were granted permanent residence, have you ever filed Form I-407 or otherwise been judged to have abandoned your status?",
+      "help": "Form I-407 records abandonment of lawful permanent resident status. If Yes, provide a detailed explanation in Part 8.",
+      "fields": [
+        {
+          "id": "abandonment_history",
+          "label": "Answer",
+          "type": "radio",
+          "required": true,
+          "options": [
+            {
+              "value": "yes",
+              "label": "Yes"
+            },
+            {
+              "value": "no",
+              "label": "No"
+            }
+          ],
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[2].P3_checkbox5[1]",
+              "option": "yes",
+              "exportValue": "Y"
+            },
+            {
+              "name": "form1[0].#subform[2].P3_checkbox5[0]",
+              "option": "no",
+              "exportValue": "N"
+            }
+          ]
+        }
+      ],
+      "source": {
+        "formPages": [
+          3
+        ],
+        "instructionPages": [
+          8
+        ]
+      }
+    },
+    {
+      "id": "ethnicity",
+      "part": 3,
+      "item": "6",
+      "title": "What is your ethnicity?",
+      "help": "Select one category from the official form. The instructions define Hispanic or Latino as Cuban, Mexican, Puerto Rican, South or Central American, or other Spanish culture or origin, regardless of race.",
+      "fields": [
+        {
+          "id": "ethnicity",
+          "label": "Ethnicity",
+          "type": "radio",
+          "required": true,
+          "options": [
+            {
+              "value": "hispanic",
+              "label": "Hispanic or Latino"
+            },
+            {
+              "value": "not-hispanic",
+              "label": "Not Hispanic or Latino"
+            }
+          ],
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[2].P3_checkbox6[1]",
+              "option": "hispanic",
+              "exportValue": "H"
+            },
+            {
+              "name": "form1[0].#subform[2].P3_checkbox6[0]",
+              "option": "not-hispanic",
+              "exportValue": "N"
+            }
+          ]
+        }
+      ],
+      "source": {
+        "formPages": [
+          3
+        ],
+        "instructionPages": [
+          8
+        ]
+      }
+    },
+    {
+      "id": "race",
+      "part": 3,
+      "item": "7",
+      "title": "Which racial categories apply to you?",
+      "help": "The official form allows more than one selection. Use the category definitions in the instructions when needed.",
+      "fields": [
+        {
+          "id": "race",
+          "label": "Select all applicable categories",
+          "type": "multiselect",
+          "required": true,
+          "options": [
+            {
+              "value": "white",
+              "label": "White"
+            },
+            {
+              "value": "asian",
+              "label": "Asian"
+            },
+            {
+              "value": "black",
+              "label": "Black or African American"
+            },
+            {
+              "value": "american-indian",
+              "label": "American Indian or Alaska Native"
+            },
+            {
+              "value": "pacific-islander",
+              "label": "Native Hawaiian or Other Pacific Islander"
+            }
+          ],
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[2].P3_checkbox7_White[0]",
+              "option": "white",
+              "exportValue": "Y"
+            },
+            {
+              "name": "form1[0].#subform[2].P3_checkbox7_Asian[0]",
+              "option": "asian",
+              "exportValue": "Y"
+            },
+            {
+              "name": "form1[0].#subform[2].P3_checkbox7_Black[0]",
+              "option": "black",
+              "exportValue": "Y"
+            },
+            {
+              "name": "form1[0].#subform[2].P3_checkbox7_Indian[0]",
+              "option": "american-indian",
+              "exportValue": "Y"
+            },
+            {
+              "name": "form1[0].#subform[2].P3_checkbox7_Hawaiian[0]",
+              "option": "pacific-islander",
+              "exportValue": "Y"
+            }
+          ]
+        }
+      ],
+      "source": {
+        "formPages": [
+          3
+        ],
+        "instructionPages": [
+          8
+        ]
+      }
+    },
+    {
+      "id": "height",
+      "part": 3,
+      "item": "8",
+      "title": "What is your height in feet and inches?",
+      "help": "Use feet and inches, not meters or centimeters. Select the values that best match your height.",
+      "fields": [
+        {
+          "id": "height_feet",
+          "label": "Feet",
+          "type": "select",
+          "required": true,
+          "options": [
+            {
+              "value": "2",
+              "label": "2"
+            },
+            {
+              "value": "3",
+              "label": "3"
+            },
+            {
+              "value": "4",
+              "label": "4"
+            },
+            {
+              "value": "5",
+              "label": "5"
+            },
+            {
+              "value": "6",
+              "label": "6"
+            },
+            {
+              "value": "7",
+              "label": "7"
+            },
+            {
+              "value": "8",
+              "label": "8"
+            }
+          ],
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[2].P3_Line8_HeightFeet[0]"
+            }
+          ]
+        },
+        {
+          "id": "height_inches",
+          "label": "Inches",
+          "type": "select",
+          "required": true,
+          "options": [
+            {
+              "value": "0",
+              "label": "0"
+            },
+            {
+              "value": "1",
+              "label": "1"
+            },
+            {
+              "value": "2",
+              "label": "2"
+            },
+            {
+              "value": "3",
+              "label": "3"
+            },
+            {
+              "value": "4",
+              "label": "4"
+            },
+            {
+              "value": "5",
+              "label": "5"
+            },
+            {
+              "value": "6",
+              "label": "6"
+            },
+            {
+              "value": "7",
+              "label": "7"
+            },
+            {
+              "value": "8",
+              "label": "8"
+            },
+            {
+              "value": "9",
+              "label": "9"
+            },
+            {
+              "value": "10",
+              "label": "10"
+            },
+            {
+              "value": "11",
+              "label": "11"
+            }
+          ],
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[2].P3_Line8_HeightInches[0]"
+            }
+          ]
+        }
+      ],
+      "source": {
+        "formPages": [
+          3
+        ],
+        "instructionPages": [
+          8
+        ]
+      }
+    },
+    {
+      "id": "weight",
+      "part": 3,
+      "item": "9",
+      "title": "What is your weight in pounds?",
+      "help": "Use three digits, adding a leading zero if needed (for example, 095). The instructions say to enter 000 if unknown, below 30 pounds, or above 699 pounds. Do not enter kilograms.",
+      "fields": [
+        {
+          "id": "weight",
+          "label": "Weight in pounds",
+          "type": "text",
+          "required": true,
+          "maxLength": 3,
+          "validation": "weight",
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[2].P3_Line9_HeightInches1[0]",
+              "transform": "digit1"
+            },
+            {
+              "name": "form1[0].#subform[2].P3_Line9_HeightInches2[0]",
+              "transform": "digit2"
+            },
+            {
+              "name": "form1[0].#subform[2].P3_Line9_HeightInches3[0]",
+              "transform": "digit3"
+            }
+          ]
+        }
+      ],
+      "source": {
+        "formPages": [
+          3
+        ],
+        "instructionPages": [
+          8
+        ]
+      }
+    },
+    {
+      "id": "eye-color",
+      "part": 3,
+      "item": "10",
+      "title": "What is your eye color?",
+      "help": "Select the single category that best describes your eyes.",
+      "fields": [
+        {
+          "id": "eye_color",
+          "label": "Eye color",
+          "type": "radio",
+          "required": true,
+          "options": [
+            {
+              "value": "Blue",
+              "label": "Blue"
+            },
+            {
+              "value": "Green",
+              "label": "Green"
+            },
+            {
+              "value": "Hazel",
+              "label": "Hazel"
+            },
+            {
+              "value": "Pink",
+              "label": "Pink"
+            },
+            {
+              "value": "Maroon",
+              "label": "Maroon"
+            },
+            {
+              "value": "Brown",
+              "label": "Brown"
+            },
+            {
+              "value": "Black",
+              "label": "Black"
+            },
+            {
+              "value": "Unknown / Other",
+              "label": "Unknown / Other"
+            },
+            {
+              "value": "Gray",
+              "label": "Gray"
+            }
+          ],
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[2].P3_checkbox10[0]",
+              "option": "Blue",
+              "exportValue": "BLU"
+            },
+            {
+              "name": "form1[0].#subform[2].P3_checkbox10[1]",
+              "option": "Green",
+              "exportValue": "GRN"
+            },
+            {
+              "name": "form1[0].#subform[2].P3_checkbox10[2]",
+              "option": "Hazel",
+              "exportValue": "HAZ"
+            },
+            {
+              "name": "form1[0].#subform[2].P3_checkbox10[3]",
+              "option": "Pink",
+              "exportValue": "PNK"
+            },
+            {
+              "name": "form1[0].#subform[2].P3_checkbox10[4]",
+              "option": "Maroon",
+              "exportValue": "MAR"
+            },
+            {
+              "name": "form1[0].#subform[2].P3_checkbox10[5]",
+              "option": "Brown",
+              "exportValue": "BRO"
+            },
+            {
+              "name": "form1[0].#subform[2].P3_checkbox10[6]",
+              "option": "Black",
+              "exportValue": "BLK"
+            },
+            {
+              "name": "form1[0].#subform[2].P3_checkbox10[7]",
+              "option": "Unknown / Other",
+              "exportValue": "UNK"
+            },
+            {
+              "name": "form1[0].#subform[2].P3_checkbox10[8]",
+              "option": "Gray",
+              "exportValue": "GRY"
+            }
+          ]
+        }
+      ],
+      "source": {
+        "formPages": [
+          3
+        ],
+        "instructionPages": [
+          8
+        ]
+      }
+    },
+    {
+      "id": "hair-color",
+      "part": 3,
+      "item": "11",
+      "title": "What is your hair color?",
+      "help": "Select the single category that best describes your hair.",
+      "fields": [
+        {
+          "id": "hair_color",
+          "label": "Hair color",
+          "type": "radio",
+          "required": true,
+          "options": [
+            {
+              "value": "Bald (No hair)",
+              "label": "Bald (No hair)"
+            },
+            {
+              "value": "Blond",
+              "label": "Blond"
+            },
+            {
+              "value": "Gray",
+              "label": "Gray"
+            },
+            {
+              "value": "Sandy",
+              "label": "Sandy"
+            },
+            {
+              "value": "Unknown / Other",
+              "label": "Unknown / Other"
+            },
+            {
+              "value": "White",
+              "label": "White"
+            },
+            {
+              "value": "Red",
+              "label": "Red"
+            },
+            {
+              "value": "Brown",
+              "label": "Brown"
+            },
+            {
+              "value": "Black",
+              "label": "Black"
+            }
+          ],
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[2].P3_checkbox11[0]",
+              "option": "Bald (No hair)",
+              "exportValue": "BAL"
+            },
+            {
+              "name": "form1[0].#subform[2].P3_checkbox11[1]",
+              "option": "Blond",
+              "exportValue": "BLN"
+            },
+            {
+              "name": "form1[0].#subform[2].P3_checkbox11[2]",
+              "option": "Gray",
+              "exportValue": "GRY"
+            },
+            {
+              "name": "form1[0].#subform[2].P3_checkbox11[3]",
+              "option": "Sandy",
+              "exportValue": "SDY"
+            },
+            {
+              "name": "form1[0].#subform[2].P3_checkbox11[4]",
+              "option": "Unknown / Other",
+              "exportValue": "UNK"
+            },
+            {
+              "name": "form1[0].#subform[2].P3_checkbox11[5]",
+              "option": "White",
+              "exportValue": "WHI"
+            },
+            {
+              "name": "form1[0].#subform[2].P3_checkbox11[6]",
+              "option": "Red",
+              "exportValue": "RED"
+            },
+            {
+              "name": "form1[0].#subform[2].P3_checkbox11[7]",
+              "option": "Brown",
+              "exportValue": "BRO"
+            },
+            {
+              "name": "form1[0].#subform[2].P3_checkbox11[8]",
+              "option": "Black",
+              "exportValue": "BLK"
+            }
+          ]
+        }
+      ],
+      "source": {
+        "formPages": [
+          3
+        ],
+        "instructionPages": [
+          8
+        ]
+      }
+    },
+    {
+      "id": "accommodation",
+      "part": 4,
+      "item": "1",
+      "title": "Are you requesting an accommodation because of a disability or impairment?",
+      "help": "Choose Yes if you are requesting an accommodation. For appointment arrangements, also follow the instructions on your appointment notice or USCIS accommodation guidance.",
+      "fields": [
+        {
+          "id": "accommodation",
+          "label": "Request an accommodation?",
+          "type": "radio",
+          "required": true,
+          "options": [
+            {
+              "value": "yes",
+              "label": "Yes"
+            },
+            {
+              "value": "no",
+              "label": "No"
+            }
+          ],
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[2].P4_checkbox1[1]",
+              "option": "yes",
+              "exportValue": "Y"
+            },
+            {
+              "name": "form1[0].#subform[2].P4_checkbox1[0]",
+              "option": "no",
+              "exportValue": "N"
+            }
+          ]
+        }
+      ],
+      "source": {
+        "formPages": [
+          3
+        ],
+        "instructionPages": [
+          2
+        ]
+      }
+    },
+    {
+      "id": "accommodation-types",
+      "part": 4,
+      "item": "1.a–1.c",
+      "title": "Which accommodation requests apply?",
+      "help": "Select all applicable categories, then describe what you request. Use Part 8 if more space is needed.",
+      "fields": [
+        {
+          "id": "accommodation_types",
+          "label": "Select all that apply",
+          "type": "multiselect",
+          "required": true,
+          "options": [
+            {
+              "value": "hearing",
+              "label": "I am deaf or hard of hearing"
+            },
+            {
+              "value": "vision",
+              "label": "I am blind or have low vision"
+            },
+            {
+              "value": "other",
+              "label": "I have another disability or impairment"
+            }
+          ],
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[2].P4_checkbox1a[0]",
+              "option": "hearing",
+              "exportValue": "Y"
+            },
+            {
+              "name": "form1[0].#subform[3].P4_checkbox1b[0]",
+              "option": "vision",
+              "exportValue": "Y"
+            },
+            {
+              "name": "form1[0].#subform[3].P4_checkbox1c[0]",
+              "option": "other",
+              "exportValue": "Y"
+            }
+          ]
+        }
+      ],
+      "source": {
+        "formPages": [
+          3,
+          4
+        ],
+        "instructionPages": [
+          2
+        ]
+      },
+      "when": {
+        "field": "accommodation",
+        "equals": "yes"
+      }
+    },
+    {
+      "id": "accommodation-hearing",
+      "part": 4,
+      "item": "1.a",
+      "title": "What accommodation do you request for hearing?",
+      "help": "If requesting a sign-language interpreter, identify the language, such as American Sign Language.",
+      "fields": [
+        {
+          "id": "accommodation_hearing",
+          "label": "Accommodation request",
+          "type": "textarea",
+          "required": true,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[2].P4_Line1a_AccomodationRequested[0]"
+            }
+          ],
+          "maxLength": 140
+        }
+      ],
+      "source": {
+        "formPages": [
+          3
+        ],
+        "instructionPages": [
+          2
+        ]
+      },
+      "when": {
+        "field": "accommodation_types",
+        "includes": "hearing"
+      }
+    },
+    {
+      "id": "accommodation-vision",
+      "part": 4,
+      "item": "1.b",
+      "title": "What accommodation do you request for vision?",
+      "help": "Describe the accommodation you are requesting.",
+      "fields": [
+        {
+          "id": "accommodation_vision",
+          "label": "Accommodation request",
+          "type": "textarea",
+          "required": true,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[3].P4_Line1b_AccomodationRequested[0]"
+            }
+          ],
+          "maxLength": 140
+        }
+      ],
+      "source": {
+        "formPages": [
+          4
+        ],
+        "instructionPages": [
+          2
+        ]
+      },
+      "when": {
+        "field": "accommodation_types",
+        "includes": "vision"
+      }
+    },
+    {
+      "id": "accommodation-other",
+      "part": 4,
+      "item": "1.c",
+      "title": "What other disability or impairment and accommodation should USCIS know about?",
+      "help": "Describe the nature of the disability or impairment and the accommodation requested.",
+      "fields": [
+        {
+          "id": "accommodation_other",
+          "label": "Accommodation request",
+          "type": "textarea",
+          "required": true,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[3].P4_Line1c_AccomodationRequested[0]"
+            }
+          ],
+          "maxLength": 140
+        }
+      ],
+      "source": {
+        "formPages": [
+          4
+        ],
+        "instructionPages": [
+          2
+        ]
+      },
+      "when": {
+        "field": "accommodation_types",
+        "includes": "other"
+      }
+    },
+    {
+      "id": "applicant-statement",
+      "part": 5,
+      "item": "1.a–1.b",
+      "title": "Which applicant statement is true?",
+      "help": "Read all form questions and instructions before choosing. These are your statements on the government form; the app must not select one for you. Read the Penalties section of the instructions before signing.",
+      "fields": [
+        {
+          "id": "applicant_statement",
+          "label": "Select one statement",
+          "type": "radio",
+          "required": true,
+          "options": [
+            {
+              "value": "english",
+              "label": "I can read and understand English, and I have read and understand every question and instruction on this application and my answer to every question."
+            },
+            {
+              "value": "interpreter",
+              "label": "The interpreter named in Part 6 read to me every question and instruction and my answer to every question in a language in which I am fluent, and I understood everything."
+            }
+          ],
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[3].P5_Checkbox1a[0]",
+              "option": "english",
+              "exportValue": "Y"
+            },
+            {
+              "name": "form1[0].#subform[3].P5_Checkbox1b[0]",
+              "option": "interpreter",
+              "exportValue": "Y"
+            }
+          ]
+        }
+      ],
+      "source": {
+        "formPages": [
+          4
+        ],
+        "instructionPages": [
+          8,
+          10
+        ]
+      }
+    },
+    {
+      "id": "interpreter-language",
+      "part": 5,
+      "item": "1.b",
+      "title": "Which language did the interpreter use?",
+      "help": "Use the language in which the interpreter read every question, instruction and answer. This same language is repeated in the interpreter’s certification in Part 6.",
+      "fields": [
+        {
+          "id": "interpreter_language",
+          "label": "Language",
+          "type": "text",
+          "required": true,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[3].P5_Line1b_Language[0]"
+            }
+          ],
+          "maxLength": 18
+        }
+      ],
+      "source": {
+        "formPages": [
+          4
+        ],
+        "instructionPages": [
+          8
+        ]
+      },
+      "when": {
+        "field": "applicant_statement",
+        "equals": "interpreter"
+      }
+    },
+    {
+      "id": "preparer-used",
+      "part": 5,
+      "item": "2",
+      "title": "Did another person prepare this application at your request?",
+      "help": "Select Yes only if the preparer named in Part 7 prepared the application based only on information you provided or authorized. Anyone acting as preparer must complete Part 7 and sign it; the app does not supply a person’s certification.",
+      "fields": [
+        {
+          "id": "preparer_used",
+          "label": "Another person prepared the application",
+          "type": "radio",
+          "required": true,
+          "options": [
+            {
+              "value": "yes",
+              "label": "Yes"
+            },
+            {
+              "value": "no",
+              "label": "No"
+            }
+          ],
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[3].P5_Checkbox2[0]",
+              "option": "yes",
+              "exportValue": "Y"
+            }
+          ]
+        }
+      ],
+      "source": {
+        "formPages": [
+          4
+        ],
+        "instructionPages": [
+          8,
+          9
+        ]
+      }
+    },
+    {
+      "id": "preparer-name",
+      "part": 5,
+      "item": "2",
+      "title": "What is the name of the person who prepared the application?",
+      "help": "Use the same preparer you will identify in Part 7. That person must review, sign and date their certification.",
+      "fields": [
+        {
+          "id": "preparer_full_name",
+          "label": "Name of preparer",
+          "type": "text",
+          "required": true,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[3].P5_Line2_NameofRepresentative[0]"
+            }
+          ]
+        }
+      ],
+      "source": {
+        "formPages": [
+          4
+        ],
+        "instructionPages": [
+          8,
+          9
+        ]
+      },
+      "when": {
+        "field": "preparer_used",
+        "equals": "yes"
+      }
+    },
+    {
+      "id": "applicant-contact",
+      "part": 5,
+      "item": "3–5",
+      "title": "What are your contact details?",
+      "help": "Provide your daytime telephone number, and your mobile telephone number and email address if you have them.",
+      "fields": [
+        {
+          "id": "applicant_phone",
+          "label": "Daytime telephone number",
+          "type": "text",
+          "required": true,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[3].P5_Line3_DaytimePhoneNumber[0]"
+            }
+          ],
+          "maxLength": 13,
+          "validation": "phone"
+        },
+        {
+          "id": "applicant_mobile",
+          "label": "Mobile telephone number, if any",
+          "type": "text",
+          "required": false,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[3].P5_Line4_MobilePhoneNumber[0]"
+            }
+          ],
+          "maxLength": 13,
+          "validation": "phone"
+        },
+        {
+          "id": "applicant_email",
+          "label": "Email address, if any",
+          "type": "text",
+          "required": false,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[3].P5_Line5_EmailAddress[0]"
+            }
+          ],
+          "maxLength": 38,
+          "validation": "email"
+        }
+      ],
+      "source": {
+        "formPages": [
+          4
+        ],
+        "instructionPages": [
+          8
+        ]
+      }
+    },
+    {
+      "id": "interpreter-name",
+      "part": 6,
+      "item": "1.a–2",
+      "title": "Who interpreted the application for you?",
+      "help": "The actual interpreter must provide this information, review the interpreter’s certification, and sign and date Part 6. Include the business or organization name if applicable.",
+      "fields": [
+        {
+          "id": "interpreter_family_name",
+          "label": "Interpreter’s family name",
+          "type": "text",
+          "required": true,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[4].P6_Line1a_InterpretersFamilyName[0]"
+            }
+          ]
+        },
+        {
+          "id": "interpreter_given_name",
+          "label": "Interpreter’s given name",
+          "type": "text",
+          "required": true,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[4].P6_Line1b_InterpretersGivenName[0]"
+            }
+          ]
+        },
+        {
+          "id": "interpreter_business",
+          "label": "Interpreter’s business or organization, if any",
+          "type": "text",
+          "required": false,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[4].P6_Line2_NameofBusinessor[0]"
+            }
+          ],
+          "maxLength": 30
+        }
+      ],
+      "source": {
+        "formPages": [
+          5
+        ],
+        "instructionPages": [
+          8
+        ]
+      },
+      "when": {
+        "field": "applicant_statement",
+        "equals": "interpreter"
+      }
+    },
+    {
+      "id": "interpreter-address",
+      "part": 6,
+      "item": "3.a–3.h",
+      "title": "What is the interpreter’s mailing address?",
+      "help": "Use the interpreter’s address. Complete the fields applicable to a U.S. or foreign address.",
+      "fields": [
+        {
+          "id": "interpreter_street",
+          "label": "Street number and name",
+          "type": "text",
+          "required": true,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[4].P6_Line3a_StreetNumberName[0]"
+            }
+          ],
+          "maxLength": 25
+        },
+        {
+          "id": "interpreter_unit_type",
+          "label": "Apartment, suite or floor",
+          "type": "radio",
+          "required": true,
+          "options": [
+            {
+              "value": "none",
+              "label": "No apartment, suite or floor"
+            },
+            {
+              "value": "apt",
+              "label": "Apartment"
+            },
+            {
+              "value": "ste",
+              "label": "Suite"
+            },
+            {
+              "value": "flr",
+              "label": "Floor"
+            }
+          ],
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[4].P6_checkbox3b_Unit[0]",
+              "option": "apt",
+              "exportValue": " APT "
+            },
+            {
+              "name": "form1[0].#subform[4].P6_checkbox3b_Unit[1]",
+              "option": "ste",
+              "exportValue": " STE "
+            },
+            {
+              "name": "form1[0].#subform[4].P6_checkbox3b_Unit[2]",
+              "option": "flr",
+              "exportValue": " FLR "
+            }
+          ]
+        },
+        {
+          "id": "interpreter_unit",
+          "label": "Apartment, suite or floor number",
+          "type": "text",
+          "required": false,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[4].P6_Line3b_AptSteFlrNumber[0]"
+            }
+          ],
+          "maxLength": 6,
+          "requiredWhen": {
+            "field": "interpreter_unit_type",
+            "oneOf": [
+              "apt",
+              "ste",
+              "flr"
+            ]
+          }
+        },
+        {
+          "id": "interpreter_city",
+          "label": "City or town",
+          "type": "text",
+          "required": true,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[4].P6_Line3c_CityTown[0]"
+            }
+          ],
+          "maxLength": 20
+        },
+        {
+          "id": "interpreter_state",
+          "label": "State (for a U.S. address)",
+          "type": "select",
+          "required": false,
+          "options": [
+            {
+              "value": "AA",
+              "label": "AA"
+            },
+            {
+              "value": "AE",
+              "label": "AE"
+            },
+            {
+              "value": "AK",
+              "label": "AK"
+            },
+            {
+              "value": "AL",
+              "label": "AL"
+            },
+            {
+              "value": "AP",
+              "label": "AP"
+            },
+            {
+              "value": "AR",
+              "label": "AR"
+            },
+            {
+              "value": "AS",
+              "label": "AS"
+            },
+            {
+              "value": "AZ",
+              "label": "AZ"
+            },
+            {
+              "value": "CA",
+              "label": "CA"
+            },
+            {
+              "value": "CO",
+              "label": "CO"
+            },
+            {
+              "value": "CT",
+              "label": "CT"
+            },
+            {
+              "value": "DC",
+              "label": "DC"
+            },
+            {
+              "value": "DE",
+              "label": "DE"
+            },
+            {
+              "value": "FL",
+              "label": "FL"
+            },
+            {
+              "value": "FM",
+              "label": "FM"
+            },
+            {
+              "value": "GA",
+              "label": "GA"
+            },
+            {
+              "value": "GU",
+              "label": "GU"
+            },
+            {
+              "value": "HI",
+              "label": "HI"
+            },
+            {
+              "value": "IA",
+              "label": "IA"
+            },
+            {
+              "value": "ID",
+              "label": "ID"
+            },
+            {
+              "value": "IL",
+              "label": "IL"
+            },
+            {
+              "value": "IN",
+              "label": "IN"
+            },
+            {
+              "value": "KS",
+              "label": "KS"
+            },
+            {
+              "value": "KY",
+              "label": "KY"
+            },
+            {
+              "value": "LA",
+              "label": "LA"
+            },
+            {
+              "value": "MA",
+              "label": "MA"
+            },
+            {
+              "value": "MD",
+              "label": "MD"
+            },
+            {
+              "value": "ME",
+              "label": "ME"
+            },
+            {
+              "value": "MH",
+              "label": "MH"
+            },
+            {
+              "value": "MI",
+              "label": "MI"
+            },
+            {
+              "value": "MN",
+              "label": "MN"
+            },
+            {
+              "value": "MO",
+              "label": "MO"
+            },
+            {
+              "value": "MP",
+              "label": "MP"
+            },
+            {
+              "value": "MS",
+              "label": "MS"
+            },
+            {
+              "value": "MT",
+              "label": "MT"
+            },
+            {
+              "value": "NC",
+              "label": "NC"
+            },
+            {
+              "value": "ND",
+              "label": "ND"
+            },
+            {
+              "value": "NE",
+              "label": "NE"
+            },
+            {
+              "value": "NH",
+              "label": "NH"
+            },
+            {
+              "value": "NJ",
+              "label": "NJ"
+            },
+            {
+              "value": "NM",
+              "label": "NM"
+            },
+            {
+              "value": "NV",
+              "label": "NV"
+            },
+            {
+              "value": "NY",
+              "label": "NY"
+            },
+            {
+              "value": "OH",
+              "label": "OH"
+            },
+            {
+              "value": "OK",
+              "label": "OK"
+            },
+            {
+              "value": "OR",
+              "label": "OR"
+            },
+            {
+              "value": "PA",
+              "label": "PA"
+            },
+            {
+              "value": "PR",
+              "label": "PR"
+            },
+            {
+              "value": "PW",
+              "label": "PW"
+            },
+            {
+              "value": "RI",
+              "label": "RI"
+            },
+            {
+              "value": "SC",
+              "label": "SC"
+            },
+            {
+              "value": "SD",
+              "label": "SD"
+            },
+            {
+              "value": "TN",
+              "label": "TN"
+            },
+            {
+              "value": "TX",
+              "label": "TX"
+            },
+            {
+              "value": "UT",
+              "label": "UT"
+            },
+            {
+              "value": "VA",
+              "label": "VA"
+            },
+            {
+              "value": "VI",
+              "label": "VI"
+            },
+            {
+              "value": "VT",
+              "label": "VT"
+            },
+            {
+              "value": "WA",
+              "label": "WA"
+            },
+            {
+              "value": "WI",
+              "label": "WI"
+            },
+            {
+              "value": "WV",
+              "label": "WV"
+            },
+            {
+              "value": "WY",
+              "label": "WY"
+            }
+          ],
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[4].P6_Line3d_State[0]"
+            }
+          ]
+        },
+        {
+          "id": "interpreter_zip",
+          "label": "ZIP code (for a U.S. address)",
+          "type": "text",
+          "required": false,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[4].P6_Line3e_ZipCode[0]"
+            }
+          ],
+          "maxLength": 5,
+          "validation": "zip"
+        },
+        {
+          "id": "interpreter_province",
+          "label": "Province (for a foreign address)",
+          "type": "text",
+          "required": false,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[4].P6_Line3f_Province[0]"
+            }
+          ],
+          "maxLength": 20
+        },
+        {
+          "id": "interpreter_postal",
+          "label": "Postal code (for a foreign address)",
+          "type": "text",
+          "required": false,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[4].P6_Line3g_PostalCode[0]"
+            }
+          ],
+          "maxLength": 9
+        },
+        {
+          "id": "interpreter_country",
+          "label": "Country",
+          "type": "text",
+          "required": true,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[4].P6_Line3h_Country[0]"
+            }
+          ]
+        }
+      ],
+      "source": {
+        "formPages": [
+          5
+        ],
+        "instructionPages": [
+          8
+        ]
+      },
+      "when": {
+        "field": "applicant_statement",
+        "equals": "interpreter"
+      }
+    },
+    {
+      "id": "interpreter-contact",
+      "part": 6,
+      "item": "4–6",
+      "title": "What are the interpreter’s contact details?",
+      "help": "The interpreter provides a daytime telephone number and mobile number and email address if any.",
+      "fields": [
+        {
+          "id": "interpreter_phone",
+          "label": "Daytime telephone number",
+          "type": "text",
+          "required": true,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[4].P6_Line4_InterpretersDaytimePhoneNumber[0]"
+            }
+          ],
+          "maxLength": 10,
+          "validation": "phone"
+        },
+        {
+          "id": "interpreter_mobile",
+          "label": "Mobile telephone number, if any",
+          "type": "text",
+          "required": false,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[4].P6_Line4_InterpretersDaytimePhoneNumber[1]"
+            }
+          ],
+          "maxLength": 10,
+          "validation": "phone"
+        },
+        {
+          "id": "interpreter_email",
+          "label": "Email address, if any",
+          "type": "text",
+          "required": false,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[4].P6_Line5_InterpretersEmailAddress[0]"
+            }
+          ],
+          "maxLength": 38,
+          "validation": "email"
+        }
+      ],
+      "source": {
+        "formPages": [
+          5
+        ],
+        "instructionPages": [
+          8
+        ]
+      },
+      "when": {
+        "field": "applicant_statement",
+        "equals": "interpreter"
+      }
+    },
+    {
+      "id": "preparer-details",
+      "part": 7,
+      "item": "1.a–2",
+      "title": "What are the preparer’s name and business details?",
+      "help": "The actual person who prepared the form must provide their information. If the same person was also the interpreter, both Parts 6 and 7 must be completed.",
+      "fields": [
+        {
+          "id": "preparer_family_name",
+          "label": "Preparer’s family name",
+          "type": "text",
+          "required": true,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[4].P7_Line1a_FamilyName[0]"
+            }
+          ]
+        },
+        {
+          "id": "preparer_given_name",
+          "label": "Preparer’s given name",
+          "type": "text",
+          "required": true,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[4].P7_Line1b_PreparersGivenName[0]"
+            }
+          ]
+        },
+        {
+          "id": "preparer_business",
+          "label": "Preparer’s business or organization, if any",
+          "type": "text",
+          "required": false,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[4].P7_Line2_NameofBusinessor[0]"
+            }
+          ],
+          "maxLength": 34
+        }
+      ],
+      "source": {
+        "formPages": [
+          5
+        ],
+        "instructionPages": [
+          9
+        ]
+      },
+      "when": {
+        "field": "preparer_used",
+        "equals": "yes"
+      }
+    },
+    {
+      "id": "preparer-address",
+      "part": 7,
+      "item": "3.a–3.h",
+      "title": "What is the preparer’s mailing address?",
+      "help": "Use the preparer’s address. Complete the fields applicable to a U.S. or foreign address.",
+      "fields": [
+        {
+          "id": "preparer_street",
+          "label": "Street number and name",
+          "type": "text",
+          "required": true,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[4].P7_Line3a_StreetNumberName[0]"
+            }
+          ],
+          "maxLength": 25
+        },
+        {
+          "id": "preparer_unit_type",
+          "label": "Apartment, suite or floor",
+          "type": "radio",
+          "required": true,
+          "options": [
+            {
+              "value": "none",
+              "label": "No apartment, suite or floor"
+            },
+            {
+              "value": "apt",
+              "label": "Apartment"
+            },
+            {
+              "value": "ste",
+              "label": "Suite"
+            },
+            {
+              "value": "flr",
+              "label": "Floor"
+            }
+          ],
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[4].P7_checkbox3b_Unit[0]",
+              "option": "apt",
+              "exportValue": " APT "
+            },
+            {
+              "name": "form1[0].#subform[4].P7_checkbox3b_Unit[1]",
+              "option": "ste",
+              "exportValue": " STE "
+            },
+            {
+              "name": "form1[0].#subform[4].P7_checkbox3b_Unit[2]",
+              "option": "flr",
+              "exportValue": " FLR "
+            }
+          ]
+        },
+        {
+          "id": "preparer_unit",
+          "label": "Apartment, suite or floor number",
+          "type": "text",
+          "required": false,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[4].P7_Line3b_AptSteFlrNumber[0]"
+            }
+          ],
+          "maxLength": 6,
+          "requiredWhen": {
+            "field": "preparer_unit_type",
+            "oneOf": [
+              "apt",
+              "ste",
+              "flr"
+            ]
+          }
+        },
+        {
+          "id": "preparer_city",
+          "label": "City or town",
+          "type": "text",
+          "required": true,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[4].P7_Line3c_CityTown[0]"
+            }
+          ],
+          "maxLength": 20
+        },
+        {
+          "id": "preparer_state",
+          "label": "State (for a U.S. address)",
+          "type": "select",
+          "required": false,
+          "options": [
+            {
+              "value": "AA",
+              "label": "AA"
+            },
+            {
+              "value": "AE",
+              "label": "AE"
+            },
+            {
+              "value": "AK",
+              "label": "AK"
+            },
+            {
+              "value": "AL",
+              "label": "AL"
+            },
+            {
+              "value": "AP",
+              "label": "AP"
+            },
+            {
+              "value": "AR",
+              "label": "AR"
+            },
+            {
+              "value": "AS",
+              "label": "AS"
+            },
+            {
+              "value": "AZ",
+              "label": "AZ"
+            },
+            {
+              "value": "CA",
+              "label": "CA"
+            },
+            {
+              "value": "CO",
+              "label": "CO"
+            },
+            {
+              "value": "CT",
+              "label": "CT"
+            },
+            {
+              "value": "DC",
+              "label": "DC"
+            },
+            {
+              "value": "DE",
+              "label": "DE"
+            },
+            {
+              "value": "FL",
+              "label": "FL"
+            },
+            {
+              "value": "FM",
+              "label": "FM"
+            },
+            {
+              "value": "GA",
+              "label": "GA"
+            },
+            {
+              "value": "GU",
+              "label": "GU"
+            },
+            {
+              "value": "HI",
+              "label": "HI"
+            },
+            {
+              "value": "IA",
+              "label": "IA"
+            },
+            {
+              "value": "ID",
+              "label": "ID"
+            },
+            {
+              "value": "IL",
+              "label": "IL"
+            },
+            {
+              "value": "IN",
+              "label": "IN"
+            },
+            {
+              "value": "KS",
+              "label": "KS"
+            },
+            {
+              "value": "KY",
+              "label": "KY"
+            },
+            {
+              "value": "LA",
+              "label": "LA"
+            },
+            {
+              "value": "MA",
+              "label": "MA"
+            },
+            {
+              "value": "MD",
+              "label": "MD"
+            },
+            {
+              "value": "ME",
+              "label": "ME"
+            },
+            {
+              "value": "MH",
+              "label": "MH"
+            },
+            {
+              "value": "MI",
+              "label": "MI"
+            },
+            {
+              "value": "MN",
+              "label": "MN"
+            },
+            {
+              "value": "MO",
+              "label": "MO"
+            },
+            {
+              "value": "MP",
+              "label": "MP"
+            },
+            {
+              "value": "MS",
+              "label": "MS"
+            },
+            {
+              "value": "MT",
+              "label": "MT"
+            },
+            {
+              "value": "NC",
+              "label": "NC"
+            },
+            {
+              "value": "ND",
+              "label": "ND"
+            },
+            {
+              "value": "NE",
+              "label": "NE"
+            },
+            {
+              "value": "NH",
+              "label": "NH"
+            },
+            {
+              "value": "NJ",
+              "label": "NJ"
+            },
+            {
+              "value": "NM",
+              "label": "NM"
+            },
+            {
+              "value": "NV",
+              "label": "NV"
+            },
+            {
+              "value": "NY",
+              "label": "NY"
+            },
+            {
+              "value": "OH",
+              "label": "OH"
+            },
+            {
+              "value": "OK",
+              "label": "OK"
+            },
+            {
+              "value": "OR",
+              "label": "OR"
+            },
+            {
+              "value": "PA",
+              "label": "PA"
+            },
+            {
+              "value": "PR",
+              "label": "PR"
+            },
+            {
+              "value": "PW",
+              "label": "PW"
+            },
+            {
+              "value": "RI",
+              "label": "RI"
+            },
+            {
+              "value": "SC",
+              "label": "SC"
+            },
+            {
+              "value": "SD",
+              "label": "SD"
+            },
+            {
+              "value": "TN",
+              "label": "TN"
+            },
+            {
+              "value": "TX",
+              "label": "TX"
+            },
+            {
+              "value": "UT",
+              "label": "UT"
+            },
+            {
+              "value": "VA",
+              "label": "VA"
+            },
+            {
+              "value": "VI",
+              "label": "VI"
+            },
+            {
+              "value": "VT",
+              "label": "VT"
+            },
+            {
+              "value": "WA",
+              "label": "WA"
+            },
+            {
+              "value": "WI",
+              "label": "WI"
+            },
+            {
+              "value": "WV",
+              "label": "WV"
+            },
+            {
+              "value": "WY",
+              "label": "WY"
+            }
+          ],
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[4].P7_Line3d_State[0]"
+            }
+          ]
+        },
+        {
+          "id": "preparer_zip",
+          "label": "ZIP code (for a U.S. address)",
+          "type": "text",
+          "required": false,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[4].P7_Line3e_ZipCode[0]"
+            }
+          ],
+          "maxLength": 5,
+          "validation": "zip"
+        },
+        {
+          "id": "preparer_province",
+          "label": "Province (for a foreign address)",
+          "type": "text",
+          "required": false,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[4].P7_Line3f_Province[0]"
+            }
+          ],
+          "maxLength": 20
+        },
+        {
+          "id": "preparer_postal",
+          "label": "Postal code (for a foreign address)",
+          "type": "text",
+          "required": false,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[4].P7_Line3g_PostalCode[0]"
+            }
+          ],
+          "maxLength": 9
+        },
+        {
+          "id": "preparer_country",
+          "label": "Country",
+          "type": "text",
+          "required": true,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[4].P7_Line3h_Country[0]"
+            }
+          ]
+        }
+      ],
+      "source": {
+        "formPages": [
+          5
+        ],
+        "instructionPages": [
+          9
+        ]
+      },
+      "when": {
+        "field": "preparer_used",
+        "equals": "yes"
+      }
+    },
+    {
+      "id": "preparer-contact",
+      "part": 7,
+      "item": "4–6",
+      "title": "What are the preparer’s contact details?",
+      "help": "The preparer provides a daytime telephone number and mobile number and email address if any.",
+      "fields": [
+        {
+          "id": "preparer_phone",
+          "label": "Daytime telephone number",
+          "type": "text",
+          "required": true,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[4].P7_Line4_PreparersDaytimePhoneNumber[0]"
+            }
+          ],
+          "maxLength": 10,
+          "validation": "phone"
+        },
+        {
+          "id": "preparer_mobile",
+          "label": "Mobile telephone number, if any",
+          "type": "text",
+          "required": false,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[4].P7_Line5_PreparersFaxNumber[0]"
+            }
+          ],
+          "maxLength": 10,
+          "validation": "phone"
+        },
+        {
+          "id": "preparer_email",
+          "label": "Email address, if any",
+          "type": "text",
+          "required": false,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[4].P7_Line6_PreparersEmailAddress[0]"
+            }
+          ],
+          "maxLength": 38,
+          "validation": "email"
+        }
+      ],
+      "source": {
+        "formPages": [
+          5
+        ],
+        "instructionPages": [
+          9
+        ]
+      },
+      "when": {
+        "field": "preparer_used",
+        "equals": "yes"
+      }
+    },
+    {
+      "id": "preparer-statement",
+      "part": 7,
+      "item": "7.a–7.b",
+      "title": "Which statement applies to the preparer?",
+      "help": "The preparer must choose the statement that is true and review the certification before signing. Do not imply attorney status without that person’s confirmation.",
+      "fields": [
+        {
+          "id": "preparer_status",
+          "label": "Preparer’s statement",
+          "type": "radio",
+          "required": true,
+          "options": [
+            {
+              "value": "non-attorney",
+              "label": "I am not an attorney or accredited representative but prepared this application on behalf of the applicant and with the applicant’s consent."
+            },
+            {
+              "value": "attorney",
+              "label": "I am an attorney or accredited representative."
+            }
+          ],
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[5].P7_checkbox7[0]",
+              "option": "non-attorney",
+              "exportValue": "A"
+            },
+            {
+              "name": "form1[0].#subform[5].P7_checkbox7[1]",
+              "option": "attorney",
+              "exportValue": "B"
+            }
+          ]
+        }
+      ],
+      "source": {
+        "formPages": [
+          6
+        ],
+        "instructionPages": [
+          9
+        ]
+      },
+      "when": {
+        "field": "preparer_used",
+        "equals": "yes"
+      }
+    },
+    {
+      "id": "preparer-representation",
+      "part": 7,
+      "item": "7.b",
+      "title": "Does the preparer’s representation extend beyond preparing this form?",
+      "help": "The attorney or accredited representative must select the applicable option. The instructions explain when a separate Form G-28 may be required.",
+      "fields": [
+        {
+          "id": "preparer_representation",
+          "label": "Scope of representation",
+          "type": "radio",
+          "required": true,
+          "options": [
+            {
+              "value": "extends",
+              "label": "Extends beyond preparing this application"
+            },
+            {
+              "value": "does-not-extend",
+              "label": "Does not extend beyond preparing this application"
+            }
+          ],
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[5].P7_checkbox7Extend[0]",
+              "option": "extends",
+              "exportValue": "E"
+            },
+            {
+              "name": "form1[0].#subform[5].P7_checkbox7Extend[1]",
+              "option": "does-not-extend",
+              "exportValue": "D"
+            }
+          ]
+        }
+      ],
+      "source": {
+        "formPages": [
+          6
+        ],
+        "instructionPages": [
+          9
+        ]
+      },
+      "when": {
+        "all": [
+          {
+            "field": "preparer_used",
+            "equals": "yes"
+          },
+          {
+            "field": "preparer_status",
+            "equals": "attorney"
+          }
+        ]
+      }
+    },
+    {
+      "id": "additional-1",
+      "part": 8,
+      "item": "3.a–3.d",
+      "title": "Additional information 1",
+      "help": "Use this area if you need more room or must explain an answer. Enter the printed page, part and item that your explanation concerns. A Yes to Part 3, Item 4 or 5 requires a detailed explanation. If these five areas are not enough, the official instructions allow a separate sheet with your name, A-Number, page/part/item reference, signature and date.",
+      "fields": [
+        {
+          "id": "additional_1_page",
+          "label": "Page number",
+          "type": "text",
+          "required": false,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[6].P8_Line3a_PageNumber[0]"
+            }
+          ],
+          "maxLength": 2
+        },
+        {
+          "id": "additional_1_part",
+          "label": "Part number",
+          "type": "text",
+          "required": false,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[6].P8_Line3b_PartNumber[0]"
+            }
+          ],
+          "maxLength": 4
+        },
+        {
+          "id": "additional_1_item",
+          "label": "Item number",
+          "type": "text",
+          "required": false,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[6].P8_Line3c_ItemNumber[0]"
+            }
+          ],
+          "maxLength": 4
+        },
+        {
+          "id": "additional_1_text",
+          "label": "Additional information",
+          "type": "textarea",
+          "required": false,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[6].P8_Line3d_AdditionalInfo[0]"
+            }
+          ]
+        }
+      ],
+      "source": {
+        "formPages": [
+          7
+        ],
+        "instructionPages": [
+          2,
+          8
+        ]
+      }
+    },
+    {
+      "id": "additional-2",
+      "part": 8,
+      "item": "4.a–4.d",
+      "title": "Additional information 2",
+      "help": "Use this area if you need more room or must explain an answer. Enter the printed page, part and item that your explanation concerns. A Yes to Part 3, Item 4 or 5 requires a detailed explanation. If these five areas are not enough, the official instructions allow a separate sheet with your name, A-Number, page/part/item reference, signature and date.",
+      "fields": [
+        {
+          "id": "additional_2_page",
+          "label": "Page number",
+          "type": "text",
+          "required": false,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[6].P8_Line5a_PageNumber[1]"
+            }
+          ],
+          "maxLength": 2
+        },
+        {
+          "id": "additional_2_part",
+          "label": "Part number",
+          "type": "text",
+          "required": false,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[6].P8_Line5b_PartNumber[1]"
+            }
+          ],
+          "maxLength": 4
+        },
+        {
+          "id": "additional_2_item",
+          "label": "Item number",
+          "type": "text",
+          "required": false,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[6].P8_Line5c_ItemNumber[1]"
+            }
+          ],
+          "maxLength": 4
+        },
+        {
+          "id": "additional_2_text",
+          "label": "Additional information",
+          "type": "textarea",
+          "required": false,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[6].P8_Line5d_AdditionalInfo[1]"
+            }
+          ]
+        }
+      ],
+      "source": {
+        "formPages": [
+          7
+        ],
+        "instructionPages": [
+          2,
+          8
+        ]
+      }
+    },
+    {
+      "id": "additional-3",
+      "part": 8,
+      "item": "5.a–5.d",
+      "title": "Additional information 3",
+      "help": "Use this area if you need more room or must explain an answer. Enter the printed page, part and item that your explanation concerns. A Yes to Part 3, Item 4 or 5 requires a detailed explanation. If these five areas are not enough, the official instructions allow a separate sheet with your name, A-Number, page/part/item reference, signature and date.",
+      "fields": [
+        {
+          "id": "additional_3_page",
+          "label": "Page number",
+          "type": "text",
+          "required": false,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[6].P8_Line4a_PageNumber[0]"
+            }
+          ],
+          "maxLength": 2
+        },
+        {
+          "id": "additional_3_part",
+          "label": "Part number",
+          "type": "text",
+          "required": false,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[6].P8_Line4b_PartNumber[0]"
+            }
+          ],
+          "maxLength": 4
+        },
+        {
+          "id": "additional_3_item",
+          "label": "Item number",
+          "type": "text",
+          "required": false,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[6].P8_Line4c_ItemNumber[0]"
+            }
+          ],
+          "maxLength": 4
+        },
+        {
+          "id": "additional_3_text",
+          "label": "Additional information",
+          "type": "textarea",
+          "required": false,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[6].P8_Line4d_AdditionalInfo[0]"
+            }
+          ]
+        }
+      ],
+      "source": {
+        "formPages": [
+          7
+        ],
+        "instructionPages": [
+          2,
+          8
+        ]
+      }
+    },
+    {
+      "id": "additional-4",
+      "part": 8,
+      "item": "6.a–6.d",
+      "title": "Additional information 4",
+      "help": "Use this area if you need more room or must explain an answer. Enter the printed page, part and item that your explanation concerns. A Yes to Part 3, Item 4 or 5 requires a detailed explanation. If these five areas are not enough, the official instructions allow a separate sheet with your name, A-Number, page/part/item reference, signature and date.",
+      "fields": [
+        {
+          "id": "additional_4_page",
+          "label": "Page number",
+          "type": "text",
+          "required": false,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[6].P8_Line5a_PageNumber[0]"
+            }
+          ],
+          "maxLength": 2
+        },
+        {
+          "id": "additional_4_part",
+          "label": "Part number",
+          "type": "text",
+          "required": false,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[6].P8_Line5b_PartNumber[0]"
+            }
+          ],
+          "maxLength": 4
+        },
+        {
+          "id": "additional_4_item",
+          "label": "Item number",
+          "type": "text",
+          "required": false,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[6].P8_Line5c_ItemNumber[0]"
+            }
+          ],
+          "maxLength": 4
+        },
+        {
+          "id": "additional_4_text",
+          "label": "Additional information",
+          "type": "textarea",
+          "required": false,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[6].P8_Line5d_AdditionalInfo[0]"
+            }
+          ]
+        }
+      ],
+      "source": {
+        "formPages": [
+          7
+        ],
+        "instructionPages": [
+          2,
+          8
+        ]
+      }
+    },
+    {
+      "id": "additional-5",
+      "part": 8,
+      "item": "7.a–7.d",
+      "title": "Additional information 5",
+      "help": "Use this area if you need more room or must explain an answer. Enter the printed page, part and item that your explanation concerns. A Yes to Part 3, Item 4 or 5 requires a detailed explanation. If these five areas are not enough, the official instructions allow a separate sheet with your name, A-Number, page/part/item reference, signature and date.",
+      "fields": [
+        {
+          "id": "additional_5_page",
+          "label": "Page number",
+          "type": "text",
+          "required": false,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[6].P8_Line5a_PageNumber[2]"
+            }
+          ],
+          "maxLength": 2
+        },
+        {
+          "id": "additional_5_part",
+          "label": "Part number",
+          "type": "text",
+          "required": false,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[6].P8_Line5b_PartNumber[2]"
+            }
+          ],
+          "maxLength": 4
+        },
+        {
+          "id": "additional_5_item",
+          "label": "Item number",
+          "type": "text",
+          "required": false,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[6].P8_Line5c_ItemNumber[2]"
+            }
+          ],
+          "maxLength": 4
+        },
+        {
+          "id": "additional_5_text",
+          "label": "Additional information",
+          "type": "textarea",
+          "required": false,
+          "pdfFields": [
+            {
+              "name": "form1[0].#subform[6].P8_Line5d_AdditionalInfo[2]"
+            }
+          ]
+        }
+      ],
+      "source": {
+        "formPages": [
+          7
+        ],
+        "instructionPages": [
+          2,
+          8
+        ]
+      }
+    }
+  ],
+  "derived": [
+    {
+      "name": "form1[0].#subform[6].P1_Line3a_FamilyName[1]",
+      "fromField": "family_name"
+    },
+    {
+      "name": "form1[0].#subform[6].P1_Line3b_GivenName[1]",
+      "fromField": "given_name"
+    },
+    {
+      "name": "form1[0].#subform[6].P1_Line3c_MiddleName[1]",
+      "fromField": "middle_name"
+    },
+    {
+      "name": "form1[0].#subform[6].#area[3].P1_Line1_AlienNumber[1]",
+      "fromField": "alien_number"
+    },
+    {
+      "name": "form1[0].#subform[4].P6_Language[0]",
+      "fromField": "interpreter_language",
+      "when": {
+        "field": "applicant_statement",
+        "equals": "interpreter"
+      }
+    }
+  ],
+  "signing": [
+    {
+      "role": "Applicant",
+      "part": 5,
+      "page": 4,
+      "instruction": "Applicant: review the full certification on printed page 4, then sign in ink and enter the signing date. The app leaves both spaces blank. A typed name is not a signature.",
+      "blankPdfFields": [
+        "form1[0].#subform[3].P5_Line6a_SignatureofApplicant[0]",
+        "form1[0].#subform[3].P5_Line6b_DateofSignature[0]"
+      ]
+    },
+    {
+      "role": "Interpreter",
+      "part": 6,
+      "page": 5,
+      "instruction": "Interpreter: review the full certification on printed page 5, then sign in ink and enter the signing date. The app leaves both spaces blank. A typed name is not a signature.",
+      "blankPdfFields": [
+        "form1[0].#subform[4].P6_Line6a_Signature[0]",
+        "form1[0].#subform[4].P6_Line6b_DateofSignature[0]"
+      ],
+      "when": {
+        "field": "applicant_statement",
+        "equals": "interpreter"
+      }
+    },
+    {
+      "role": "Preparer",
+      "part": 7,
+      "page": 6,
+      "instruction": "Preparer: review the full certification on printed page 6, then sign in ink and enter the signing date. The app leaves both spaces blank. A typed name is not a signature.",
+      "blankPdfFields": [
+        "form1[0].#subform[5].P7_Line8a_SignatureofPreparer[0]",
+        "form1[0].#subform[5].P7_Line8b_DateofSignature[0]"
+      ],
+      "when": {
+        "field": "preparer_used",
+        "equals": "yes"
+      }
+    }
+  ],
+  "excluded": [
+    {
+      "name": "form1[0].#pageSet[0].Page1[0].PDF417BarCode1[0]",
+      "reason": "USCIS barcode. Do not collect, generate or populate."
+    },
+    {
+      "name": "form1[0].#pageSet[0].Page1[1].PDF417BarCode1[0]",
+      "reason": "USCIS barcode. Do not collect, generate or populate."
+    },
+    {
+      "name": "form1[0].#pageSet[0].Page1[2].PDF417BarCode1[0]",
+      "reason": "USCIS barcode. Do not collect, generate or populate."
+    },
+    {
+      "name": "form1[0].#pageSet[0].Page1[3].PDF417BarCode1[0]",
+      "reason": "USCIS barcode. Do not collect, generate or populate."
+    },
+    {
+      "name": "form1[0].#pageSet[0].Page1[4].PDF417BarCode1[0]",
+      "reason": "USCIS barcode. Do not collect, generate or populate."
+    },
+    {
+      "name": "form1[0].#pageSet[0].Page1[5].PDF417BarCode1[0]",
+      "reason": "USCIS barcode. Do not collect, generate or populate."
+    },
+    {
+      "name": "form1[0].#pageSet[0].Page1[6].PDF417BarCode1[0]",
+      "reason": "USCIS barcode. Do not collect, generate or populate."
+    }
+  ],
+  "printFields": [
+    {
+      "name": "form1[0].#pageSet[0].Page1[0].PDF417BarCode1[0]",
+      "type": "/Tx",
+      "maxLength": null,
+      "disposition": "barcode",
+      "approvedForPrint": false
+    },
+    {
+      "name": "form1[0].#subform[0].P1_Line3a_FamilyName[0]",
+      "type": "/Tx",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[0].P1_Line3b_GivenName[0]",
+      "type": "/Tx",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[0].P1_Line3c_MiddleName[0]",
+      "type": "/Tx",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[0].P1_checkbox4[0]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[0].P1_checkbox4[1]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[0].P1_checkbox4[2]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[0].P1_Line6a_InCareofName[0]",
+      "type": "/Tx",
+      "maxLength": 34,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[0].P1_Line6b_StreetNumberName[0]",
+      "type": "/Tx",
+      "maxLength": 25,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[0].P1_Line6c_AptSteFlrNumber[0]",
+      "type": "/Tx",
+      "maxLength": 6,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[0].P1_Line6d_CityOrTown[0]",
+      "type": "/Tx",
+      "maxLength": 20,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[0].P1_Line6h_PostalCode[0]",
+      "type": "/Tx",
+      "maxLength": 9,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[0].P1_Line6f_ZipCode[0]",
+      "type": "/Tx",
+      "maxLength": 5,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[0].P1_Line6e_State[0]",
+      "type": "/Ch",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[0].P1_Line6i_Country[0]",
+      "type": "/Tx",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[0].P1_Line5a_FamilyName[0]",
+      "type": "/Tx",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[0].P1_Line5b_GivenName[0]",
+      "type": "/Tx",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[0].P1_Line5c_MiddleName[0]",
+      "type": "/Tx",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[0].P1_Line2_AcctIdentifier[0]",
+      "type": "/Tx",
+      "maxLength": 12,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[0].P1_Line6g_Province[0]",
+      "type": "/Tx",
+      "maxLength": 20,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[0].#area[1].P1_Line1_AlienNumber[0]",
+      "type": "/Tx",
+      "maxLength": 9,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[0].P1_checkbox6c_Unit[0]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[0].P1_checkbox6c_Unit[1]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[0].P1_checkbox6c_Unit[2]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[0].P1_Line7a_StreetNumberName[0]",
+      "type": "/Tx",
+      "maxLength": 25,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[0].P1_Line7c_CityOrTown[0]",
+      "type": "/Tx",
+      "maxLength": 20,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[0].P1_Line7e_ZipCode[0]",
+      "type": "/Tx",
+      "maxLength": 5,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[0].P1_Line7b_AptSteFlrNumber[0]",
+      "type": "/Tx",
+      "maxLength": 6,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[0].P1_Line7h_Country[0]",
+      "type": "/Tx",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[0].P1_Line7g_PostalCode[0]",
+      "type": "/Tx",
+      "maxLength": 9,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[0].P1_Line7f_Province[0]",
+      "type": "/Tx",
+      "maxLength": 20,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[0].P1_checkbox7b_Unit[0]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[0].P1_checkbox7b_Unit[1]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[0].P1_checkbox7b_Unit[2]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[0].P1_Line7d_State[0]",
+      "type": "/Ch",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#pageSet[0].Page1[1].PDF417BarCode1[0]",
+      "type": "/Tx",
+      "maxLength": null,
+      "disposition": "barcode",
+      "approvedForPrint": false
+    },
+    {
+      "name": "form1[0].#subform[1].P1_Line9_DateOfBirth[0]",
+      "type": "/Tx",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[1].P1_Line10_CityTownOfBirth[0]",
+      "type": "/Tx",
+      "maxLength": 38,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[1].P1_Line11_CountryofBirth[0]",
+      "type": "/Tx",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[1].P1_Line16_SSN[0]",
+      "type": "/Tx",
+      "maxLength": 9,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[1].P1_Line15_DateOfAdmission[0]",
+      "type": "/Tx",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[1].P1_Line14_ClassOfAdmission[0]",
+      "type": "/Tx",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[1].P2_checkbox2[0]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[1].P2_checkbox2[1]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[1].P2_checkbox2[2]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[1].P2_checkbox2[3]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[1].P2_checkbox2[4]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[1].P1_Line12_MotherGivenName[0]",
+      "type": "/Tx",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[1].P1_Line13_FatherGivenName[0]",
+      "type": "/Tx",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[1].P2_checkbox2[5]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[1].P2_checkbox2[6]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[1].P2_checkbox2[7]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[1].P1_Line8_male[0]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[1].P1_Line8_female[0]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[1].P2_checkbox1[0]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[1].P2_checkbox1[1]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[1].P2_checkbox1[2]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[1].P2_checkbox2[8]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[1].P2_checkbox2[9]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[1].P2_checkbox2[10]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[1].P2_checkbox2[11]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[1].P2_Line2h1_CityandState[0]",
+      "type": "/Tx",
+      "maxLength": 25,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#pageSet[0].Page1[2].PDF417BarCode1[0]",
+      "type": "/Tx",
+      "maxLength": null,
+      "disposition": "barcode",
+      "approvedForPrint": false
+    },
+    {
+      "name": "form1[0].#subform[2].P3_Line1_LocationAppliedVisa[0]",
+      "type": "/Tx",
+      "maxLength": 38,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[2].P3_Line2_LocationIssuedVisa[0]",
+      "type": "/Tx",
+      "maxLength": 38,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[2].P3_checkbox4[0]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[2].P3_checkbox4[1]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[2].P3_checkbox5[0]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[2].P3_checkbox5[1]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[2].P3_Line8_HeightFeet[0]",
+      "type": "/Ch",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[2].P3_Line8_HeightInches[0]",
+      "type": "/Ch",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[2].P2_checkbox3[0]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[2].P2_checkbox3[1]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[2].P2_checkbox3[2]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[2].P2_checkbox3[3]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[2].P2_checkbox3[4]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[2].P3_Line9_HeightInches1[0]",
+      "type": "/Tx",
+      "maxLength": 1,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[2].P3_Line9_HeightInches2[0]",
+      "type": "/Tx",
+      "maxLength": 1,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[2].P3_Line9_HeightInches3[0]",
+      "type": "/Tx",
+      "maxLength": 1,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[2].P3_checkbox6[0]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[2].P3_checkbox6[1]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[2].P3_checkbox7_Hawaiian[0]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[2].P3_checkbox7_Indian[0]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[2].P3_checkbox7_White[0]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[2].P3_checkbox7_Asian[0]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[2].P3_checkbox7_Black[0]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[2].P3_checkbox10[0]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[2].P3_checkbox10[1]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[2].P3_checkbox10[2]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[2].P3_checkbox10[3]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[2].P3_checkbox10[4]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[2].P3_checkbox10[5]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[2].P3_checkbox10[6]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[2].P3_checkbox10[7]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[2].P3_checkbox10[8]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[2].P3_Line3a1_CityandState[0]",
+      "type": "/Tx",
+      "maxLength": 25,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[2].P3_Line3a_Destination[0]",
+      "type": "/Tx",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[2].P3_checkbox11[0]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[2].P3_checkbox11[1]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[2].P3_checkbox11[2]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[2].P3_checkbox11[3]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[2].P3_checkbox11[4]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[2].P3_checkbox11[5]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[2].P3_checkbox11[6]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[2].P3_checkbox11[7]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[2].P3_checkbox11[8]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[2].P4_checkbox1[0]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[2].P4_checkbox1[1]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[2].P4_checkbox1a[0]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[2].P4_Line1a_AccomodationRequested[0]",
+      "type": "/Tx",
+      "maxLength": 140,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#pageSet[0].Page1[3].PDF417BarCode1[0]",
+      "type": "/Tx",
+      "maxLength": null,
+      "disposition": "barcode",
+      "approvedForPrint": false
+    },
+    {
+      "name": "form1[0].#subform[3].P4_checkbox1b[0]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[3].P4_Line1b_AccomodationRequested[0]",
+      "type": "/Tx",
+      "maxLength": 140,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[3].P4_checkbox1c[0]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[3].P4_Line1c_AccomodationRequested[0]",
+      "type": "/Tx",
+      "maxLength": 140,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[3].P5_Checkbox1b[0]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[3].P5_Line1b_Language[0]",
+      "type": "/Tx",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[3].P5_Checkbox1a[0]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[3].P5_Checkbox2[0]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[3].P5_Line2_NameofRepresentative[0]",
+      "type": "/Tx",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[3].P5_Line5_EmailAddress[0]",
+      "type": "/Tx",
+      "maxLength": 38,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[3].P5_Line3_DaytimePhoneNumber[0]",
+      "type": "/Tx",
+      "maxLength": 13,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[3].P5_Line4_MobilePhoneNumber[0]",
+      "type": "/Tx",
+      "maxLength": 13,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[3].P5_Line6b_DateofSignature[0]",
+      "type": "/Tx",
+      "maxLength": null,
+      "disposition": "signature",
+      "approvedForPrint": false
+    },
+    {
+      "name": "form1[0].#subform[3].P5_Line6a_SignatureofApplicant[0]",
+      "type": "/Tx",
+      "maxLength": null,
+      "disposition": "signature",
+      "approvedForPrint": false
+    },
+    {
+      "name": "form1[0].#pageSet[0].Page1[4].PDF417BarCode1[0]",
+      "type": "/Tx",
+      "maxLength": null,
+      "disposition": "barcode",
+      "approvedForPrint": false
+    },
+    {
+      "name": "form1[0].#subform[4].P6_Line1b_InterpretersGivenName[0]",
+      "type": "/Tx",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[4].P6_Line1a_InterpretersFamilyName[0]",
+      "type": "/Tx",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[4].P6_Line2_NameofBusinessor[0]",
+      "type": "/Tx",
+      "maxLength": 30,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[4].P6_Line3c_CityTown[0]",
+      "type": "/Tx",
+      "maxLength": 20,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[4].P6_Line3a_StreetNumberName[0]",
+      "type": "/Tx",
+      "maxLength": 25,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[4].P6_Line3b_AptSteFlrNumber[0]",
+      "type": "/Tx",
+      "maxLength": 6,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[4].P6_Line3f_Province[0]",
+      "type": "/Tx",
+      "maxLength": 20,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[4].P6_Line3e_ZipCode[0]",
+      "type": "/Tx",
+      "maxLength": 5,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[4].P6_Line3d_State[0]",
+      "type": "/Ch",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[4].P6_Line3h_Country[0]",
+      "type": "/Tx",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[4].P6_Line3g_PostalCode[0]",
+      "type": "/Tx",
+      "maxLength": 9,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[4].P6_checkbox3b_Unit[0]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[4].P6_checkbox3b_Unit[1]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[4].P6_checkbox3b_Unit[2]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[4].P6_Line5_InterpretersEmailAddress[0]",
+      "type": "/Tx",
+      "maxLength": 38,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[4].P6_Line4_InterpretersDaytimePhoneNumber[0]",
+      "type": "/Tx",
+      "maxLength": 10,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[4].P6_Line4_InterpretersDaytimePhoneNumber[1]",
+      "type": "/Tx",
+      "maxLength": 10,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[4].P6_Language[0]",
+      "type": "/Tx",
+      "maxLength": 18,
+      "disposition": "derived",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[4].P6_Line6b_DateofSignature[0]",
+      "type": "/Tx",
+      "maxLength": null,
+      "disposition": "signature",
+      "approvedForPrint": false
+    },
+    {
+      "name": "form1[0].#subform[4].P6_Line6a_Signature[0]",
+      "type": "/Tx",
+      "maxLength": 1,
+      "disposition": "signature",
+      "approvedForPrint": false
+    },
+    {
+      "name": "form1[0].#subform[4].P7_Line1a_FamilyName[0]",
+      "type": "/Tx",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[4].P7_Line1b_PreparersGivenName[0]",
+      "type": "/Tx",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[4].P7_Line2_NameofBusinessor[0]",
+      "type": "/Tx",
+      "maxLength": 34,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[4].P7_Line3c_CityTown[0]",
+      "type": "/Tx",
+      "maxLength": 20,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[4].P7_Line3a_StreetNumberName[0]",
+      "type": "/Tx",
+      "maxLength": 25,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[4].P7_Line3b_AptSteFlrNumber[0]",
+      "type": "/Tx",
+      "maxLength": 6,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[4].P7_Line3f_Province[0]",
+      "type": "/Tx",
+      "maxLength": 20,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[4].P7_Line3e_ZipCode[0]",
+      "type": "/Tx",
+      "maxLength": 5,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[4].P7_Line3d_State[0]",
+      "type": "/Ch",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[4].P7_Line3h_Country[0]",
+      "type": "/Tx",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[4].P7_Line3g_PostalCode[0]",
+      "type": "/Tx",
+      "maxLength": 9,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[4].P7_checkbox3b_Unit[0]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[4].P7_checkbox3b_Unit[1]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[4].P7_checkbox3b_Unit[2]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[4].P7_Line6_PreparersEmailAddress[0]",
+      "type": "/Tx",
+      "maxLength": 38,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[4].P7_Line4_PreparersDaytimePhoneNumber[0]",
+      "type": "/Tx",
+      "maxLength": 10,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[4].P7_Line5_PreparersFaxNumber[0]",
+      "type": "/Tx",
+      "maxLength": 10,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#pageSet[0].Page1[5].PDF417BarCode1[0]",
+      "type": "/Tx",
+      "maxLength": null,
+      "disposition": "barcode",
+      "approvedForPrint": false
+    },
+    {
+      "name": "form1[0].#subform[5].P7_checkbox7[0]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[5].P7_checkbox7[1]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[5].P7_checkbox7Extend[0]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[5].P7_checkbox7Extend[1]",
+      "type": "/Btn",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[5].P7_Line8a_SignatureofPreparer[0]",
+      "type": "/Tx",
+      "maxLength": 1,
+      "disposition": "signature",
+      "approvedForPrint": false
+    },
+    {
+      "name": "form1[0].#subform[5].P7_Line8b_DateofSignature[0]",
+      "type": "/Tx",
+      "maxLength": null,
+      "disposition": "signature",
+      "approvedForPrint": false
+    },
+    {
+      "name": "form1[0].#pageSet[0].Page1[6].PDF417BarCode1[0]",
+      "type": "/Tx",
+      "maxLength": null,
+      "disposition": "barcode",
+      "approvedForPrint": false
+    },
+    {
+      "name": "form1[0].#subform[6].P8_Line3d_AdditionalInfo[0]",
+      "type": "/Tx",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[6].P8_Line5a_PageNumber[0]",
+      "type": "/Tx",
+      "maxLength": 2,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[6].P8_Line5b_PartNumber[0]",
+      "type": "/Tx",
+      "maxLength": 4,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[6].P8_Line5c_ItemNumber[0]",
+      "type": "/Tx",
+      "maxLength": 4,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[6].P8_Line5d_AdditionalInfo[0]",
+      "type": "/Tx",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[6].P8_Line4d_AdditionalInfo[0]",
+      "type": "/Tx",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[6].P8_Line3a_PageNumber[0]",
+      "type": "/Tx",
+      "maxLength": 2,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[6].P8_Line3b_PartNumber[0]",
+      "type": "/Tx",
+      "maxLength": 4,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[6].P8_Line3c_ItemNumber[0]",
+      "type": "/Tx",
+      "maxLength": 4,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[6].P8_Line4a_PageNumber[0]",
+      "type": "/Tx",
+      "maxLength": 2,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[6].P8_Line4b_PartNumber[0]",
+      "type": "/Tx",
+      "maxLength": 4,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[6].P8_Line4c_ItemNumber[0]",
+      "type": "/Tx",
+      "maxLength": 4,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[6].P1_Line3a_FamilyName[1]",
+      "type": "/Tx",
+      "maxLength": null,
+      "disposition": "derived",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[6].P1_Line3b_GivenName[1]",
+      "type": "/Tx",
+      "maxLength": null,
+      "disposition": "derived",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[6].P1_Line3c_MiddleName[1]",
+      "type": "/Tx",
+      "maxLength": null,
+      "disposition": "derived",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[6].P8_Line5a_PageNumber[1]",
+      "type": "/Tx",
+      "maxLength": 2,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[6].P8_Line5b_PartNumber[1]",
+      "type": "/Tx",
+      "maxLength": 4,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[6].P8_Line5c_ItemNumber[1]",
+      "type": "/Tx",
+      "maxLength": 4,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[6].P8_Line5d_AdditionalInfo[1]",
+      "type": "/Tx",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[6].P8_Line5a_PageNumber[2]",
+      "type": "/Tx",
+      "maxLength": 2,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[6].P8_Line5b_PartNumber[2]",
+      "type": "/Tx",
+      "maxLength": 4,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[6].P8_Line5c_ItemNumber[2]",
+      "type": "/Tx",
+      "maxLength": 4,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[6].P8_Line5d_AdditionalInfo[2]",
+      "type": "/Tx",
+      "maxLength": null,
+      "disposition": "answer",
+      "approvedForPrint": true
+    },
+    {
+      "name": "form1[0].#subform[6].#area[3].P1_Line1_AlienNumber[1]",
+      "type": "/Tx",
+      "maxLength": 9,
+      "disposition": "derived",
+      "approvedForPrint": true
+    }
+  ],
+  "validationRules": [
+    {
+      "type": "additional-information",
+      "when": {
+        "field": "removal_history",
+        "equals": "yes"
+      },
+      "requiredReference": {
+        "page": "3",
+        "part": "3",
+        "item": "4"
+      },
+      "message": "Add a detailed explanation for Part 3, Item 4 in Part 8."
+    },
+    {
+      "type": "additional-information",
+      "when": {
+        "field": "abandonment_history",
+        "equals": "yes"
+      },
+      "requiredReference": {
+        "page": "3",
+        "part": "3",
+        "item": "5"
+      },
+      "message": "Add a detailed explanation for Part 3, Item 5 in Part 8."
+    },
+    {
+      "type": "additional-information-completeness",
+      "prefix": "additional_",
+      "count": 5,
+      "message": "Each additional-information entry needs a page, part, item and explanation."
+    },
+    {
+      "type": "address-completeness",
+      "prefixes": [
+        "mail",
+        "physical",
+        "interpreter",
+        "preparer"
+      ],
+      "message": "For a U.S. address, enter state and ZIP code; for a foreign address, complete the applicable province/postal fields."
+    }
+  ],
+  "coverage": {
+    "officialWidgets": 195,
+    "mappedAnswerWidgets": 177,
+    "derivedWidgets": 5,
+    "blankSignatureAndDateWidgets": 6,
+    "excludedBarcodes": 7
+  },
+  "reviewNotes": [
+    "Checkboxes are explicitly grouped using visible question labels. Each PDF checkbox retains its exact export state; do not write yes/no strings directly into PDF buttons.",
+    "Read-only XFA-dependent fields remain included when they are applicant inputs. Their conditions are represented by interview rules rather than Adobe JavaScript.",
+    "Weight is collected as one three-digit value and mapped to the three official digit widgets.",
+    "The original field names for interpreter mobile phone, preparer mobile phone and Part 8 repeated entries do not match their printed numbering; mapping follows official tooltips and visible page text.",
+    "Signature and signature-date fields are intentionally blank for the actual signer after printing. Preparer and interpreter certifications must not be inferred from AI use.",
+    "The form page includes a never-received-card name-change option even though the instructions describe that branch differently; the interview preserves the printed form options.",
+    "No field value may be silently truncated; PDF output must stop if an answer does not fit and direct the user to Part 8 or an additional sheet."
+  ]
+}

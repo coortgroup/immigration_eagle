@@ -15,6 +15,7 @@ import {
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { cloudRequested } from '../cloudClient';
 import { LiveAssistant, liveAiEnabled } from '../components/LiveAssistant';
+import { AssistantWelcome } from '../components/AssistantWelcome';
 import { EmailAccess } from '../components/EmailAccess';
 import { submitRequest, useRequestDelivery, useRequestIdentity, type RequestReceipt } from '../requestDelivery';
 
@@ -73,6 +74,7 @@ export function AssistantScreen({ contactRequest = 0, isActive = true }: Assista
   const previousRequestUser = useRef(delivery.user?.id);
   const [message, setMessage] = useState('');
   const [turns, setTurns] = useState<ChatTurn[]>([]);
+  const [examplesOpen, setExamplesOpen] = useState(false);
   const lastContactRequest = useRef(0);
   const turnId = useRef(0);
   const scrollRef = useRef<ScrollView>(null);
@@ -164,6 +166,7 @@ export function AssistantScreen({ contactRequest = 0, isActive = true }: Assista
     const id = ++turnId.current;
     shouldScrollChat.current = true;
     setTurns(current => [...current, { id, question: trimmed, answer }]);
+    setExamplesOpen(false);
     setMessage('');
     Keyboard.dismiss();
     AccessibilityInfo.announceForAccessibility(`Demo response. ${answer}`);
@@ -194,19 +197,12 @@ export function AssistantScreen({ contactRequest = 0, isActive = true }: Assista
 
   return (
     <KeyboardAvoidingView style={styles.screen} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-      <ScrollView
+      {contactOpen ? <ScrollView
         ref={scrollRef}
         contentContainerStyle={styles.content}
         keyboardShouldPersistTaps="handled"
         keyboardDismissMode="on-drag"
-        onContentSizeChange={() => {
-          if (shouldScrollChat.current && !contactOpen) {
-            shouldScrollChat.current = false;
-            scrollRef.current?.scrollToEnd({ animated: true });
-          }
-        }}
       >
-        {contactOpen ? (
           <>
             <Pressable accessibilityRole="button" onPress={preview ? backToForm : closeContact} style={({ pressed }) => [styles.backButton, pressed && styles.pressed]}>
               <Ionicons name="chevron-back" size={20} color="#092653" />
@@ -266,8 +262,8 @@ export function AssistantScreen({ contactRequest = 0, isActive = true }: Assista
               </>
             )}
           </>
-        ) : (
-          <>
+      </ScrollView> : (
+          <View style={styles.chatPage}>
             <View style={styles.header}>
               <View style={styles.brand}>
                 <Text accessibilityRole="header" style={styles.aiTitle}>FILLOUT AI</Text>
@@ -276,13 +272,20 @@ export function AssistantScreen({ contactRequest = 0, isActive = true }: Assista
                 <Text style={styles.contactButtonText}>Contact us</Text>
               </Pressable>
             </View>
-            {cloudRequested && liveAiEnabled ? <LiveAssistant /> : <>
-            <View style={styles.demoBadge}>
-              <View style={styles.demoDot} />
-              <Text style={styles.demoBadgeText}>DEMO · SCRIPTED RESPONSES</Text>
-            </View>
-            <Text style={styles.demoDescription}>Explore example guidance. Live AI is not connected, and chat messages are not sent.</Text>
-
+            {cloudRequested && liveAiEnabled ? <LiveAssistant /> : <View style={styles.chatBody}>
+            <ScrollView
+              ref={scrollRef}
+              style={styles.chatScroll}
+              contentContainerStyle={styles.chatContent}
+              keyboardShouldPersistTaps="handled"
+              keyboardDismissMode="on-drag"
+              onContentSizeChange={() => {
+                if (shouldScrollChat.current) {
+                  shouldScrollChat.current = false;
+                  scrollRef.current?.scrollToEnd({ animated: true });
+                }
+              }}
+            >
             {turns.length ? (
               <View style={styles.conversation}>
                 <Pressable accessibilityRole="button" accessibilityLabel="Clear this demo conversation" onPress={() => { setTurns([]); setMessage(''); scrollRef.current?.scrollTo({ y: 0, animated: false }); }} style={({ pressed }) => [styles.clearButton, pressed && styles.pressed]}>
@@ -300,32 +303,36 @@ export function AssistantScreen({ contactRequest = 0, isActive = true }: Assista
                 ))}
               </View>
             ) : (
-              <View style={styles.welcome}>
-                <Text accessibilityRole="header" style={styles.welcomeTitle}>How can I help?</Text>
-                <Text style={styles.welcomeCopy}>A little clarity for your next step.</Text>
-              </View>
+              <AssistantWelcome />
             )}
-
-            <View style={styles.prompts}>
+            </ScrollView>
+            <View style={styles.composerDock}>
+            <View style={styles.demoRow}>
+              <Text style={styles.demoBadgeText}>Demo · scripted responses</Text>
+              <Pressable accessibilityRole="button" accessibilityState={{ expanded: examplesOpen }} onPress={() => setExamplesOpen(current => !current)} style={styles.examplesButton}>
+                <Text style={styles.examplesText}>Examples</Text>
+                <Ionicons name={examplesOpen ? 'chevron-down' : 'chevron-up'} size={13} color="#667085" />
+              </Pressable>
+            </View>
+            {examplesOpen && <ScrollView horizontal showsHorizontalScrollIndicator={false} keyboardShouldPersistTaps="handled" contentContainerStyle={styles.prompts}>
               {PROMPTS.map(prompt => (
                 <Pressable key={prompt.id} accessibilityRole="button" accessibilityHint="Shows a scripted example response." onPress={() => addTurn(prompt.label, prompt.id)} style={({ pressed }) => [styles.prompt, pressed && styles.pressed]}>
-                  <Ionicons name={prompt.icon} size={20} color="#092653" />
+                  <Ionicons name={prompt.icon} size={16} color="#092653" />
                   <Text style={styles.promptText}>{prompt.label}</Text>
-                  <Ionicons name="chevron-forward" size={16} color="#738094" />
                 </Pressable>
               ))}
-            </View>
+            </ScrollView>}
             <View style={styles.composer}>
               <TextInput accessibilityLabel="Message FILLOUT AI demo" accessibilityHint="Messages receive a scripted response and are not sent to an AI service." style={styles.composerInput} value={message} onChangeText={setMessage} multiline textAlignVertical="top" maxLength={2000} placeholder="Message FILLOUT AI…" placeholderTextColor="#738094" autoComplete="off" textContentType="none" />
               <Pressable accessibilityRole="button" accessibilityLabel="Show demo response" accessibilityState={{ disabled: !message.trim() }} disabled={!message.trim()} onPress={() => addTurn(message)} style={({ pressed }) => [styles.sendButton, !message.trim() && styles.disabled, pressed && styles.pressed]}>
                 <Ionicons name="arrow-up" size={23} color="#092653" />
               </Pressable>
             </View>
-            <Text style={styles.footnote}>Chat stays in this session. Contact requests are saved only when you choose Send request.</Text>
-            </>}
-          </>
+            <Text style={styles.chatFootnote}>Demo only. Messages stay in this session.</Text>
+            </View>
+            </View>}
+          </View>
         )}
-      </ScrollView>
     </KeyboardAvoidingView>
   );
 }
@@ -343,22 +350,24 @@ export default AssistantScreen;
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: '#F8F9FC' },
   content: { flexGrow: 1, paddingHorizontal: 20, paddingTop: 18, paddingBottom: 28 },
-  header: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, alignItems: 'center', justifyContent: 'space-between', marginBottom: 18 },
+  chatPage: { flex: 1, minHeight: 0, paddingHorizontal: 18, paddingTop: 6 },
+  chatBody: { flex: 1, minHeight: 0 },
+  chatScroll: { flex: 1 },
+  chatContent: { flexGrow: 1, paddingBottom: 14 },
+  header: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, alignItems: 'center', justifyContent: 'space-between' },
   brand: { flexDirection: 'row', alignItems: 'center', gap: 8, flexShrink: 1 },
-  aiTitle: { color: '#092653', fontWeight: '800', fontSize: 25, lineHeight: 33, flexShrink: 1 },
+  aiTitle: { color: '#092653', fontWeight: '800', fontSize: 18, lineHeight: 26, flexShrink: 1 },
   contactButton: { minHeight: 44, justifyContent: 'center', paddingHorizontal: 10 },
   contactButtonText: { color: '#092653', fontSize: 13, lineHeight: 20, fontWeight: '700' },
-  demoBadge: { alignSelf: 'flex-start', flexDirection: 'row', alignItems: 'center', gap: 7, backgroundColor: '#FBF3DF', paddingVertical: 7, paddingHorizontal: 10, borderRadius: 8 },
-  demoDot: { height: 5, width: 5, borderRadius: 3, backgroundColor: '#95702D' },
-  demoBadgeText: { flexShrink: 1, color: '#74571F', fontSize: 9, lineHeight: 14, letterSpacing: 1, fontWeight: '700' },
-  demoDescription: { color: '#667085', fontSize: 12, lineHeight: 18, marginTop: 9 },
-  welcome: { alignItems: 'center', paddingTop: 48, paddingBottom: 38 },
-  welcomeTitle: { color: '#092653', fontSize: 29, lineHeight: 37, fontWeight: '700', textAlign: 'center' },
-  welcomeCopy: { color: '#667085', fontSize: 14, lineHeight: 21, marginTop: 9, textAlign: 'center' },
-  prompts: { gap: 9, marginTop: 12, marginBottom: 18 },
-  prompt: { minHeight: 54, flexDirection: 'row', alignItems: 'center', gap: 11, paddingVertical: 13, paddingHorizontal: 14, borderRadius: 14, borderWidth: 1, borderColor: '#E1E6EF', backgroundColor: '#FFFFFF' },
-  promptText: { flex: 1, color: '#092653', fontSize: 14, lineHeight: 21, fontWeight: '500' },
-  conversation: { marginTop: 20, gap: 15 },
+  composerDock: { paddingBottom: 8 },
+  demoRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 8 },
+  demoBadgeText: { flexShrink: 1, color: '#667085', fontSize: 10, lineHeight: 16 },
+  examplesButton: { minHeight: 44, flexDirection: 'row', alignItems: 'center', gap: 4, paddingLeft: 8 },
+  examplesText: { color: '#667085', fontSize: 11, lineHeight: 17 },
+  prompts: { gap: 7, paddingBottom: 8 },
+  prompt: { minHeight: 44, flexDirection: 'row', alignItems: 'center', gap: 7, paddingVertical: 9, paddingHorizontal: 12, borderRadius: 14, borderWidth: 1, borderColor: '#E1E6EF', backgroundColor: '#FFFFFF' },
+  promptText: { color: '#092653', fontSize: 12, lineHeight: 18, fontWeight: '500' },
+  conversation: { paddingTop: 8, gap: 15 },
   clearButton: { alignSelf: 'flex-end', minHeight: 44, flexDirection: 'row', alignItems: 'center', gap: 6, paddingHorizontal: 4 },
   clearButtonText: { color: '#4E5E75', fontSize: 12, lineHeight: 18 },
   turn: { gap: 10 },
@@ -368,11 +377,12 @@ const styles = StyleSheet.create({
   author: { color: '#7F6531', fontSize: 9, letterSpacing: 1.2, fontWeight: '700', lineHeight: 15, marginBottom: 7 },
   answer: { color: '#34445D', fontSize: 14, lineHeight: 22 },
   composer: { backgroundColor: '#FFFFFF', borderColor: '#D6DFEC', borderWidth: 1, borderRadius: 18, padding: 8, flexDirection: 'row', alignItems: 'flex-end', gap: 8 },
-  composerInput: { flex: 1, color: '#092653', fontSize: 15, lineHeight: 22, minHeight: 58, maxHeight: 160, paddingHorizontal: 7, paddingTop: 9, paddingBottom: 9 },
+  composerInput: { flex: 1, color: '#092653', fontSize: 15, lineHeight: 22, minHeight: 46, maxHeight: 130, paddingHorizontal: 7, paddingTop: 11, paddingBottom: 9 },
   sendButton: { width: 44, height: 44, borderRadius: 13, backgroundColor: '#E9C675', alignItems: 'center', justifyContent: 'center' },
   disabled: { opacity: 0.4 },
   pressed: { opacity: 0.7 },
   footnote: { color: '#667085', fontSize: 11, lineHeight: 17, textAlign: 'center', marginTop: 14 },
+  chatFootnote: { color: '#667085', fontSize: 10, lineHeight: 15, textAlign: 'center', marginTop: 6 },
   backButton: { minHeight: 44, flexDirection: 'row', alignItems: 'center', gap: 3, alignSelf: 'flex-start', marginBottom: 17 },
   textButton: { color: '#092653', fontSize: 14, lineHeight: 21, fontWeight: '600' },
   eyebrow: { fontSize: 10, lineHeight: 16, letterSpacing: 1.5, fontWeight: '700', color: '#7F6531', marginBottom: 7 },

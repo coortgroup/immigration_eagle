@@ -1,0 +1,16 @@
+{
+  "tool": "Built-in image_gen.imagegen",
+  "date": "2026-10-10",
+  "purpose": "Small increase in the gap between the eagle/shield and lettering in the existing FILLOUT header logo, requested in the mobile screenshot review.",
+  "export": {
+    "path": "assets/fillout-logo-v3.png",
+    "width": 1200,
+    "height": 494,
+    "transparentBackground": true,
+    "mode": "precise-object-edit",
+    "reference": "assets/fillout-logo-v2.png",
+    "prompt": "Use case: precise-object-edit. Asset type: existing transparent FILLOUT IMMIGRATION FORMS horizontal app header logo. Input image is the EDIT TARGET, not a style inspiration. Make exactly one minimal spacing edit: increase the horizontal clear gap between the eagle/shield artwork on the left and the lettering block on the right by about 24 pixels at this 1200px source size (roughly from a 20px gap to a 44px gap). Preserve ALL eagle and shield artwork, feathers, colors, outlines, gold gradients, flag details, exact proportions, lettering, font, gold rule and relative scale unchanged. Exact text FILLOUT above IMMIGRATION FORMS. Keep the whole text block together; translate only the text block a little right. Keep vertical centering as source. Keep compact outside margins and original wide aspect ratio about 2.48:1. Do not redesign or simplify anything. Return a clean PNG with genuine transparent alpha background. No background color, no shadow, no added objects, no cropping. This is an existing brand, preserve it faithfully.",
+    "display": "Use contain and aspect ratio 1200/494. Root implementation reduces header display size by half independently of this asset."
+  },
+  "postProcessing": "Deterministic proportional deployment downscale from the 1954x805 generated PNG to 1200x494 with Sharp; transparent alpha retained. No artwork edits outside built-in image generation. Existing source assets preserved."
+}

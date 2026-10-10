@@ -1,0 +1,67 @@
+:root {
+  color-scheme: light;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #13243d;
+  background: #eef2f7;
+  font-synthesis: none;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; width: 100%; height: 100%; }
+body { display: flex; flex-direction: column; overflow: hidden; }
+button, select { font: inherit; }
+button { cursor: pointer; }
+button:disabled, select:disabled { opacity: .5; cursor: default; }
+button:focus-visible, select:focus-visible { outline: 3px solid #2479d6; outline-offset: 2px; }
+[hidden] { display: none !important; }
+.toolbar { flex: none; background: #fff; border-bottom: 1px solid #d6dfeb; padding: 14px 18px 12px; }
+.toolbar-top, .toolbar-bottom, .actions, .page-navigation { display: flex; align-items: center; gap: 10px; }
+.toolbar-top { justify-content: space-between; flex-wrap: wrap; }
+.actions { flex-wrap: wrap; }
+.action { display: inline-flex; justify-content: center; align-items: center; min-height: 40px; padding: 8px 14px; border-radius: 9px; font-size: 13px; font-weight: 700; border: 1px solid #072d60; background: #072d60; color: white; gap: 7px; }
+.action svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.action.secondary { color: #072d60; background: white; border-color: #c3d1e1; }
+.toolbar-bottom { justify-content: space-between; margin-top: 12px; flex-wrap: wrap; gap: 8px; }
+.control { border: 1px solid #cbd6e3; border-radius: 7px; height: 34px; padding: 5px 10px; color: #233d60; background: #fff; font-size: 12px; }
+button.control { min-width: 34px; font-size: 20px; line-height: 20px; }
+label.zoom-label { display: flex; align-items: center; gap: 6px; color: #596b81; font-size: 12px; }
+.status { margin: 0; color: #53667e; font-size: 12px; line-height: 1.5; }
+.notice { padding: 9px 18px; background: #f5faff; border-bottom: 1px solid #dbe7f4; font-size: 12px; line-height: 1.5; color: #39587a; }
+.notice strong { font-weight: 650; }
+.error { margin: 10px 16px 0; padding: 10px 12px; border: 1px solid #efc7c3; border-radius: 8px; background: #fff1f0; color: #91352f; font-size: 13px; line-height: 1.4; flex: none; }
+.error button { margin-left: 8px; padding: 4px 8px; background: #fff; border: 1px solid #c1817a; border-radius: 5px; color: inherit; font-size: 12px; font-weight: 650; }
+.page-stage { flex: 1; min-height: 0; overflow: auto; padding: 16px; position: relative; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
+.page-frame { position: relative; margin: 0 auto; background: white; box-shadow: 0 2px 14px #112b4d26; flex: none; }
+#pdf-page { display: block; }
+.fields { position: absolute; inset: 0; }
+.pdf-field { position: absolute; display: block; box-sizing: border-box; margin: 0; min-width: 0; min-height: 0; border: 1px solid #8bb7df; border-radius: 1px; padding: 0 2px; background: #dbeeff; color: #07162c; font-family: Arial, Helvetica, sans-serif; line-height: 1.1; }
+.pdf-field:hover { background: #c7e5ff; border-color: #337dc4; }
+.pdf-field:focus { outline: 2px solid #075cad; outline-offset: 1px; background: #f4faff; z-index: 2; }
+textarea.pdf-field { resize: none; padding: 2px; line-height: 1.2; }
+select.pdf-field { padding: 0; appearance: none; }
+.pdf-field--checkbox, .pdf-field--radio { appearance: none; -webkit-appearance: none; padding: 0; cursor: pointer; }
+.pdf-field--checkbox:checked, .pdf-field--radio:checked { background: #dbeeff; }
+.pdf-field--checkbox:checked::after, .pdf-field--radio:checked::after { content: ""; position: absolute; left: 19%; top: 19%; width: 62%; height: 62%; background: #07162c; clip-path: polygon(0 10%, 10% 0, 50% 40%, 90% 0, 100% 10%, 60% 50%, 100% 90%, 90% 100%, 50% 60%, 10% 100%, 0 90%, 40% 50%); }
+.footer { flex: none; padding: 9px 18px max(9px, env(safe-area-inset-bottom)); background: white; border-top: 1px solid #d6dfeb; font-size: 12px; line-height: 1.4; color: #4d6280; min-height: 36px; max-height: 96px; overflow: auto; }
+.footer p { margin: 0; overflow-wrap: anywhere; }
+.sr-only { position: absolute; height: 1px; width: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+@media (max-width: 580px) {
+  .toolbar { padding: 11px 12px 10px; }
+  .toolbar-top { gap: 9px; }
+  .actions { gap: 6px; }
+  .action { padding: 7px 10px; font-size: 12px; min-height: 36px; }
+  .toolbar-bottom { margin-top: 9px; }
+  .status { flex-basis: 100%; order: 2; font-size: 11px; }
+  .page-navigation { gap: 5px; }
+  .control { padding: 4px 7px; }
+  .notice { padding: 7px 12px; font-size: 11px; }
+  .footer { padding-left: 12px; padding-right: 12px; font-size: 11px; }
+}
+@media (max-width: 380px) {
+  .actions { width: 100%; }
+  .action { flex: 1; }
+}
+@media print {
+  body { display: block; overflow: visible; }
+  .toolbar, .notice, .page-stage, .footer, .error { display: none; }
+  body::after { content: "Use Print filled PDF in the form editor to print all pages with your current answers."; display: block; padding: 24px; }
+}

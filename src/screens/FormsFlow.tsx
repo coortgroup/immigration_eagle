@@ -18,8 +18,10 @@ import attorneyFile from '../../data/attorney-pricing.json';
 import mainChecksFile from '../../data/eligibility-main.json';
 import otherChecksFile from '../../data/eligibility-other.json';
 import interviewFile from '../../data/preparation-fields.json';
+import { FullFormPreparationScreen } from './FullFormPreparationScreen';
+import { FreeFormPreparationScreen } from './FreeFormPreparationScreen';
 
-type Route = 'home' | 'catalog' | 'finder' | 'detail' | 'check' | 'result' | 'aiIntro' | 'interview' | 'interviewReview' | 'attorney' | 'attorneyPreview';
+type Route = 'home' | 'catalog' | 'finder' | 'detail' | 'check' | 'result' | 'aiIntro' | 'fullPreparation' | 'freePreparation' | 'interview' | 'interviewReview' | 'attorney' | 'attorneyPreview';
 type PickerKind = 'status' | 'goal' | null;
 type Props = {
   onContact: () => void;
@@ -28,6 +30,8 @@ type Props = {
   initialFormId?: string;
   resumeFormId?: string;
   resumeRequest?: number;
+  onExitToApplications?: () => void;
+  onFullSessionActiveChange?: (active: boolean) => void;
 };
 
 const forms = catalogFile.forms as FormRecord[];
@@ -72,7 +76,7 @@ async function openOfficial(url?: string | null) {
   catch { Alert.alert('Unable to open this link', 'Please try again when your connection is available.'); }
 }
 
-export function FormsFlow({ onContact, onDraftSaved, isActive = true, initialFormId, resumeFormId, resumeRequest }: Props) {
+export function FormsFlow({ onContact, onDraftSaved, isActive = true, initialFormId, resumeFormId, resumeRequest, onExitToApplications, onFullSessionActiveChange }: Props) {
   const { width: windowWidth } = useWindowDimensions();
   const contentWidth = Math.min(windowWidth, 600) - 40;
   const initialForm = forms.find(item => item.id === initialFormId);
@@ -131,6 +135,11 @@ export function FormsFlow({ onContact, onDraftSaved, isActive = true, initialFor
   }), [search, category]);
 
   useEffect(() => { scroll.current?.scrollTo({ y: 0, animated: false }); }, [route, formId, questionIndex, fieldIndex]);
+  useEffect(() => {
+    const active = route === 'fullPreparation' || route === 'freePreparation';
+    onFullSessionActiveChange?.(active);
+    return () => { if (active) onFullSessionActiveChange?.(false); };
+  }, [route, onFullSessionActiveChange]);
 
   useEffect(() => {
     const userId = delivery.user?.id;
@@ -193,8 +202,14 @@ export function FormsFlow({ onContact, onDraftSaved, isActive = true, initialFor
   function goBack() {
     if (savingDraftRef.current || sendingRequestRef.current || loadingDraft) return true;
     if (route === 'home') return false;
-    if (route === 'catalog' || route === 'finder') setRoute('home');
-    else if (route === 'detail') setRoute(returnTo === 'home' || returnTo === 'finder' ? returnTo : 'catalog');
+    if (route === 'catalog' || route === 'finder') {
+      if (onExitToApplications) onExitToApplications();
+      else setRoute('home');
+    }
+    else if (route === 'detail') {
+      if (onExitToApplications) onExitToApplications();
+      else setRoute(returnTo === 'home' || returnTo === 'finder' ? returnTo : 'catalog');
+    }
     else if (route === 'check') { if (questionIndex > 0) editCheck(questionIndex - 1); else setRoute('detail'); }
     else if (route === 'result') editCheck(Math.min(qualification.index, (schema?.questions.length || 1) - 1));
     else if (route === 'aiIntro' || route === 'attorney') setRoute('result');
@@ -205,15 +220,16 @@ export function FormsFlow({ onContact, onDraftSaved, isActive = true, initialFor
   }
 
   useEffect(() => {
-    if (!isActive) return;
+    if (!isActive || route === 'fullPreparation' || route === 'freePreparation') return;
     const subscription = BackHandler.addEventListener('hardwareBackPress', goBack);
     return () => subscription.remove();
-  }, [isActive, route, questionIndex, fieldIndex, editingDraft, returnTo, qualification.index, answers, loadingDraft]);
+  }, [isActive, route, questionIndex, fieldIndex, editingDraft, returnTo, qualification.index, answers, loadingDraft, onExitToApplications]);
 
   function startCheck(selectedMode: PreparationMode) {
     setMode(selectedMode); setAnswers({}); setQuestionIndex(0); setShowCheckAnswers(false);
     setRequestReceipt(null); setRequestError(''); requestIdentity.reset();
-    setRoute(schema?.questions.length ? 'check' : 'result');
+    const initial = evaluateQualification(schema, {});
+    setRoute(selectedMode === 'self' && initial.status === 'passed' ? 'freePreparation' : initial.status === 'checking' ? 'check' : 'result');
   }
 
   function answerCheck(answer: QualificationAnswer) {
@@ -222,16 +238,16 @@ export function FormsFlow({ onContact, onDraftSaved, isActive = true, initialFor
     setAnswers(updated);
     const next = evaluateQualification(schema, updated);
     if (next.status === 'checking') setQuestionIndex(next.index);
-    else setRoute('result');
+    else setRoute(mode === 'self' && next.status === 'passed' ? 'freePreparation' : 'result');
   }
 
   function continueFromCheck() {
     if (qualification.status !== 'passed') return;
-    if (mode === 'self') { void openOfficial(schema?.pdfUrl || form.officialUrl); return; }
+    if (mode === 'self') { setRoute('freePreparation'); return; }
     if (mode === 'attorney') { setLawyerErrors({}); setRoute('attorney'); return; }
     if (offer.unavailable) { onContact(); return; }
     if (offer.target) { openForm(offer.target, 'catalog'); return; }
-    setRoute('aiIntro');
+    setRoute(form.id === 'I-90' ? 'fullPreparation' : 'aiIntro');
   }
 
   function saveField() {
@@ -306,7 +322,7 @@ export function FormsFlow({ onContact, onDraftSaved, isActive = true, initialFor
     const detail = reference.status === 'included' || reference.status === 'add-on' ? ai.note : item.id === 'I-485' ? 'Base package' : item.id === 'I-821D' ? 'Includes I-765 and I-765WS' : '';
     return <View style={styles.priceColumns}>
       <View style={styles.priceColumn}><Text style={styles.priceLabel}>Do it yourself</Text><Text style={styles.listPrice}>Free</Text></View>
-      <View style={styles.priceColumn}><Text style={styles.priceLabel}>With AI</Text><Text style={styles.listPrice}>{ai.unavailable ? 'Contact us' : ai.price}</Text>{!!detail && <Text style={styles.priceNote}>{detail}</Text>}{!ai.unavailable && <Pressable accessibilityRole="button" accessibilityLabel={`Read preparation guarantee terms for ${item.id}`} onPress={() => setGuaranteeOpen(true)} style={styles.priceGuarantee}><Text style={styles.priceGuaranteeText}>Preparation guarantee*</Text></Pressable>}</View>
+      <View style={styles.priceColumn}><Text style={styles.priceLabel}>With AI</Text><Text style={styles.listPrice}>{ai.unavailable ? 'Contact us' : ai.price}</Text>{!!detail && <Text style={styles.priceNote}>{detail}</Text>}{!ai.unavailable && <Pressable accessibilityRole="button" accessibilityLabel={`Read preparation guarantee terms for ${item.id}`} onPress={() => setGuaranteeOpen(true)} hitSlop={6} style={styles.priceGuarantee}><Text style={styles.priceGuaranteeText}>Preparation guarantee*</Text></Pressable>}</View>
       <View style={[styles.priceColumn, styles.attorneyPriceColumn]}><Text style={styles.priceLabel}>With an attorney</Text><Text style={styles.listPrice}>{typeof lawyerPrice === 'number' ? money(lawyerPrice) : 'Get a quote'}</Text>{typeof lawyerPrice === 'number' && !!attorneyScope[item.id] && <Text style={styles.priceNote}>{attorneyScope[item.id]}</Text>}</View>
     </View>;
   }
@@ -326,7 +342,7 @@ export function FormsFlow({ onContact, onDraftSaved, isActive = true, initialFor
   function homeForms() {
     const mainForms = mainFormIds.map(id => forms.find(item => item.id === id)).filter((item): item is FormRecord => !!item);
     const otherForms = forms.filter(item => !mainFormIds.includes(item.id));
-    return <View style={{ gap: 17 }}>
+    return <View style={{ gap: 12 }}>
       <SectionTitle eyebrow="YOUR FORM. YOUR WAY." title="Immigration forms" subtitle="Choose free self-preparation, AI guidance or attorney assistance." />
       <Button title="Search by form number or name" variant="secondary" icon="search-outline" onPress={() => setRoute('catalog')} />
       <Text accessibilityRole="header" style={styles.label}>Main forms</Text>
@@ -378,14 +394,16 @@ export function FormsFlow({ onContact, onDraftSaved, isActive = true, initialFor
   }
 
   function confidenceSection() {
-    return <View style={{ gap: 18 }}>
-      <ImageBackground source={require('../../assets/fillout-hero-bg.jpg')} style={styles.confidenceBanner} imageStyle={styles.backgroundImage}>
+    return <View style={{ gap: 14 }}>
+      <ImageBackground source={require('../../assets/fillout-hero-bg.jpg')} resizeMode="cover" style={styles.confidenceBanner} imageStyle={styles.backgroundImage}>
+        <View style={styles.confidenceBannerContent}>
         <View style={styles.confidenceBannerTop}>
           <Image source={require('../../assets/fillout-guarantee-badge.png')} style={[styles.guaranteeBadge, { width: (contentWidth - 40) * 0.35, height: (contentWidth - 40) * 0.35 }]} resizeMode="contain" accessibilityLabel="FILLOUT preparation guarantee shield" />
-          <View style={{ flex: 1, gap: 12 }}><Text accessibilityRole="header" style={styles.confidenceTitle}>File your immigration forms with <Text style={{ color: colors.gold }}>confidence.</Text></Text><Text style={styles.confidenceCopy}>Accurate forms. Clear guidance. A simpler way forward.</Text></View>
+          <View style={{ flex: 1, gap: 8 }}><Text accessibilityRole="header" style={styles.confidenceTitle}>File your immigration forms with <Text style={{ color: colors.gold }}>confidence.</Text></Text><Text style={styles.confidenceCopy}>Accurate forms. Clear guidance. A simpler way forward.</Text></View>
         </View>
         {confidencePoints()}
         <Pressable accessibilityRole="button" onPress={() => setGuaranteeOpen(true)} style={styles.guaranteeLink}><Text style={styles.guaranteeLinkText}>Preparation guarantee* · Read terms</Text><Ionicons name="arrow-forward" size={15} color="#F3D783" /></Pressable>
+        </View>
       </ImageBackground>
       <Card style={styles.whyCard}>
         <View style={{ gap: 10 }}><Text accessibilityRole="header" style={styles.whyTitle}>Why it matters</Text><View style={styles.goldLine} /><Text style={styles.body}>Small details deserve a careful check. Start with the right form, read the current instructions and review your answers before filing.</Text></View>
@@ -408,20 +426,22 @@ export function FormsFlow({ onContact, onDraftSaved, isActive = true, initialFor
       { icon: 'chatbubbles-outline', title: 'Contact our team', text: 'Review a question and your contact details before sending a support request.' },
     ];
     return <>
-      <View style={styles.topLine}><BrandMark width={Math.min(contentWidth - 56, 370)} /><Pressable accessibilityRole="button" accessibilityLabel="Contact our team" onPress={onContact} style={styles.contactIcon}><Ionicons name="chatbubble-ellipses-outline" size={23} color={colors.navy} /></Pressable></View>
-      <ImageBackground source={require('../../assets/fillout-hero-bg.jpg')} style={styles.hero} imageStyle={styles.backgroundImage}>
+      <View style={styles.topLine}><BrandMark width={Math.min(contentWidth - 56, 370) / 2} /><Pressable accessibilityRole="button" accessibilityLabel="Contact our team" onPress={onContact} style={styles.contactIcon}><Ionicons name="chatbubble-ellipses-outline" size={23} color={colors.navy} /></Pressable></View>
+      <ImageBackground source={require('../../assets/fillout-hero-bg.jpg')} resizeMode="cover" style={styles.hero} imageStyle={styles.backgroundImage}>
+        <View style={styles.heroContent}>
         <Text style={styles.heroEyebrow}>IMMIGRATION MADE SIMPLE</Text>
         <Text accessibilityRole="header" style={[styles.heroTitle, { fontSize: contentWidth < 315 ? 27 : contentWidth > 470 ? 43 : 29, lineHeight: contentWidth < 315 ? 34 : contentWidth > 470 ? 51 : 36 }]}>Prepare immigration paperwork correctly, <Text style={{ color: colors.gold }}>guaranteed.</Text></Text>
         <Text style={styles.heroCopy}>Find your form. Follow clear steps.{'\n'}Move forward with confidence.</Text>
         {confidencePoints()}
-        <Pressable accessibilityRole="button" accessibilityLabel="Read preparation guarantee terms" onPress={() => setGuaranteeOpen(true)}><Text style={styles.heroTerms}>*Preparation guarantee · Terms apply</Text></Pressable>
+        <Pressable accessibilityRole="button" accessibilityLabel="Read preparation guarantee terms" onPress={() => setGuaranteeOpen(true)} hitSlop={10}><Text style={styles.heroTerms}>*Preparation guarantee · Terms apply</Text></Pressable>
+        </View>
       </ImageBackground>
       {finderCard()}
       {confidenceSection()}
       {homeForms()}
       <SectionTitle eyebrow="SUPPORT AT EVERY STEP" title="A clearer path to your paperwork" />
-      <Card style={{ gap: 24 }}>{benefits.map(item => <View key={item.title} style={{ flexDirection: 'row', gap: 14 }}><View style={styles.benefitIcon}><Ionicons name={item.icon} size={21} color={colors.navy} /></View><View style={{ flex: 1, gap: 5 }}><Text style={styles.label}>{item.title}</Text><Text style={styles.small}>{item.text}</Text></View></View>)}</Card>
-      <View style={styles.homeFooter}><BrandMark width={235} /><Text style={styles.footnote}>FILLOUT is not affiliated with USCIS or any government agency. A form check does not decide legal eligibility or guarantee approval.</Text><Button title="Contact our team" variant="secondary" icon="chatbubble-ellipses-outline" onPress={onContact} /><Text style={styles.footnote}>Early access · Guided drafts and official documents are available. Paid preparation, shipping and government filing are not connected.</Text></View>
+      <Card style={{ gap: 16, padding: 16 }}>{benefits.map(item => <View key={item.title} style={{ flexDirection: 'row', gap: 10 }}><View style={styles.benefitIcon}><Ionicons name={item.icon} size={21} color={colors.navy} /></View><View style={{ flex: 1, gap: 3 }}><Text style={styles.label}>{item.title}</Text><Text style={styles.small}>{item.text}</Text></View></View>)}</Card>
+      <View style={styles.homeFooter}><Text style={styles.footerText}>FILLOUT is not affiliated with USCIS. A form check does not determine legal eligibility or guarantee approval.</Text><Text style={styles.footerText}>Early access · Paid preparation, shipping and government filing are not connected.</Text></View>
     </>;
   }
 
@@ -440,8 +460,8 @@ export function FormsFlow({ onContact, onDraftSaved, isActive = true, initialFor
   function details() {
     return <><Badge gold>{form.id} · {form.category}</Badge><SectionTitle title={form.title} subtitle={form.summary} />
       <Text style={styles.body}>Choose how you’d like to prepare. Every option starts with a short form check.</Text>
-      <Card><View style={styles.sectionHeading}><Ionicons name="create-outline" size={25} color={colors.navy} /><Text style={styles.cardTitle}>Do it yourself</Text></View><Text style={styles.price}>Free</Text><Text style={styles.small}>No preparation charge</Text><Text style={styles.body}>Complete the official USCIS document yourself using its instructions.</Text><Button title="Start free form check" variant="secondary" onPress={() => startCheck('self')} /></Card>
-      <Card style={{ borderColor: colors.gold, borderWidth: 1.5 }}><View style={styles.sectionHeading}><Ionicons name="sparkles-outline" size={25} color={colors.navy} /><Text style={styles.cardTitle}>Prepare with AI</Text></View><Text style={styles.price}>{offer.price}</Text><Text style={styles.small}>{offer.note}</Text><Text style={styles.body}>{offer.unavailable ? 'Check the form and ask our team about available preparation help.' : offer.target ? 'This document is prepared with its related application package.' : 'Answer one question at a time and review your preparation draft.'}</Text><Button title="Check & prepare with AI" variant="gold" onPress={() => startCheck('ai')} /><Text style={styles.footnote}>This MVP uses guided questions. Live AI and payment are not connected.</Text></Card>
+      <Card><View style={styles.sectionHeading}><Ionicons name="create-outline" size={25} color={colors.navy} /><Text style={styles.cardTitle}>Do it yourself</Text></View><Text style={styles.price}>Free</Text><Text style={styles.small}>No preparation charge</Text><Text style={styles.body}>After the short check, fill in your PDF form, save your answers and print your completed document.</Text><Button title="Start free form check" variant="secondary" onPress={() => startCheck('self')} /></Card>
+      <Card style={{ borderColor: colors.gold, borderWidth: 1.5 }}><View style={styles.sectionHeading}><Ionicons name="sparkles-outline" size={25} color={colors.navy} /><Text style={styles.cardTitle}>Prepare with AI</Text></View><Text style={styles.price}>{offer.price}</Text><Text style={styles.small}>{offer.note}</Text><Text style={styles.body}>{offer.unavailable ? 'Check the form and ask our team about available preparation help.' : offer.target ? 'This document is prepared with its related application package.' : form.id === 'I-90' ? 'Answer the full I-90 questions, review explanations, and download your filled official PDF for printing.' : 'Answer introductory questions and review your preparation draft.'}</Text><Button title="Check & prepare with AI" variant="gold" onPress={() => startCheck('ai')} /><Text style={styles.footnote}>Guided questions with explanations. Live AI conversation and payment are not connected.</Text></Card>
       <Card><View style={styles.sectionHeading}><Ionicons name="briefcase-outline" size={25} color={colors.navy} /><Text style={styles.cardTitle}>Prepare with an attorney</Text></View><Text style={styles.price}>{money(attorney?.servicePriceUsd)}</Text><Text style={styles.small}>{attorney?.status === 'fixed' ? 'Company service price' : 'We’ll confirm the scope and price'}</Text><Text style={styles.body}>{attorney?.benchmark?.scope || 'Get individual help for your situation.'}</Text><Button title="Check & request attorney help" variant="secondary" onPress={() => startCheck('attorney')} /></Card>
       <Text style={styles.footnote}>Preparation fees only. Government fees and taxes are separate. No payment is collected in this preview.</Text>
       <Button title="View official USCIS information" variant="quiet" icon="open-outline" onPress={() => void openOfficial(form.officialUrl)} />
@@ -463,9 +483,9 @@ export function FormsFlow({ onContact, onDraftSaved, isActive = true, initialFor
     const stopped = qualification.status === 'stopped';
     const title = passed ? 'Congratulations!' : stopped ? 'Sorry, this form isn’t a match' : 'Your situation needs a closer look';
     const reason = passed ? 'Your answers fit this preliminary preparation path. The full USCIS requirements and your documents still need to be checked.' : qualification.reason;
-    const primary = mode === 'self' ? (schema?.pdfUrl ? 'Open fillable USCIS PDF' : 'Open official USCIS service') : mode === 'attorney' ? 'Continue to attorney intake' : offer.unavailable ? 'Ask our team about preparation' : offer.target ? `View ${offer.target} package` : 'Continue to guided preparation';
+    const primary = mode === 'self' ? 'Open PDF form' : mode === 'attorney' ? 'Continue to attorney intake' : offer.unavailable ? 'Ask our team about preparation' : offer.target ? `View ${offer.target} package` : 'Continue to guided preparation';
     return <><Badge>{form.id} · {modeNames[mode]}</Badge><View style={[styles.resultIcon, { backgroundColor: passed ? colors.successLight : colors.goldLight }]}><Ionicons name={passed ? 'checkmark-circle-outline' : stopped ? 'compass-outline' : 'chatbubbles-outline'} size={45} color={passed ? colors.success : colors.navy} /></View><SectionTitle title={title} subtitle={reason} />
-      {passed ? <><Button title={primary} variant={mode === 'ai' ? 'gold' : 'primary'} icon={mode === 'self' ? 'open-outline' : 'arrow-forward'} onPress={continueFromCheck} />{mode === 'self' && <Text style={styles.small}>The official document opens outside this app. Use a PDF reader that supports fillable USCIS forms and check the current edition before filing.</Text>}{mode === 'ai' && !!offer.target && <Notice>The related package has its own form check. This supplement is not a separate purchase.</Notice>}</> : <><Notice tone="warning">This result is not a decision that you are ineligible for an immigration benefit. Exceptions or another process may apply.</Notice><Button title="Contact our team" onPress={onContact} /><Button title="Explore other forms" variant="secondary" onPress={() => setRoute('catalog')} /></>}
+      {passed ? <><Button title={primary} variant={mode === 'ai' ? 'gold' : 'primary'} icon={mode === 'self' ? 'document-text-outline' : 'arrow-forward'} onPress={continueFromCheck} />{mode === 'self' && <Text style={styles.small}>Fill in the PDF form, save your filled copy and print it for signing. Review the current USCIS instructions before filing.</Text>}{mode === 'ai' && !!offer.target && <Notice>The related package has its own form check. This supplement is not a separate purchase.</Notice>}</> : <><Notice tone="warning">This result is not a decision that you are ineligible for an immigration benefit. Exceptions or another process may apply.</Notice><Button title="Contact our team" onPress={onContact} /><Button title="Explore other forms" variant="secondary" onPress={() => onExitToApplications ? onExitToApplications() : setRoute('catalog')} /></>}
       <Card><RowLink title={showCheckAnswers ? 'Hide your answers' : 'Review or change your answers'} onPress={() => setShowCheckAnswers(!showCheckAnswers)} icon={showCheckAnswers ? 'chevron-up' : 'chevron-down'} />{showCheckAnswers && schema?.questions.map((item, index) => answers[item.id] ? <RowLink key={item.id} title={item.text} subtitle={answers[item.id] === 'unsure' ? 'Not sure · Tap to change' : `${answers[item.id] === 'yes' ? 'Yes' : 'No'} · Tap to change`} onPress={() => editCheck(index)} icon="create-outline" /> : null)}</Card>
       <Button title="Back to preparation options" variant="quiet" onPress={() => setRoute('detail')} />
     </>;
@@ -544,7 +564,9 @@ export function FormsFlow({ onContact, onDraftSaved, isActive = true, initialFor
   }
 
   const pickerOptions: { id: string; label: string }[] = picker === 'status' ? finder.statuses : selectedStatus?.goals || [];
-  const backLabels: Partial<Record<Route, string>> = { catalog: 'Home', finder: 'Home', detail: 'Forms', check: questionIndex ? 'Previous question' : 'Preparation options', result: 'Change last answer', aiIntro: 'Form check', interview: editingDraft ? 'Review answers' : fieldIndex ? 'Previous question' : 'Overview', interviewReview: 'Overview', attorney: 'Form check', attorneyPreview: 'Edit request' };
+  if (route === 'freePreparation') return <FreeFormPreparationScreen formId={form.id} officialUrl={form.officialUrl} isActive={isActive} onExit={() => setRoute('result')} />;
+  if (route === 'fullPreparation') return <FullFormPreparationScreen isActive={isActive} onExit={() => setRoute('detail')} />;
+  const backLabels: Partial<Record<Route, string>> = { catalog: 'Home', finder: 'Home', detail: onExitToApplications ? 'My Application' : 'Forms', check: questionIndex ? 'Previous question' : 'Preparation options', result: 'Change last answer', aiIntro: 'Form check', interview: editingDraft ? 'Review answers' : fieldIndex ? 'Previous question' : 'Overview', interviewReview: 'Overview', attorney: 'Form check', attorneyPreview: 'Edit request' };
   return <KeyboardAvoidingView style={styles.root} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
     <ScrollView ref={scroll} keyboardShouldPersistTaps="handled" keyboardDismissMode="on-drag" contentContainerStyle={styles.scrollContent}>
       <View style={styles.content}>
@@ -598,15 +620,17 @@ export default FormsFlow;
 
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: colors.background },
-  scrollContent: { flexGrow: 1, padding: 20, paddingBottom: 36, alignItems: 'center' },
-  content: { width: '100%', maxWidth: 680, gap: 22 },
-  topLine: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 12, paddingVertical: 4 },
+  scrollContent: { flexGrow: 1, paddingHorizontal: 20, paddingTop: 8, paddingBottom: 14, alignItems: 'center' },
+  content: { width: '100%', maxWidth: 680, gap: 14 },
+  topLine: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 12 },
   contactIcon: { width: 44, height: 44, flexShrink: 0, borderRadius: 22, borderWidth: 1, borderColor: colors.border, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.paper },
-  hero: { backgroundColor: '#052A58', borderRadius: radius.lg, padding: 22, gap: 20, overflow: 'hidden' },
+  hero: { backgroundColor: '#052A58', borderRadius: radius.lg, overflow: 'hidden' },
+  heroContent: { padding: 20, gap: 14 },
+  // The background fills the unpadded outer frame; spacing belongs to the inner content.
   backgroundImage: { borderRadius: radius.lg, width: '100%', height: '100%' },
   heroEyebrow: { color: '#F3D783', fontSize: 10, lineHeight: 17, fontWeight: '800', letterSpacing: 1.8 },
   heroTitle: { color: colors.paper, fontWeight: '800', fontSize: 35, lineHeight: 42, letterSpacing: -0.8 },
-  heroCopy: { color: '#D2E0F3', fontSize: 16, lineHeight: 25 },
+  heroCopy: { color: '#D2E0F3', fontSize: 15, lineHeight: 22 },
   heroTerms: { color: '#D2E0F3', fontSize: 10, lineHeight: 16, textDecorationLine: 'underline' },
   sectionHeading: { flexDirection: 'row', alignItems: 'center', gap: 12 },
   cardTitle: { color: colors.navy, fontSize: 20, fontWeight: '800', lineHeight: 27, flexShrink: 1 },
@@ -615,46 +639,48 @@ const styles = StyleSheet.create({
   label: { color: colors.text, fontSize: 15, fontWeight: '700', lineHeight: 22 },
   link: { color: colors.navy, fontSize: 13, fontWeight: '700', padding: 8 },
   eyebrow: { color: '#8E6E2B', fontSize: 11, fontWeight: '800', letterSpacing: 1.2 },
-  finderCard: { padding: 18, gap: 20, borderRadius: 24, boxShadow: '0px 5px 18px rgba(7, 45, 96, 0.05)' },
+  finderCard: { padding: 16, gap: 14, borderRadius: 22, boxShadow: '0px 5px 18px rgba(7, 45, 96, 0.05)' },
   finderIcon: { width: 48, height: 52, backgroundColor: colors.blueLight, borderRadius: 14, justifyContent: 'center', alignItems: 'center' },
   finderFields: { flexDirection: 'row', alignItems: 'stretch', gap: 10 },
-  selectorField: { flex: 1, minWidth: 0, gap: 8 },
+  selectorField: { flex: 1, minWidth: 0, gap: 5 },
   selectorLabel: { color: colors.text, fontSize: 13, lineHeight: 19, fontWeight: '700' },
-  selector: { flex: 1, borderWidth: 1, borderColor: colors.border, borderRadius: radius.sm, padding: 11, minHeight: 66, flexDirection: 'row', alignItems: 'center', gap: 6, backgroundColor: '#FBFCFF' },
+  selector: { flex: 1, borderWidth: 1, borderColor: colors.border, borderRadius: radius.sm, padding: 10, minHeight: 52, flexDirection: 'row', alignItems: 'center', gap: 6, backgroundColor: '#FBFCFF' },
   selectorValue: { color: colors.text, fontSize: 12, lineHeight: 18, flex: 1 },
-  pricedFormRow: { padding: 14, gap: 14, borderWidth: 1, borderColor: colors.border, borderRadius: 23, backgroundColor: colors.paper, boxShadow: '0px 4px 14px rgba(7, 45, 96, 0.035)' },
+  pricedFormRow: { padding: 12, gap: 10, borderWidth: 1, borderColor: colors.border, borderRadius: 20, backgroundColor: colors.paper, boxShadow: '0px 4px 14px rgba(7, 45, 96, 0.035)' },
   formInfo: { flexDirection: 'row', alignItems: 'flex-start', gap: 12 },
-  formCodeBadge: { backgroundColor: '#E5F0FF', borderRadius: 12, paddingVertical: 12, paddingHorizontal: 11, minWidth: 64, alignItems: 'center' },
+  formCodeBadge: { backgroundColor: '#E5F0FF', borderRadius: 10, paddingVertical: 8, paddingHorizontal: 9, minWidth: 60, alignItems: 'center' },
   formCode: { color: colors.navy, fontSize: 17, fontWeight: '800', lineHeight: 23 },
   formSummary: { color: colors.muted, fontSize: 12, lineHeight: 18 },
   priceColumns: { flexDirection: 'row', gap: 7, alignItems: 'stretch' },
-  priceColumn: { flex: 1, minWidth: 0, gap: 5, borderWidth: 1, borderColor: colors.blueBorder, backgroundColor: colors.blueLight, borderRadius: 13, paddingVertical: 12, paddingHorizontal: 4, alignItems: 'center' },
+  priceColumn: { flex: 1, minWidth: 0, gap: 3, borderWidth: 1, borderColor: colors.blueBorder, backgroundColor: colors.blueLight, borderRadius: 11, paddingVertical: 8, paddingHorizontal: 4, alignItems: 'center' },
   attorneyPriceColumn: { borderColor: '#F0DFB7', backgroundColor: colors.cream },
-  priceLabel: { color: '#405578', fontSize: 10, lineHeight: 15, minHeight: 30, textAlign: 'center' },
+  priceLabel: { color: '#405578', fontSize: 10, lineHeight: 14, textAlign: 'center' },
   listPrice: { color: colors.navy, fontSize: 20, fontWeight: '800', lineHeight: 26, textAlign: 'center' },
-  priceNote: { color: colors.muted, fontSize: 10, lineHeight: 15, textAlign: 'center' },
-  priceGuarantee: { paddingVertical: 5, minHeight: 34, justifyContent: 'center' },
-  priceGuaranteeText: { color: '#1469AB', fontSize: 10, lineHeight: 14, fontWeight: '600', textAlign: 'center' },
-  otherFormsHeader: { minHeight: 76, padding: 17, flexDirection: 'row', alignItems: 'center', gap: 12, borderRadius: 20, borderWidth: 1, borderColor: colors.border, backgroundColor: colors.paper },
-  confidencePoints: { flexDirection: 'row', alignItems: 'stretch', marginTop: 3 },
-  confidencePoint: { flex: 1, minWidth: 0, alignItems: 'center', gap: 8, paddingHorizontal: 5 },
+  priceNote: { color: colors.muted, fontSize: 9, lineHeight: 12, textAlign: 'center' },
+  priceGuarantee: { minHeight: 26, justifyContent: 'center' },
+  priceGuaranteeText: { color: '#1469AB', fontSize: 9, lineHeight: 12, fontWeight: '600', textAlign: 'center' },
+  otherFormsHeader: { minHeight: 64, padding: 13, flexDirection: 'row', alignItems: 'center', gap: 10, borderRadius: 18, borderWidth: 1, borderColor: colors.border, backgroundColor: colors.paper },
+  confidencePoints: { flexDirection: 'row', alignItems: 'stretch' },
+  confidencePoint: { flex: 1, minWidth: 0, alignItems: 'center', gap: 5, paddingHorizontal: 5 },
   confidencePointBorder: { borderLeftWidth: 1, borderLeftColor: 'rgba(189, 215, 246, 0.25)' },
   confidencePointText: { color: '#F0F5FF', fontSize: 11, lineHeight: 16, textAlign: 'center' },
-  confidenceBanner: { padding: 20, backgroundColor: '#052A58', borderRadius: radius.lg, overflow: 'hidden', gap: 23 },
-  confidenceBannerTop: { flexDirection: 'row', gap: 14, alignItems: 'center' },
+  confidenceBanner: { backgroundColor: '#052A58', borderRadius: radius.lg, overflow: 'hidden' },
+  confidenceBannerContent: { paddingHorizontal: 18, paddingTop: 18, paddingBottom: 10, gap: 14 },
+  confidenceBannerTop: { flexDirection: 'row', gap: 10, alignItems: 'center' },
   guaranteeBadge: { aspectRatio: 1, alignSelf: 'center' },
-  confidenceTitle: { color: colors.paper, fontSize: 24, lineHeight: 29, fontWeight: '800', letterSpacing: -0.45 },
+  confidenceTitle: { color: colors.paper, fontSize: 22, lineHeight: 27, fontWeight: '800', letterSpacing: -0.45 },
   confidenceCopy: { color: '#D2E0F3', fontSize: 13, lineHeight: 20 },
   guaranteeLink: { flexDirection: 'row', gap: 7, alignItems: 'center', justifyContent: 'center', minHeight: 34 },
   guaranteeLinkText: { color: '#F3D783', fontSize: 11, lineHeight: 17, textAlign: 'center', textDecorationLine: 'underline', flexShrink: 1 },
-  whyCard: { padding: 22, gap: 20, borderRadius: 24 },
-  whyTitle: { color: colors.navy, fontSize: 30, lineHeight: 37, fontWeight: '800', letterSpacing: -0.7 },
+  whyCard: { padding: 18, gap: 14, borderRadius: 22 },
+  whyTitle: { color: colors.navy, fontSize: 28, lineHeight: 34, fontWeight: '800', letterSpacing: -0.7 },
   goldLine: { height: 4, width: 100, backgroundColor: colors.gold, borderRadius: 3 },
   reasonCards: { flexDirection: 'row', gap: 10, alignItems: 'stretch' },
-  reasonCard: { flex: 1, gap: 8, paddingVertical: 18, paddingHorizontal: 12, borderRadius: 18, alignItems: 'center' },
+  reasonCard: { flex: 1, gap: 6, paddingVertical: 12, paddingHorizontal: 10, borderRadius: 16, alignItems: 'center' },
   reasonTitle: { color: colors.navy, fontSize: 13, lineHeight: 18, fontWeight: '700', textAlign: 'center' },
   reasonCopy: { color: colors.muted, fontSize: 11, lineHeight: 17, textAlign: 'center' },
-  homeFooter: { paddingTop: 10, gap: 18, borderTopWidth: 1, borderTopColor: colors.border },
+  homeFooter: { paddingTop: 10, gap: 6, borderTopWidth: 1, borderTopColor: colors.border },
+  footerText: { color: colors.muted, fontSize: 11, lineHeight: 16 },
   fileIcon: { width: 43, height: 46, backgroundColor: '#EEF2F7', borderRadius: 12, justifyContent: 'center', alignItems: 'center' },
   formId: { color: '#8E6E2B', fontSize: 12, fontWeight: '800', letterSpacing: 0.5 },
   rowTitle: { color: colors.navy, fontSize: 17, fontWeight: '800', lineHeight: 23 },
