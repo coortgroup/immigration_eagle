@@ -8,7 +8,7 @@ An Expo / React Native app for exploring immigration forms, with a small GitHub 
 - Expo project: https://expo.dev/accounts/coortgroup/projects/immigration-eagle
 - [Open the published SDK 57 preview in Expo Go](https://expo.dev/preview/update/expo-go?projectId=9fc8959b-6ce7-436b-b512-8d0f7fe2e081&group=b719349c-1095-457a-8f98-19ee9e315940)
 
-The custom domain is configured in GitHub Pages. DNS and HTTPS verification are pending; the website addresses above are not yet confirmed live. See [custom domain setup](docs/CUSTOM_DOMAIN.md).
+The custom domain is configured in GitHub Pages, DNS validation passed, and the root-path deployment succeeded. HTTPS certificate provisioning and a final live-site check are pending. See [custom domain setup](docs/CUSTOM_DOMAIN.md).
 
 The Expo preview is hosted by EAS Update and works without a running Mac or a shared Wi-Fi network. Sign in as `coortgroup` in Expo Go and on Expo's launch page if asked. This is an update under the Expo project's `preview` branch, not a signed iOS build under Builds. See the repository Actions tab for website deployment status.
 
@@ -82,7 +82,7 @@ The project uses SDK 57, with unresolved audit findings in its dependency tree. 
 
 `.github/workflows/pages.yml` builds and deploys on pushes to `main` and manual runs. Repository **Settings → Pages → Source** must be **GitHub Actions**. The workflow reads the configured Pages URL before building, so Expo assets work at either `/immigration_eagle/app/` on the default address or `/app/` on a custom domain.
 
-The custom domain **fillout.net** is saved in GitHub Pages. DNS and HTTPS verification remain pending. After saving the domain, a new deployment must rebuild Expo assets for `/app/`. See [custom domain setup](docs/CUSTOM_DOMAIN.md).
+The custom domain **fillout.net** is saved in GitHub Pages. DNS validation and the deployment with Expo assets under `/app/` have completed; HTTPS certificate provisioning and the final live-site check remain pending. See [custom domain setup](docs/CUSTOM_DOMAIN.md).
 
 After authenticating with `gh auth login`, an administrator can configure Pages and the About link:
 

@@ -4,7 +4,7 @@ Configured website: **https://fillout.net/**
 
 Configured browser app: **https://fillout.net/app/**
 
-The custom domain **fillout.net** is saved in the repository's GitHub Pages settings. DNS and HTTPS verification are pending, so these addresses are not yet confirmed live. A fresh deployment must build the app with the custom domain's root base path. The previous GitHub address is https://coortgroup.github.io/immigration_eagle/; GitHub may redirect it after the domain change.
+The custom domain **fillout.net** is saved in the repository's GitHub Pages settings, and GitHub reports **DNS check successful**. [Deployment 38020674959](https://github.com/coortgroup/immigration_eagle/actions/runs/38020674959) for commit `3edbcaa` succeeded after the domain switch. HTTPS certificate provisioning and the final live-site check are pending. The previous GitHub address, https://coortgroup.github.io/immigration_eagle/, now redirects to the custom domain.
 
 ## GitHub Pages
 
@@ -19,7 +19,7 @@ The workflow reads `actions/configure-pages`'s `base_path` output before exporti
 
 ## DNS
 
-At the DNS provider, replace conflicting parking/forwarding records for `@` and `www` with the following records. Preserve unrelated mail, verification and other subdomain records.
+Namecheap's parking/forwarding records for `@` and `www` have been replaced with these records. Unrelated mail and verification records were preserved.
 
 | Type | Host | Value |
 | --- | --- | --- |
@@ -31,7 +31,7 @@ At the DNS provider, replace conflicting parking/forwarding records for `@` and 
 
 The `www` target must not include `/immigration_eagle`. Existing apex IPv6 records must not point to another host. If IPv6 is wanted, GitHub's documented values are `2606:50c0:8000::153`, `2606:50c0:8001::153`, `2606:50c0:8002::153`, and `2606:50c0:8003::153`.
 
-At inspection on October 9, 2026, the nameservers were `dns1.registrar-servers.com` and `dns2.registrar-servers.com`; the apex resolved to `192.64.119.114` and `www` to `parkingpage.namecheap.com`. These identify Namecheap DNS/parking, not ownership. Recheck before changing records. In Namecheap, host records are under **Domain List → Manage → Advanced DNS**.
+On October 9, 2026, both authoritative nameservers (`dns1.registrar-servers.com` and `dns2.registrar-servers.com`) and the public resolvers `1.1.1.1` and `8.8.8.8` returned all four GitHub A records and the correct `www` CNAME. No apex AAAA records were present. Some local DNS caches still returned the former Namecheap parking destination during verification. In Namecheap, host records are under **Domain List → Manage → Advanced DNS**.
 
 ## Verify the switch
 
@@ -39,7 +39,7 @@ At inspection on October 9, 2026, the nameservers were `dns1.registrar-servers.c
 2. Confirm DNS resolves to GitHub Pages and its Pages settings report a successful DNS check.
 3. When GitHub finishes provisioning the certificate, enable **Enforce HTTPS**. DNS changes and certificate availability can take up to 24 hours.
 4. Open `https://fillout.net/` and `https://fillout.net/app/?form=I-129F`. Confirm the website, app, images and form choice screen load, then confirm `https://www.fillout.net/` redirects to the apex domain.
-5. Update the repository **About → Website** to `https://fillout.net/` after the custom domain works. `package.json`'s `homepage`, `app.config.ts`'s `extra.website`, and the README addresses already use the configured domain; remove the pending-verification notes only after completing the checks above.
+5. The repository **About → Website**, `package.json`'s `homepage`, `app.config.ts`'s `extra.website`, and README addresses already use `https://fillout.net/`. Remove the pending-verification notes only after completing the checks above.
 
 The published Expo Go preview and Expo project identity are independent of website DNS. Changing the website domain does not require renaming the Expo project.
 
