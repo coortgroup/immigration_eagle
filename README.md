@@ -6,7 +6,7 @@ An Expo / React Native app for exploring immigration forms, with a small GitHub 
 - Browser app: **https://coortgroup.github.io/immigration_eagle/app/**
 - Repository: https://github.com/coortgroup/immigration_eagle
 - Expo project: https://expo.dev/accounts/coortgroup/projects/immigration-eagle
-- [Open the published SDK 57 preview in Expo Go](https://expo.dev/preview/update/expo-go?projectId=9fc8959b-6ce7-436b-b512-8d0f7fe2e081&group=a13d8929-df4d-4a3b-947f-a83b0e69fe34)
+- [Open the published SDK 57 preview in Expo Go](https://expo.dev/preview/update/expo-go?projectId=9fc8959b-6ce7-436b-b512-8d0f7fe2e081&group=5d93a2e2-41ab-4e42-b329-74c4b135189f)
 
 The Expo preview is hosted by EAS Update and works without a running Mac or a shared Wi-Fi network. Sign in as `coortgroup` in Expo Go and on Expo's launch page if asked. This is an update under the Expo project's `preview` branch, not a signed iOS build under Builds. See the repository Actions tab for website deployment status.
 
