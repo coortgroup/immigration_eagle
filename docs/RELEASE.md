@@ -29,6 +29,10 @@ The launcher skips an incomplete local Android SDK for this process only because
 
 An EAS Update can host this app's JavaScript and assets for Expo Go without keeping the Mac running. This is a published preview, not an Apple-signed app or an entry under EAS Builds. The project uses Expo Go-compatible libraries and SDK 57.
 
+The project is now linked to [@coortgroup/immigration-eagle](https://expo.dev/accounts/coortgroup/projects/immigration-eagle), ID `9fc8959b-6ce7-436b-b512-8d0f7fe2e081`. The first published preview group is `a13d8929-df4d-4a3b-947f-a83b0e69fe34`: [open in Expo Go](https://expo.dev/preview/update/expo-go?projectId=9fc8959b-6ce7-436b-b512-8d0f7fe2e081&group=a13d8929-df4d-4a3b-947f-a83b0e69fe34). Sign in to Expo Go as `coortgroup`; Expo requires authorized account access to this preview. The hosted iOS and Android manifests identify SDK 57, and the downloaded bundles, icon artwork and font match their SHA-256 hashes. Physical phone testing still needs confirmation on the device.
+
+For subsequent updates, preserve the project configuration and run step 4 below. Steps 1–3 describe the initial setup and recovery on another computer:
+
 1. Sign in with `npx eas-cli@latest login --device` (or `npx expo login`).
 2. Create or link the project with `npx eas-cli@latest init --account YOUR_EXPO_ACCOUNT --non-interactive --json`.
 3. Preserve the returned project ID in `app.config.ts`: set `owner` to the authenticated account, `extra.eas.projectId` to that ID, `updates.url` to `https://u.expo.dev/PROJECT_ID`, and `runtimeVersion` to `{policy:'appVersion'}`. Keep the existing `extra` fields. Dynamic TypeScript config may need these changes applied manually. The `expo-updates` dependency is already installed.

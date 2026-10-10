@@ -20,3 +20,4 @@ android/
 *.log
 .eas/
 .local/
+dist/
