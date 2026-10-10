@@ -1,6 +1,6 @@
 {
   "name": "fillout-immigration-forms",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "main": "index.ts",
   "description": "FILLOUT IMMIGRATION FORMS — Expo app and GitHub Pages website",
@@ -54,6 +54,11 @@
     "@types/react": "~19.2.4",
     "sharp": "^0.35.5",
     "typescript": "~6.0.3"
+  },
+  "overrides": {
+    "xcode": {
+      "uuid": "11.1.1"
+    }
   },
   "engines": {
     "node": ">=22.14.0"

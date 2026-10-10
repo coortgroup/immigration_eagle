@@ -1,0 +1,58 @@
+{
+  "tool": "Built-in image_gen.imagegen",
+  "date": "2026-10-10",
+  "purpose": "Home redesign from the user's three supplied visual references. These assets preserve the navy, gold, red and white identity and use the larger eagle-to-lettering proportions shown in the new header reference.",
+  "exports": [
+    {
+      "path": "assets/fillout-logo-v2.png",
+      "width": 1200,
+      "height": 494,
+      "transparentBackground": true,
+      "mode": "compositing",
+      "references": [
+        "assets/fillout-wordmark.png",
+        "User attachment 2026-10-10: 1-Photo-1.jpg, home header mockup"
+      ],
+      "prompt": "Use case: compositing. Asset type: transparent FILLOUT IMMIGRATION FORMS horizontal logo for app header and website footer. Image 1 is the exact source brand artwork. Image 2 is supporting layout reference showing the desired NEW proportions. Preserve source eagle-and-American-flag shield identity exactly, its navy/gold/white/red palette, all letters and gold rule. Change ONLY relative scale and spacing: the eagle is large and tall on the left; the text is appreciably smaller on the right, vertically centered alongside it. Eagle painted height 340 units and width 305; text block width 490 and height 145 units, separated by 28 units. Overall painted bounds approximately 825x340. Text reads exactly FILLOUT above thin gold horizontal rule and IMMIGRATION FORMS below it, same typography. Eagle height must be more than twice whole text block height, matching image 2. No added UI, no new details, no shadows, no backdrop. Produce one tight transparent-background PNG with true alpha and just 12 units clear margin. Keep entire artwork intact; no cropping. Do not reproduce the surrounding website from reference2.",
+      "display": "Use contain and an aspect ratio of 1200/494. Do not stretch the logo or reuse old 2.6:1 sizing that distorts it. Small app/navigation icons should continue using the standalone eagle emblem."
+    },
+    {
+      "path": "assets/fillout-guarantee-badge.png",
+      "width": 640,
+      "height": 640,
+      "transparentBackground": true,
+      "mode": "background-extraction",
+      "references": [
+        "User attachment 2026-10-10: 2-Photo-2.jpg, guarantee shield mockup"
+      ],
+      "prompt": "Use case: background-extraction. Asset type: single standalone premium guarantee shield badge, transparent PNG. Input image is supporting appearance reference: recreate ONLY the FILLOUT guarantee badge at upper left, not the surrounding page. A symmetrical navy blue shield with polished gold bevel border. One gold five-point star near top. Exact white bold lettering FILLOUT (F I L L O U T) on navy. A glossy red ribbon crosses the shield with exact white lettering GUARANTEED (G U A R A N T E E D). Five small gold stars in a horizontal row below ribbon. One crisp white checkmark near pointed shield bottom. Match reference materials, proportions and dimensionality closely; beautiful clean polished corporate emblem with modest highlights, no heavy outer shadow. Entire badge intact on true transparent alpha, tightly framed with small safe padding. No additional text, no additional shields, no webpage elements, no background rectangle, no painted checkerboard. Approximately square canvas. Production quality app asset.",
+      "display": "Use contain. Any guarantee wording must remain paired with the actual service terms, rather than implying a guarantee of immigration approval."
+    },
+    {
+      "path": "assets/fillout-hero-bg.jpg",
+      "width": 1600,
+      "height": 800,
+      "transparentBackground": false,
+      "mode": "ads-marketing",
+      "references": [],
+      "prompt": "Use case: ads-marketing. Asset type: subtle website and mobile app hero BACKGROUND only. Primary request: sophisticated deep navy blue background with Statue of Liberty at the far right and very subtle flowing US flag folds, matching an elegant navy/gold immigration assistance brand. Wide landscape about 2:1. Keep left 65 percent quiet, nearly solid deep navy #062556, suitable for highly legible white text which will be overlaid in code. On right third a recognizable realistic Statue of Liberty and raised torch, crop statue body below shoulders at bottom, render entirely in darker and midtone cobalt blues under a strong navy overlay, restrained contrast. Flag folds can sweep diagonally behind statue but no loud red or white. Soft upper right blue illumination, navy vignette. No lettering, no logos, no icons, no border, no cards, no gold, no UI. Premium understated digital photographic composition, not busy, not a flat clipart silhouette. Full bleed rectangular opaque background.",
+      "display": "Use cover, with the statue placed on the right and readable page text on the left; add a navy overlay if needed for contrast."
+    }
+  ],
+  "postProcessing": "Deterministic deployment resizing and PNG/JPEG encoding with Sharp only; alpha retained for the logo and badge. Existing original assets were not overwritten. No artwork edits were performed outside the built-in image generation tool.",
+  "compactPrototypeExports": [
+    {
+      "path": "assets/fillout-logo-v2-preview.png",
+      "width": 520,
+      "height": 214,
+      "bytes": 26971
+    },
+    {
+      "path": "assets/fillout-guarantee-badge-preview.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 22777
+    }
+  ],
+  "compactPrototypePurpose": "Requested by the web implementation for its 1 MB single-file prototype limit. Deterministic downscales of the final artwork, palette-optimized with alpha retained. Website/native screens use the full assets."
+}

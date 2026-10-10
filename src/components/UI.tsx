@@ -41,10 +41,10 @@ export function Field({ label, help, error, multiline, ...props }: TextInputProp
   </View>;
 }
 
-export function BrandMark({ compact = false }: { compact?: boolean }) {
+export function BrandMark({ compact = false, width = 280 }: { compact?: boolean; width?: number }) {
   return <Image
-    source={compact ? require('../../assets/eagle-logo.png') : require('../../assets/fillout-wordmark.png')}
-    style={compact ? styles.brandEmblem : styles.brandWordmark}
+    source={compact ? require('../../assets/eagle-logo.png') : require('../../assets/fillout-logo-v2.png')}
+    style={compact ? styles.brandEmblem : [styles.brandWordmark, { width, height: width * 494 / 1200 }]}
     resizeMode="contain"
     accessibilityLabel="FILLOUT IMMIGRATION FORMS logo"
   />;
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
   input: { minHeight: 52, borderRadius: radius.sm, borderWidth: 1, borderColor: colors.border, padding: 14, backgroundColor: colors.paper, color: colors.text, fontSize: 16 },
   error: { color: colors.error, fontSize: 13, lineHeight: 19 },
   brandEmblem: { width: 36, height: 40, flexShrink: 0 },
-  brandWordmark: { width: 238, height: 92, maxWidth: '100%', flexShrink: 1 },
+  brandWordmark: { aspectRatio: 1200 / 494, maxWidth: '100%', flexShrink: 1 },
   notice: { borderRadius: radius.sm, padding: 15, gap: 6 },
   row: { paddingVertical: 16, paddingHorizontal: 2, flexDirection: 'row', alignItems: 'center', gap: 16 },
 });

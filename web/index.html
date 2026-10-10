@@ -15,7 +15,7 @@
   <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="./" aria-label="FILLOUT IMMIGRATION FORMS home">
-        <img src="assets/fillout-wordmark.png" alt="FILLOUT IMMIGRATION FORMS" width="1264" height="485">
+        <img src="assets/fillout-logo-v2.png" alt="FILLOUT IMMIGRATION FORMS" width="1200" height="494">
       </a>
       <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-navigation">Menu <span aria-hidden="true">☰</span></button>
       <nav class="site-navigation" id="site-navigation" aria-label="Main navigation">
@@ -27,42 +27,46 @@
   </header>
 
   <main id="main">
-    <section class="hero" aria-labelledby="hero-title">
-      <div class="container hero-grid">
-        <div class="hero-copy">
-          <span class="preview-badge"><span aria-hidden="true"></span> EARLY PRODUCT PREVIEW</span>
-          <h1 id="hero-title">Prepare immigration paperwork correctly, <em>guaranteed.</em></h1>
-          <p>Find your form. Follow clear steps.<br>Move forward with confidence.</p>
-          <div class="hero-actions">
-            <a class="button button-gold" href="#forms">Browse immigration forms <span aria-hidden="true">↓</span></a>
-            <a class="text-link" href="app/">Open app <span aria-hidden="true">↗</span></a>
-          </div>
-          <p class="hero-note">Early preview · Guarantee terms are not finalized. Live AI, attorney delivery, payments, and filing are not connected.</p>
+    <section class="hero container" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <span class="eyebrow">IMMIGRATION MADE SIMPLE</span>
+        <h1 id="hero-title">Prepare immigration<br class="desktop-break"> paperwork correctly,<br> <em>guaranteed.</em></h1>
+        <p>Find your form. Follow clear steps.<br>Move forward with confidence.</p>
+        <div class="hero-features" aria-label="Preparation made clearer">
+          <div><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 8 3v6c0 5-8 9-8 9s-8-4-8-9V6Z"/><path d="m8 11 3 3 5-5"/></svg><span>Accurate<br>forms</span></div>
+          <div><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 6v6l4 2"/></svg><span>Save<br>time</span></div>
+          <div><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h11l3 3v15H5Z"/><path d="M15 3v5h4M8 12h8M8 16h5"/></svg><span>Clear<br>guidance</span></div>
         </div>
-
-        <div class="finder-card" aria-labelledby="finder-title">
-          <span class="eyebrow">START WITH YOUR SITUATION</span>
-          <h2 id="finder-title">Find the right USCIS form</h2>
-          <p>Choose your status and what you would like to do.</p>
-          <div class="finder-fields">
-            <label for="finder-status">I am</label>
-            <select id="finder-status" aria-describedby="finder-note" disabled><option value="">Choose your current status</option><!-- FINDER_STATUS_OPTIONS --></select>
-            <label for="finder-goal">I would like to</label>
-            <select id="finder-goal" disabled><option value="">Choose your status first</option></select>
-          </div>
-          <div id="finder-results" class="finder-results" aria-live="polite" aria-atomic="false"></div>
-          <div class="finder-bottom"><p id="finder-note">A form match is a starting point. A short check in the app follows before preparation.</p><button id="finder-reset" class="reset-button" type="button" hidden>Reset choices</button></div>
-          <noscript><p class="finder-fallback">Turn on JavaScript to use the finder, or <a href="#forms">browse all forms below</a>.</p></noscript>
-        </div>
+        <a class="hero-note" href="#guarantee">Preparation guarantee · See scope and launch status <span aria-hidden="true">↗</span></a>
       </div>
     </section>
 
-    <section class="intro-strip" aria-label="What you can explore">
-      <div class="container strip-grid">
-        <div><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h8l4 4v14H6Z"/><path d="M14 3v5h4M9 12h6M9 16h6"/></svg><span>21 forms &amp; resources</span></div>
-        <div><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 6 2 2 4-4M13 6h7M4 13l2 2 4-4M13 13h7M4 20l2 2 4-4M13 20h7"/></svg><span>Clear, guided first steps</span></div>
-        <div><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="3"/><path d="M10 17h4"/></svg><span>Made for your phone</span></div>
+    <section class="finder-card container" id="form-finder" aria-labelledby="finder-title">
+      <div class="finder-heading"><span class="finder-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="m15 15 6 6"/></svg></span><div><h2 id="finder-title">Find the right USCIS form</h2><p>Tell us about your situation to get started.</p></div></div>
+      <form id="form-finder-controls">
+        <div class="finder-fields">
+          <div><label for="finder-status">I am</label><select id="finder-status" aria-describedby="finder-note" disabled required><option value="">Choose your status</option><!-- FINDER_STATUS_OPTIONS --></select></div>
+          <div><label for="finder-goal">I would like to</label><select id="finder-goal" disabled required><option value="">Choose your status first</option></select></div>
+        </div>
+        <button class="button button-navy finder-submit" type="submit" id="finder-submit" disabled>Find My Form <span aria-hidden="true">→</span></button>
+      </form>
+      <div id="finder-results" class="finder-results" aria-live="polite" aria-atomic="false" tabindex="-1"></div>
+      <div class="finder-bottom"><p id="finder-note">A form match is a starting point. A short check follows before preparation.</p><button id="finder-reset" class="reset-button" type="button" hidden>Reset choices</button></div>
+      <noscript><p class="finder-fallback">Turn on JavaScript to use the finder, or <a href="#forms">browse all forms below</a>.</p></noscript>
+    </section>
+
+    <section class="container confidence-section" aria-labelledby="confidence-title">
+      <div class="confidence-banner">
+        <img class="guarantee-badge" src="assets/fillout-guarantee-badge.png" alt="FILLOUT preparation guarantee" width="480" height="480" loading="lazy">
+        <div class="confidence-copy"><h2 id="confidence-title">File your immigration forms with <em>confidence.</em></h2><p>Accurate forms. Clear guidance.<br>A simpler way forward.</p></div>
+        <div class="confidence-features"><span>✓ &nbsp; Choose your form</span><span>✓ &nbsp; Prepare step by step</span><span>✓ &nbsp; Review your details</span></div>
       </div>
+      <div class="why-card">
+        <div class="why-copy"><h2>Why it matters.</h2><span class="gold-rule" aria-hidden="true"></span><p>Small details matter when preparing immigration paperwork. Check your information and use the current form instructions before you file.</p><a class="button button-navy" href="#form-finder">File the Right Form <span aria-hidden="true">→</span></a></div>
+        <article class="why-risk"><span>CHECK YOUR DETAILS</span><h3>Missing<br>information</h3><p>Review required fields, signatures, and supporting documents.</p><svg viewBox="0 0 64 72" aria-hidden="true"><path d="M8 4h29l16 16v44H8Z"/><path d="M37 4v17h16M19 30h21M19 39h14M19 48h11"/><circle cx="49" cy="52" r="13"/><path d="m44 47 10 10m0-10L44 57"/></svg></article>
+        <article class="why-risk edition"><span>CHECK THE EDITION</span><h3>The right<br>form version</h3><p>Check the accepted edition and filing instructions with USCIS.</p><svg viewBox="0 0 64 72" aria-hidden="true"><path d="M8 4h29l16 16v44H8Z"/><path d="M37 4v17h16M19 30h21M19 39h14M19 48h11"/><circle cx="49" cy="52" r="13"/><path d="m43 52 4 4 8-9"/></svg></article>
+      </div>
+      <details class="guarantee-terms" id="guarantee"><summary>About the FILLOUT preparation guarantee</summary><p>Our planned guarantee covers a refund of the preparation fee if our preparation error causes a filing rejection. It does not guarantee a government decision or cover government fees. Final terms will be available before paid preparation launches. No payment is collected in this preview.</p></details>
     </section>
 
     <section class="section container catalog-section" id="forms" aria-labelledby="forms-title">
@@ -129,7 +133,7 @@
 
   <footer class="site-footer">
     <div class="container">
-      <div class="footer-top"><a class="brand" href="./" aria-label="FILLOUT IMMIGRATION FORMS home"><img src="assets/fillout-wordmark.png" alt="FILLOUT IMMIGRATION FORMS" width="1264" height="485"></a><p>A clearer start to your next chapter.</p><a href="app/">Open app <span aria-hidden="true">↗</span></a></div>
+      <div class="footer-top"><a class="brand" href="./" aria-label="FILLOUT IMMIGRATION FORMS home"><img src="assets/fillout-logo-v2.png" alt="FILLOUT IMMIGRATION FORMS" width="1200" height="494"></a><p>A clearer start to your next chapter.</p><a href="app/">Open app <span aria-hidden="true">↗</span></a></div>
       <div class="footer-details">
         <details id="status"><summary>App status <span data-status-label>Early preview</span></summary><p data-status-copy>The app is an early preparation preview. FILLOUT AI responses are scripted. Full PDF generation, attorney delivery, payments, and government filing are not connected. A preliminary form check does not confirm every filing requirement.</p></details>
         <details id="privacy"><summary>Privacy &amp; your information <span>Use sample details</span></summary><p>This landing page has no advertising trackers or analytics. Use sample information in the app preview. Finder selections stay in this page. Drafts are stored on this browser or device only when you choose Save for later, and remain until you remove them or clear app storage. There is no cloud sync.</p><p data-privacy-delivery>Contact and attorney requests are preview-only here and are not delivered. No personal details are sent to an AI service, legal team, or government agency.</p><p>Your browser connects to the hosting service to load these pages and to any external resource you choose to open.</p></details>

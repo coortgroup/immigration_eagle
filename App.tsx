@@ -8,6 +8,7 @@ import { AssistantScreen } from './src/screens/AssistantScreen';
 import { ApplicationScreen } from './src/screens/ApplicationScreen';
 import type { DraftSummary } from './src/types';
 import { deleteDraft, listDrafts } from './src/draftStorage';
+import { colors } from './src/theme';
 
 type Tab = 'home' | 'application' | 'ai';
 
@@ -42,7 +43,7 @@ function EagleApp() {
       <View style={[styles.panel,tab!=='ai'&&styles.hidden]} accessibilityElementsHidden={tab!=='ai'} importantForAccessibility={tab!=='ai'?'no-hide-descendants':'auto'}><AssistantScreen isActive={tab==='ai'} contactRequest={contactRequest}/></View>
       <View style={styles.tabs} accessibilityRole="tablist">
         {([{key:'home',label:'Home',icon:'home-outline'},{key:'application',label:'My Application',icon:'checkbox-outline'},{key:'ai',label:'FILLOUT AI',icon:'sparkles-outline'}] as const).map(item=><Pressable key={item.key} accessibilityRole="tab" accessibilityState={{selected:tab===item.key}} onPress={()=>setTab(item.key)} style={({pressed})=>[styles.tab,tab===item.key&&styles.activeTab,pressed&&{opacity:.7}]}>
-          {item.key==='ai'?<Image source={require('./assets/eagle-logo.png')} style={styles.eagle}/>:<Ionicons name={item.icon} size={23} color={tab===item.key?'#061B49':'#637089'}/>}
+          {item.key==='ai'?<Image source={require('./assets/eagle-logo.png')} style={styles.eagle}/>:<Ionicons name={item.icon} size={23} color={tab===item.key?colors.navy:colors.muted}/>}
           <Text style={[styles.tabLabel,tab===item.key&&styles.activeLabel]}>{item.label}</Text>
         </Pressable>)}
       </View>
@@ -54,9 +55,9 @@ export default function App() {return <SafeAreaProvider><EagleApp/></SafeAreaPro
 
 const styles=StyleSheet.create({
   safe:{flex:1,backgroundColor:Platform.OS==='web'?'#E8EBF1':'#FFFFFF'},
-  shell:{flex:1,width:'100%',maxWidth:600,alignSelf:'center',backgroundColor:'#F7F8FC'},
+  shell:{flex:1,width:'100%',maxWidth:600,alignSelf:'center',backgroundColor:colors.background},
   panel:{flex:1,minHeight:0},hidden:{display:'none'},
   tabs:{flexDirection:'row',backgroundColor:'#FFFFFF',borderTopWidth:1,borderTopColor:'#E1E5EE',paddingHorizontal:10,paddingVertical:8,gap:6},
   tab:{flex:1,minHeight:56,alignItems:'center',justifyContent:'center',gap:5,borderRadius:12},
-  activeTab:{backgroundColor:'#FCF7EB'},tabLabel:{fontSize:11,color:'#637089'},activeLabel:{color:'#061B49',fontWeight:'600'},eagle:{width:27,height:27,resizeMode:'contain'},
+  activeTab:{backgroundColor:colors.blueLight},tabLabel:{fontSize:11,color:colors.muted},activeLabel:{color:colors.navy,fontWeight:'700'},eagle:{width:29,height:31,resizeMode:'contain'},
 });

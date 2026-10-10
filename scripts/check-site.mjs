@@ -11,7 +11,7 @@ const ids = [...landing.matchAll(/data-catalog-form="([^"]+)"/g)].map(match=>mat
 assert.equal(ids.length,21);
 assert.equal(new Set(ids).size,21);
 assert.deepEqual(new Set(ids),new Set(catalog.map(form=>form.id)));
-assert.ok(landing.includes('Prepare immigration paperwork correctly,'));
+assert.ok(landing.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').includes('Prepare immigration paperwork correctly,'));
 for (const {id} of catalog) assert.ok(landing.includes(`href="app/?form=${id}"`),`Missing direct link for ${id}`);
 assert.equal((landing.match(/<dt>Do it yourself<\/dt>/g)||[]).length,21);
 assert.equal((landing.match(/<dt>With AI<\/dt>/g)||[]).length,21);

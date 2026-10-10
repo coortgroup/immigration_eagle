@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
-  Alert, BackHandler, KeyboardAvoidingView, Linking, Modal, Platform, Pressable,
-  ScrollView, StyleSheet, Text, View,
+  AccessibilityInfo, Alert, BackHandler, Image, ImageBackground, KeyboardAvoidingView, Linking, Modal, Platform, Pressable,
+  ScrollView, StyleSheet, Text, useWindowDimensions, View,
 } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Badge, BrandMark, Button, Card, Field, Notice, RowLink, SectionTitle } from '../components/UI';
@@ -73,6 +73,8 @@ async function openOfficial(url?: string | null) {
 }
 
 export function FormsFlow({ onContact, onDraftSaved, isActive = true, initialFormId, resumeFormId, resumeRequest }: Props) {
+  const { width: windowWidth } = useWindowDimensions();
+  const contentWidth = Math.min(windowWidth, 600) - 40;
   const initialForm = forms.find(item => item.id === initialFormId);
   const [route, setRoute] = useState<Route>(initialForm ? 'detail' : 'home');
   const [returnTo, setReturnTo] = useState<Route>('home');
@@ -82,7 +84,9 @@ export function FormsFlow({ onContact, onDraftSaved, isActive = true, initialFor
   const [otherFormsOpen, setOtherFormsOpen] = useState(false);
   const [statusId, setStatusId] = useState('');
   const [goalId, setGoalId] = useState('');
+  const [finderMatchesVisible, setFinderMatchesVisible] = useState(false);
   const [picker, setPicker] = useState<PickerKind>(null);
+  const [guaranteeOpen, setGuaranteeOpen] = useState(false);
   const [mode, setMode] = useState<PreparationMode>('self');
   const [answers, setAnswers] = useState<Record<string, QualificationAnswer>>({});
   const [questionIndex, setQuestionIndex] = useState(0);
@@ -302,16 +306,16 @@ export function FormsFlow({ onContact, onDraftSaved, isActive = true, initialFor
     const detail = reference.status === 'included' || reference.status === 'add-on' ? ai.note : item.id === 'I-485' ? 'Base package' : item.id === 'I-821D' ? 'Includes I-765 and I-765WS' : '';
     return <View style={styles.priceColumns}>
       <View style={styles.priceColumn}><Text style={styles.priceLabel}>Do it yourself</Text><Text style={styles.listPrice}>Free</Text></View>
-      <View style={styles.priceColumn}><Text style={styles.priceLabel}>With AI</Text><Text style={styles.listPrice}>{ai.unavailable ? 'Contact us' : ai.price}</Text>{!!detail && <Text style={styles.priceNote}>{detail}</Text>}</View>
-      <View style={styles.priceColumn}><Text style={styles.priceLabel}>With an attorney</Text><Text style={styles.listPrice}>{typeof lawyerPrice === 'number' ? money(lawyerPrice) : 'Get a quote'}</Text>{typeof lawyerPrice === 'number' && !!attorneyScope[item.id] && <Text style={styles.priceNote}>{attorneyScope[item.id]}</Text>}</View>
+      <View style={styles.priceColumn}><Text style={styles.priceLabel}>With AI</Text><Text style={styles.listPrice}>{ai.unavailable ? 'Contact us' : ai.price}</Text>{!!detail && <Text style={styles.priceNote}>{detail}</Text>}{!ai.unavailable && <Pressable accessibilityRole="button" accessibilityLabel={`Read preparation guarantee terms for ${item.id}`} onPress={() => setGuaranteeOpen(true)} style={styles.priceGuarantee}><Text style={styles.priceGuaranteeText}>Preparation guarantee*</Text></Pressable>}</View>
+      <View style={[styles.priceColumn, styles.attorneyPriceColumn]}><Text style={styles.priceLabel}>With an attorney</Text><Text style={styles.listPrice}>{typeof lawyerPrice === 'number' ? money(lawyerPrice) : 'Get a quote'}</Text>{typeof lawyerPrice === 'number' && !!attorneyScope[item.id] && <Text style={styles.priceNote}>{attorneyScope[item.id]}</Text>}</View>
     </View>;
   }
 
   function pricedFormRow(item: FormRecord, shortTitle: boolean) {
     return <View key={item.id} style={styles.pricedFormRow}>
-      <View style={styles.formInfo}><Badge>{item.id}</Badge><Text style={[styles.rowTitle, { flex: 1 }]}>{shortTitle ? formLabels[item.id] || item.title : item.title}</Text></View>
+      <View style={styles.formInfo}><View style={styles.formCodeBadge}><Text style={styles.formCode}>{item.id}</Text></View><View style={{ flex: 1, gap: 4 }}><Text accessibilityRole="header" style={styles.rowTitle}>{shortTitle ? formLabels[item.id] || item.title : item.title}</Text><Text style={styles.formSummary}>{item.summary}</Text></View></View>
       {formPriceSummary(item)}
-      <Button title="Start filling out form" accessibilityLabel={`Start filling out form ${item.id}`} variant="quiet" icon="arrow-forward" onPress={() => openForm(item.id)} style={{ alignSelf: 'flex-start', paddingHorizontal: 0, minHeight: 44 }} />
+      <Button title="Start filling out form" accessibilityLabel={`Start filling out form ${item.id}`} icon="arrow-forward" onPress={() => openForm(item.id)} />
     </View>;
   }
 
@@ -323,61 +327,101 @@ export function FormsFlow({ onContact, onDraftSaved, isActive = true, initialFor
     const mainForms = mainFormIds.map(id => forms.find(item => item.id === id)).filter((item): item is FormRecord => !!item);
     const otherForms = forms.filter(item => !mainFormIds.includes(item.id));
     return <View style={{ gap: 17 }}>
-      <SectionTitle title="Immigration forms" subtitle="Self-preparation is free. Choose AI or attorney assistance below." />
+      <SectionTitle eyebrow="YOUR FORM. YOUR WAY." title="Immigration forms" subtitle="Choose free self-preparation, AI guidance or attorney assistance." />
       <Button title="Search by form number or name" variant="secondary" icon="search-outline" onPress={() => setRoute('catalog')} />
       <Text accessibilityRole="header" style={styles.label}>Main forms</Text>
-      <Card style={{ paddingVertical: 0 }}>{mainForms.map(item => pricedFormRow(item, true))}</Card>
-      <Card style={{ paddingVertical: 0 }}>
-        <Pressable accessibilityRole="button" accessibilityLabel={`All other forms, ${otherForms.length} documents`} accessibilityState={{ expanded: otherFormsOpen }} onPress={() => setOtherFormsOpen(!otherFormsOpen)} style={styles.otherFormsHeader}>
-          <Text style={[styles.label, { flex: 1 }]}>All other forms</Text><Badge>{otherForms.length}</Badge><Ionicons name={otherFormsOpen ? 'chevron-up' : 'chevron-down'} size={20} color={colors.navy} />
-        </Pressable>
-        {otherFormsOpen && otherForms.map(item => pricedFormRow(item, true))}
-      </Card>
-      <Text style={styles.footnote}>Prices in USD. Government filing fees and taxes are separate.</Text>
+      {mainForms.map(item => pricedFormRow(item, true))}
+      <Pressable accessibilityRole="button" accessibilityLabel={`All other forms, ${otherForms.length} documents`} accessibilityState={{ expanded: otherFormsOpen }} onPress={() => setOtherFormsOpen(!otherFormsOpen)} style={styles.otherFormsHeader}>
+        <View style={{ flex: 1, gap: 3 }}><Text style={styles.label}>All other forms</Text><Text style={styles.small}>Compare all three preparation options</Text></View><Badge>{otherForms.length}</Badge><Ionicons name={otherFormsOpen ? 'chevron-up' : 'chevron-down'} size={20} color={colors.navy} />
+      </Pressable>
+      {otherFormsOpen && otherForms.map(item => pricedFormRow(item, true))}
+      <Text style={styles.footnote}>Prices in USD. Government filing fees and taxes are separate. Paid services are not available during this preview.</Text>
     </View>;
   }
 
   function selector(kind: 'status' | 'goal', label: string, value: string | undefined, placeholder: string) {
     const disabled = kind === 'goal' && !selectedStatus;
-    return <View style={{ gap: 8 }}><Text style={styles.label}>{label}</Text>
-      <Pressable accessibilityRole="button" accessibilityLabel={`${label}. ${value || placeholder}`} accessibilityState={{ disabled }} disabled={disabled} onPress={() => setPicker(kind)} style={[styles.selector, disabled && { opacity: 0.5 }]}>
-        <Text style={[styles.selectorValue, !value && { color: colors.muted }]}>{value || placeholder}</Text><Ionicons name="chevron-down" size={18} color={colors.navy} />
+    return <View style={styles.selectorField}><Text style={styles.selectorLabel}>{label}</Text>
+      <Pressable accessibilityRole="button" accessibilityLabel={`${label}. ${value || placeholder}`} accessibilityState={{ disabled, expanded: picker === kind }} disabled={disabled} onPress={() => setPicker(kind)} style={[styles.selector, disabled && { opacity: 0.6 }]}>
+        <Text style={[styles.selectorValue, !value && { color: colors.muted }]}>{value || placeholder}</Text><Ionicons name="chevron-down" size={17} color={colors.navy} />
       </Pressable>
     </View>;
   }
 
+  function showFormMatches() {
+    if (!selectedStatus) { setPicker('status'); return; }
+    if (!selectedGoal) { setPicker('goal'); return; }
+    setFinderMatchesVisible(true);
+    AccessibilityInfo.announceForAccessibility(`${selectedGoal.forms.length} matching forms found below.`);
+  }
+
   function finderCard() {
-    return <Card>
-      <View style={styles.sectionHeading}><View style={styles.fileIcon}><Ionicons name="search-outline" color={colors.navy} size={24} /></View><Text accessibilityRole="header" style={styles.cardTitle}>Find the right USCIS form</Text></View>
-      <Text style={styles.body}>Tell us about your situation to explore the right document.</Text>
-      {selector('status', 'I am', selectedStatus?.label, 'Choose your current status')}
-      {selector('goal', 'I would like to', selectedGoal?.label, 'Choose what you want to do')}
-      {!!selectedGoal && <View style={{ gap: 5 }}><Text style={styles.eyebrow}>YOUR MATCH</Text>{selectedGoal.forms.map((id: string) => forms.find(item => item.id === id)).filter(Boolean).map(formRow)}<Text style={styles.small}>A form match is a starting point. A short check follows before preparation.</Text></View>}
-      {!!statusId && <Button title="Reset choices" variant="quiet" onPress={() => { setStatusId(''); setGoalId(''); }} />}
+    return <Card style={styles.finderCard}>
+      <View style={styles.sectionHeading}><View style={styles.finderIcon}><Ionicons name="search-outline" color={colors.navy} size={27} /></View><View style={{ flex: 1, gap: 5 }}><Text accessibilityRole="header" style={styles.cardTitle}>Find the right USCIS form</Text><Text style={styles.small}>Tell us about your situation to get started.</Text></View></View>
+      <View style={styles.finderFields}>
+        {selector('status', 'I am', selectedStatus?.label, 'Choose your status')}
+        {selector('goal', 'I would like to', selectedGoal?.label, 'Choose what to do')}
+      </View>
+      <Button title="Find My Form" icon="arrow-forward" onPress={showFormMatches} />
+      {finderMatchesVisible && !!selectedGoal && <View style={{ gap: 12 }} accessibilityLiveRegion="polite"><Text style={styles.eyebrow}>YOUR MATCH</Text>{selectedGoal.forms.map((id: string) => forms.find(item => item.id === id)).filter(Boolean).map(formRow)}<Text style={styles.small}>A form match is a starting point. A short check follows before preparation.</Text></View>}
+      {!!statusId && <Button title="Reset choices" variant="quiet" onPress={() => { setStatusId(''); setGoalId(''); setFinderMatchesVisible(false); }} />}
     </Card>;
+  }
+
+  function confidencePoints() {
+    const points: { icon: keyof typeof Ionicons.glyphMap; label: string }[] = [
+      { icon: 'shield-checkmark-outline', label: 'Accurate\nforms' },
+      { icon: 'time-outline', label: 'Save\ntime' },
+      { icon: 'people-outline', label: 'Clear\nguidance' },
+    ];
+    return <View style={styles.confidencePoints}>{points.map((point, index) => <View key={point.label} style={[styles.confidencePoint, index > 0 && styles.confidencePointBorder]}><Ionicons name={point.icon} size={25} color="#F0F5FF" /><Text style={styles.confidencePointText}>{point.label}</Text></View>)}</View>;
+  }
+
+  function confidenceSection() {
+    return <View style={{ gap: 18 }}>
+      <ImageBackground source={require('../../assets/fillout-hero-bg.jpg')} style={styles.confidenceBanner} imageStyle={styles.backgroundImage}>
+        <View style={styles.confidenceBannerTop}>
+          <Image source={require('../../assets/fillout-guarantee-badge.png')} style={[styles.guaranteeBadge, { width: (contentWidth - 40) * 0.35, height: (contentWidth - 40) * 0.35 }]} resizeMode="contain" accessibilityLabel="FILLOUT preparation guarantee shield" />
+          <View style={{ flex: 1, gap: 12 }}><Text accessibilityRole="header" style={styles.confidenceTitle}>File your immigration forms with <Text style={{ color: colors.gold }}>confidence.</Text></Text><Text style={styles.confidenceCopy}>Accurate forms. Clear guidance. A simpler way forward.</Text></View>
+        </View>
+        {confidencePoints()}
+        <Pressable accessibilityRole="button" onPress={() => setGuaranteeOpen(true)} style={styles.guaranteeLink}><Text style={styles.guaranteeLinkText}>Preparation guarantee* · Read terms</Text><Ionicons name="arrow-forward" size={15} color="#F3D783" /></Pressable>
+      </ImageBackground>
+      <Card style={styles.whyCard}>
+        <View style={{ gap: 10 }}><Text accessibilityRole="header" style={styles.whyTitle}>Why it matters</Text><View style={styles.goldLine} /><Text style={styles.body}>Small details deserve a careful check. Start with the right form, read the current instructions and review your answers before filing.</Text></View>
+        <View style={styles.reasonCards}>
+          <View style={[styles.reasonCard, { backgroundColor: '#FFF2F3' }]}><Ionicons name="document-text-outline" size={35} color="#B24C5C" /><Text style={styles.reasonTitle}>Complete details</Text><Text style={styles.reasonCopy}>Check required answers and signatures.</Text></View>
+          <View style={[styles.reasonCard, { backgroundColor: '#FFF8E9' }]}><Ionicons name="documents-outline" size={35} color="#A47B31" /><Text style={styles.reasonTitle}>Current forms</Text><Text style={styles.reasonCopy}>Check the edition and filing instructions.</Text></View>
+        </View>
+        <Button title="File the Right Form" icon="arrow-forward" onPress={() => setRoute('finder')} />
+      </Card>
+    </View>;
   }
 
   function home() {
     const benefits: { icon: keyof typeof Ionicons.glyphMap; title: string; text: string }[] = [
-      { icon: 'shield-checkmark-outline', title: 'Attorney-Reviewed Software', text: "Prepare USCIS forms correctly with easy, step-by-step process and alerts if there's a problem" },
-      { icon: 'document-text-outline', title: 'Official USCIS Forms', text: 'Perfectly prepared documents on the latest edition of USCIS forms' },
-      { icon: 'list-outline', title: 'Personal Filing Instructions', text: 'Checklist of supporting documents and how to organize your application' },
-      { icon: 'print-outline', title: 'Printing & Shipping', text: 'Digital download on all orders and optional print and mail available' },
-      { icon: 'documents-outline', title: 'Sample Documents', text: 'Example cover letters, affidavits and how-to information for your situation' },
-      { icon: 'chatbubbles-outline', title: 'Customer Support', text: 'Live, knowledgeable customer support at your fingertips' },
+      { icon: 'search-outline', title: 'Find your starting point', text: 'Match your situation with a form and work through a short preliminary check.' },
+      { icon: 'document-text-outline', title: 'Official USCIS forms', text: 'Open the official document and current USCIS instructions for your form.' },
+      { icon: 'list-outline', title: 'One question at a time', text: 'Answer guided introductory questions and review your preparation draft.' },
+      { icon: 'save-outline', title: 'Pick up where you left off', text: 'Save a draft on this device and return to it in My Application.' },
+      { icon: 'create-outline', title: 'Free self-preparation', text: 'Use official USCIS documents at no FILLOUT preparation charge. Government fees may apply.' },
+      { icon: 'chatbubbles-outline', title: 'Contact our team', text: 'Review a question and your contact details before sending a support request.' },
     ];
     return <>
-      <View style={styles.topLine}><BrandMark /><Pressable accessibilityRole="button" accessibilityLabel="Contact our team" onPress={onContact} style={styles.contactIcon}><Ionicons name="chatbubble-ellipses-outline" size={23} color={colors.navy} /></Pressable></View>
-      <View style={styles.hero}>
+      <View style={styles.topLine}><BrandMark width={Math.min(contentWidth - 56, 370)} /><Pressable accessibilityRole="button" accessibilityLabel="Contact our team" onPress={onContact} style={styles.contactIcon}><Ionicons name="chatbubble-ellipses-outline" size={23} color={colors.navy} /></Pressable></View>
+      <ImageBackground source={require('../../assets/fillout-hero-bg.jpg')} style={styles.hero} imageStyle={styles.backgroundImage}>
         <Text style={styles.heroEyebrow}>IMMIGRATION MADE SIMPLE</Text>
-        <Text accessibilityRole="header" style={styles.heroTitle}>Prepare immigration paperwork correctly, <Text style={{ color: colors.gold }}>guaranteed.</Text></Text>
+        <Text accessibilityRole="header" style={[styles.heroTitle, { fontSize: contentWidth < 315 ? 27 : contentWidth > 470 ? 43 : 29, lineHeight: contentWidth < 315 ? 34 : contentWidth > 470 ? 51 : 36 }]}>Prepare immigration paperwork correctly, <Text style={{ color: colors.gold }}>guaranteed.</Text></Text>
         <Text style={styles.heroCopy}>Find your form. Follow clear steps.{'\n'}Move forward with confidence.</Text>
-      </View>
+        {confidencePoints()}
+        <Pressable accessibilityRole="button" accessibilityLabel="Read preparation guarantee terms" onPress={() => setGuaranteeOpen(true)}><Text style={styles.heroTerms}>*Preparation guarantee · Terms apply</Text></Pressable>
+      </ImageBackground>
       {finderCard()}
+      {confidenceSection()}
       {homeForms()}
-      <SectionTitle eyebrow="SUPPORT AT EVERY STEP" title="Every package includes" />
+      <SectionTitle eyebrow="SUPPORT AT EVERY STEP" title="A clearer path to your paperwork" />
       <Card style={{ gap: 24 }}>{benefits.map(item => <View key={item.title} style={{ flexDirection: 'row', gap: 14 }}><View style={styles.benefitIcon}><Ionicons name={item.icon} size={21} color={colors.navy} /></View><View style={{ flex: 1, gap: 5 }}><Text style={styles.label}>{item.title}</Text><Text style={styles.small}>{item.text}</Text></View></View>)}</Card>
-      <Text style={styles.footnote}>Native app preview · Payments, live AI, filing and shipping are not connected.</Text>
+      <View style={styles.homeFooter}><BrandMark width={235} /><Text style={styles.footnote}>FILLOUT is not affiliated with USCIS or any government agency. A form check does not decide legal eligibility or guarantee approval.</Text><Button title="Contact our team" variant="secondary" icon="chatbubble-ellipses-outline" onPress={onContact} /><Text style={styles.footnote}>Early access · Guided drafts and official documents are available. Paid preparation, shipping and government filing are not connected.</Text></View>
     </>;
   }
 
@@ -387,7 +431,7 @@ export function FormsFlow({ onContact, onDraftSaved, isActive = true, initialFor
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 8 }} style={{ flexGrow: 0 }}>{categories.map(item => <Pressable key={item} accessibilityRole="button" accessibilityState={{ selected: item === category }} onPress={() => setCategory(item)} style={[styles.chip, category === item && styles.chipSelected]}><Text style={[styles.chipText, category === item && { color: colors.paper }]}>{item}</Text></Pressable>)}</ScrollView>
       <Button title="Help me choose a form" variant="secondary" icon="search-outline" onPress={() => setRoute('finder')} />
       <Text accessibilityLiveRegion="polite" style={styles.small}>{visibleForms.length} {visibleForms.length === 1 ? 'document' : 'documents'}</Text>
-      {visibleForms.length ? <Card style={{ paddingVertical: 2 }}>{visibleForms.map(formRow)}</Card> : <Notice title="No forms found">Try a form number or a broader search, such as family or travel.</Notice>}
+      {visibleForms.length ? <View style={{ gap: 16 }}>{visibleForms.map(formRow)}</View> : <Notice title="No forms found">Try a form number or a broader search, such as family or travel.</Notice>}
       {(!!search || category !== 'All') && <Button title="Clear search and filters" variant="quiet" onPress={() => { setSearch(''); setCategory('All'); }} />}
       <Text style={styles.footnote}>Government filing fees are separate from preparation services.</Text>
     </>;
@@ -522,13 +566,27 @@ export function FormsFlow({ onContact, onDraftSaved, isActive = true, initialFor
         </>}
       </View>
     </ScrollView>
+    <Modal visible={isActive && guaranteeOpen} animationType="slide" transparent onRequestClose={() => setGuaranteeOpen(false)}>
+      <View style={styles.modalOverlay}><Pressable accessibilityLabel="Close guarantee terms" accessibilityRole="button" style={StyleSheet.absoluteFill} onPress={() => setGuaranteeOpen(false)} />
+        <View style={styles.modalSheet} accessibilityViewIsModal>
+          <View style={styles.metaRow}><Text accessibilityRole="header" style={styles.cardTitle}>Preparation guarantee</Text><Pressable accessibilityRole="button" accessibilityLabel="Close guarantee terms" onPress={() => setGuaranteeOpen(false)} style={{ padding: 10 }}><Ionicons name="close" size={25} color={colors.navy} /></Pressable></View>
+          <ScrollView contentContainerStyle={{ gap: 16, paddingTop: 12, paddingBottom: 28 }}>
+            <Text style={styles.body}>Our planned guarantee covers a refund of the FILLOUT preparation fee if our preparation error causes a rejection. It is not a promise of USCIS approval.</Text>
+            <Notice title="Paid services are not live yet">The complete refund conditions and claim process will be provided before paid preparation becomes available. No payment is collected in this preview.</Notice>
+            <Text style={styles.small}>Government filing fees are separate. Please review the current USCIS instructions and your completed form before you file.</Text>
+            <Button title="Contact us about the guarantee" icon="chatbubble-ellipses-outline" onPress={() => { setGuaranteeOpen(false); onContact(); }} />
+            <Button title="Done" variant="secondary" onPress={() => setGuaranteeOpen(false)} />
+          </ScrollView>
+        </View>
+      </View>
+    </Modal>
     <Modal visible={picker !== null} animationType="slide" transparent onRequestClose={() => setPicker(null)}>
       <View style={styles.modalOverlay}><Pressable accessibilityLabel="Close choices" accessibilityRole="button" style={StyleSheet.absoluteFill} onPress={() => setPicker(null)} />
         <View style={styles.modalSheet} accessibilityViewIsModal>
           <View style={styles.metaRow}><Text accessibilityRole="header" style={styles.cardTitle}>{picker === 'status' ? 'I am…' : 'I would like to…'}</Text><Pressable accessibilityRole="button" accessibilityLabel="Close choices" onPress={() => setPicker(null)} style={{ padding: 10 }}><Ionicons name="close" size={25} color={colors.navy} /></Pressable></View>
           <ScrollView contentContainerStyle={{ paddingBottom: 30 }} keyboardShouldPersistTaps="handled">{pickerOptions.map(item => {
             const selected = (picker === 'status' ? statusId : goalId) === item.id;
-            return <Pressable key={item.id} accessibilityRole="radio" accessibilityState={{ selected }} onPress={() => { if (picker === 'status') { setStatusId(item.id); setGoalId(''); } else setGoalId(item.id); setPicker(null); }} style={[styles.optionRow, selected && { backgroundColor: colors.goldLight }]}><Text style={[styles.body, { flex: 1, color: colors.navy }]}>{item.label}</Text><Ionicons name={selected ? 'checkmark-circle' : 'ellipse-outline'} size={22} color={selected ? colors.navy : colors.muted} /></Pressable>;
+            return <Pressable key={item.id} accessibilityRole="radio" accessibilityState={{ selected }} onPress={() => { if (picker === 'status') { setStatusId(item.id); setGoalId(''); } else setGoalId(item.id); setFinderMatchesVisible(false); setPicker(null); }} style={[styles.optionRow, selected && { backgroundColor: colors.goldLight }]}><Text style={[styles.body, { flex: 1, color: colors.navy }]}>{item.label}</Text><Ionicons name={selected ? 'checkmark-circle' : 'ellipse-outline'} size={22} color={selected ? colors.navy : colors.muted} /></Pressable>;
           })}</ScrollView>
         </View>
       </View>
@@ -542,12 +600,14 @@ const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: colors.background },
   scrollContent: { flexGrow: 1, padding: 20, paddingBottom: 36, alignItems: 'center' },
   content: { width: '100%', maxWidth: 680, gap: 22 },
-  topLine: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 12 },
+  topLine: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 12, paddingVertical: 4 },
   contactIcon: { width: 44, height: 44, flexShrink: 0, borderRadius: 22, borderWidth: 1, borderColor: colors.border, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.paper },
-  hero: { backgroundColor: colors.navy, borderRadius: radius.lg, padding: 25, gap: 20 },
-  heroEyebrow: { color: colors.gold, fontSize: 10, lineHeight: 17, fontWeight: '800', letterSpacing: 1.5 },
-  heroTitle: { color: colors.paper, fontWeight: '800', fontSize: 33, lineHeight: 41, letterSpacing: -0.8 },
-  heroCopy: { color: '#CFD8E6', fontSize: 16, lineHeight: 24 },
+  hero: { backgroundColor: '#052A58', borderRadius: radius.lg, padding: 22, gap: 20, overflow: 'hidden' },
+  backgroundImage: { borderRadius: radius.lg, width: '100%', height: '100%' },
+  heroEyebrow: { color: '#F3D783', fontSize: 10, lineHeight: 17, fontWeight: '800', letterSpacing: 1.8 },
+  heroTitle: { color: colors.paper, fontWeight: '800', fontSize: 35, lineHeight: 42, letterSpacing: -0.8 },
+  heroCopy: { color: '#D2E0F3', fontSize: 16, lineHeight: 25 },
+  heroTerms: { color: '#D2E0F3', fontSize: 10, lineHeight: 16, textDecorationLine: 'underline' },
   sectionHeading: { flexDirection: 'row', alignItems: 'center', gap: 12 },
   cardTitle: { color: colors.navy, fontSize: 20, fontWeight: '800', lineHeight: 27, flexShrink: 1 },
   body: { color: colors.muted, fontSize: 15, lineHeight: 23 },
@@ -555,19 +615,49 @@ const styles = StyleSheet.create({
   label: { color: colors.text, fontSize: 15, fontWeight: '700', lineHeight: 22 },
   link: { color: colors.navy, fontSize: 13, fontWeight: '700', padding: 8 },
   eyebrow: { color: '#8E6E2B', fontSize: 11, fontWeight: '800', letterSpacing: 1.2 },
-  selector: { borderWidth: 1, borderColor: colors.border, borderRadius: radius.sm, padding: 15, minHeight: 55, flexDirection: 'row', alignItems: 'center', gap: 12 },
-  selectorValue: { color: colors.text, fontSize: 15, lineHeight: 22, flex: 1 },
-  pricedFormRow: { paddingTop: 18, paddingBottom: 10, gap: 14, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: colors.border },
+  finderCard: { padding: 18, gap: 20, borderRadius: 24, boxShadow: '0px 5px 18px rgba(7, 45, 96, 0.05)' },
+  finderIcon: { width: 48, height: 52, backgroundColor: colors.blueLight, borderRadius: 14, justifyContent: 'center', alignItems: 'center' },
+  finderFields: { flexDirection: 'row', alignItems: 'stretch', gap: 10 },
+  selectorField: { flex: 1, minWidth: 0, gap: 8 },
+  selectorLabel: { color: colors.text, fontSize: 13, lineHeight: 19, fontWeight: '700' },
+  selector: { flex: 1, borderWidth: 1, borderColor: colors.border, borderRadius: radius.sm, padding: 11, minHeight: 66, flexDirection: 'row', alignItems: 'center', gap: 6, backgroundColor: '#FBFCFF' },
+  selectorValue: { color: colors.text, fontSize: 12, lineHeight: 18, flex: 1 },
+  pricedFormRow: { padding: 14, gap: 14, borderWidth: 1, borderColor: colors.border, borderRadius: 23, backgroundColor: colors.paper, boxShadow: '0px 4px 14px rgba(7, 45, 96, 0.035)' },
   formInfo: { flexDirection: 'row', alignItems: 'flex-start', gap: 12 },
-  priceColumns: { flexDirection: 'row', gap: 8, alignItems: 'flex-start' },
-  priceColumn: { flex: 1, minWidth: 0, gap: 4 },
-  priceLabel: { color: colors.muted, fontSize: 11, lineHeight: 16, minHeight: 32 },
-  listPrice: { color: colors.navy, fontSize: 16, fontWeight: '700', lineHeight: 22 },
-  priceNote: { color: colors.muted, fontSize: 11, lineHeight: 16 },
-  otherFormsHeader: { minHeight: 62, paddingVertical: 14, flexDirection: 'row', alignItems: 'center', gap: 12 },
+  formCodeBadge: { backgroundColor: '#E5F0FF', borderRadius: 12, paddingVertical: 12, paddingHorizontal: 11, minWidth: 64, alignItems: 'center' },
+  formCode: { color: colors.navy, fontSize: 17, fontWeight: '800', lineHeight: 23 },
+  formSummary: { color: colors.muted, fontSize: 12, lineHeight: 18 },
+  priceColumns: { flexDirection: 'row', gap: 7, alignItems: 'stretch' },
+  priceColumn: { flex: 1, minWidth: 0, gap: 5, borderWidth: 1, borderColor: colors.blueBorder, backgroundColor: colors.blueLight, borderRadius: 13, paddingVertical: 12, paddingHorizontal: 4, alignItems: 'center' },
+  attorneyPriceColumn: { borderColor: '#F0DFB7', backgroundColor: colors.cream },
+  priceLabel: { color: '#405578', fontSize: 10, lineHeight: 15, minHeight: 30, textAlign: 'center' },
+  listPrice: { color: colors.navy, fontSize: 20, fontWeight: '800', lineHeight: 26, textAlign: 'center' },
+  priceNote: { color: colors.muted, fontSize: 10, lineHeight: 15, textAlign: 'center' },
+  priceGuarantee: { paddingVertical: 5, minHeight: 34, justifyContent: 'center' },
+  priceGuaranteeText: { color: '#1469AB', fontSize: 10, lineHeight: 14, fontWeight: '600', textAlign: 'center' },
+  otherFormsHeader: { minHeight: 76, padding: 17, flexDirection: 'row', alignItems: 'center', gap: 12, borderRadius: 20, borderWidth: 1, borderColor: colors.border, backgroundColor: colors.paper },
+  confidencePoints: { flexDirection: 'row', alignItems: 'stretch', marginTop: 3 },
+  confidencePoint: { flex: 1, minWidth: 0, alignItems: 'center', gap: 8, paddingHorizontal: 5 },
+  confidencePointBorder: { borderLeftWidth: 1, borderLeftColor: 'rgba(189, 215, 246, 0.25)' },
+  confidencePointText: { color: '#F0F5FF', fontSize: 11, lineHeight: 16, textAlign: 'center' },
+  confidenceBanner: { padding: 20, backgroundColor: '#052A58', borderRadius: radius.lg, overflow: 'hidden', gap: 23 },
+  confidenceBannerTop: { flexDirection: 'row', gap: 14, alignItems: 'center' },
+  guaranteeBadge: { aspectRatio: 1, alignSelf: 'center' },
+  confidenceTitle: { color: colors.paper, fontSize: 24, lineHeight: 29, fontWeight: '800', letterSpacing: -0.45 },
+  confidenceCopy: { color: '#D2E0F3', fontSize: 13, lineHeight: 20 },
+  guaranteeLink: { flexDirection: 'row', gap: 7, alignItems: 'center', justifyContent: 'center', minHeight: 34 },
+  guaranteeLinkText: { color: '#F3D783', fontSize: 11, lineHeight: 17, textAlign: 'center', textDecorationLine: 'underline', flexShrink: 1 },
+  whyCard: { padding: 22, gap: 20, borderRadius: 24 },
+  whyTitle: { color: colors.navy, fontSize: 30, lineHeight: 37, fontWeight: '800', letterSpacing: -0.7 },
+  goldLine: { height: 4, width: 100, backgroundColor: colors.gold, borderRadius: 3 },
+  reasonCards: { flexDirection: 'row', gap: 10, alignItems: 'stretch' },
+  reasonCard: { flex: 1, gap: 8, paddingVertical: 18, paddingHorizontal: 12, borderRadius: 18, alignItems: 'center' },
+  reasonTitle: { color: colors.navy, fontSize: 13, lineHeight: 18, fontWeight: '700', textAlign: 'center' },
+  reasonCopy: { color: colors.muted, fontSize: 11, lineHeight: 17, textAlign: 'center' },
+  homeFooter: { paddingTop: 10, gap: 18, borderTopWidth: 1, borderTopColor: colors.border },
   fileIcon: { width: 43, height: 46, backgroundColor: '#EEF2F7', borderRadius: 12, justifyContent: 'center', alignItems: 'center' },
   formId: { color: '#8E6E2B', fontSize: 12, fontWeight: '800', letterSpacing: 0.5 },
-  rowTitle: { color: colors.navy, fontSize: 15, fontWeight: '700', lineHeight: 21 },
+  rowTitle: { color: colors.navy, fontSize: 17, fontWeight: '800', lineHeight: 23 },
   benefitIcon: { width: 40, height: 40, borderRadius: 11, backgroundColor: colors.goldLight, justifyContent: 'center', alignItems: 'center' },
   footnote: { color: colors.muted, fontSize: 12, lineHeight: 19 },
   error: { color: colors.error, fontSize: 14, lineHeight: 21 },

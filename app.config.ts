@@ -4,7 +4,7 @@ const config: ExpoConfig = {
   name: 'FILLOUT IMMIGRATION FORMS',
   slug: 'immigration-eagle',
   owner: 'coortgroup',
-  version: '0.1.0',
+  version: '0.2.0',
   runtimeVersion: {policy:'appVersion'},
   updates: {url:'https://u.expo.dev/9fc8959b-6ce7-436b-b512-8d0f7fe2e081'},
   orientation: 'portrait',

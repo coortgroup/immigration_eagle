@@ -32,7 +32,7 @@ document.querySelectorAll('[data-year]').forEach(node => {
 
 function revealFooterSection() {
   const id = window.location.hash.slice(1);
-  if (!['privacy', 'support', 'status'].includes(id)) return;
+  if (!['privacy', 'support', 'status', 'guarantee'].includes(id)) return;
   const section = document.getElementById(id);
   if (section instanceof HTMLDetailsElement) section.open = true;
 }
@@ -83,8 +83,10 @@ const statusSelect = document.querySelector('#finder-status');
 const goalSelect = document.querySelector('#finder-goal');
 const results = document.querySelector('#finder-results');
 const resetFinder = document.querySelector('#finder-reset');
+const finderSubmit = document.querySelector('#finder-submit');
+const finderControls = document.querySelector('#form-finder-controls');
 const finderData = document.querySelector('#finder-data');
-if (statusSelect && goalSelect && results && resetFinder && finderData) {
+if (statusSelect && goalSelect && results && resetFinder && finderSubmit && finderControls && finderData) {
   try {
     const { statuses } = JSON.parse(finderData.textContent);
     const cards = new Map([...document.querySelectorAll('[data-catalog-form]')].map(card => [card.dataset.catalogForm, card]));
@@ -96,13 +98,14 @@ if (statusSelect && goalSelect && results && resetFinder && finderData) {
       goalSelect.replaceChildren(placeholder(status ? 'Choose what you want to do' : 'Choose your status first'));
       (status?.goals || []).forEach(goal => goalSelect.add(new Option(goal.label, goal.id)));
       goalSelect.disabled = !status;
+      finderSubmit.disabled = !status;
       resetFinder.hidden = !status;
       results.replaceChildren();
     }
 
     statusSelect.disabled = false;
     statusSelect.addEventListener('change', resetGoals);
-    goalSelect.addEventListener('change', () => {
+    const showMatches = () => {
       results.replaceChildren();
       const goal = selectedStatus()?.goals.find(item => item.id === goalSelect.value);
       if (!goal) return;
@@ -117,6 +120,14 @@ if (statusSelect && goalSelect && results && resetFinder && finderData) {
         match.removeAttribute('data-catalog-form');
         results.append(match);
       });
+    };
+    goalSelect.addEventListener('change', showMatches);
+    finderControls.addEventListener('submit', event => {
+      event.preventDefault();
+      if (!finderControls.reportValidity()) return;
+      showMatches();
+      results.focus({ preventScroll: true });
+      results.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'nearest' });
     });
     resetFinder.addEventListener('click', () => {
       statusSelect.value = '';

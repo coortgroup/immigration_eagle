@@ -44,15 +44,25 @@ function aiPrice(id) {
   };
 }
 
+const formLabels = {
+  'AR-11': 'Change of address', 'G-1145': 'Receipt notifications', 'G-639': 'Immigration records',
+  'I-90': 'Renew or replace a green card', 'I-129F': 'Fiancé(e) petition', 'I-130': 'Family petition',
+  'I-130A': 'Spouse information', 'I-131': 'Travel document', 'I-131A': 'Carrier documentation',
+  'I-134': 'Financial support', 'I-485': 'Adjustment of status', 'I-751': 'Remove green card conditions',
+  'I-765': 'Work permit', 'I-765WS': 'Work permit worksheet', 'I-821': 'Temporary Protected Status',
+  'I-821D': 'DACA', 'I-864': 'Affidavit of support', 'I-864A': 'Household member support',
+  'N-400': 'U.S. citizenship', 'N-565': 'Replace a citizenship document', 'N-600': 'Certificate of citizenship',
+};
+
 function formCard(form) {
   const ai = aiPrice(form.id);
   const attorney = attorneysById.get(form.id);
   if (!attorney) throw new Error(`Missing attorney price for ${form.id}`);
   const attorneyScope = typeof attorney.servicePriceUsd === 'number' ? attorneyScopes[form.id] || '' : '';
-  const priceColumn = (label, price, note = '') => `<div><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(price)}</dd>${note ? `<dd class="price-note">${escapeHtml(note)}</dd>` : ''}</div>`;
+  const priceColumn = (label, price, note = '', assurance = false) => `<div><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(price)}</dd>${assurance ? '<dd class="price-note price-assurance"><a href="#guarantee">Preparation guarantee*</a></dd>' : ''}${note ? `<dd class="price-note">${escapeHtml(note)}</dd>` : ''}</div>`;
   return `<article class="catalog-card" data-catalog-form="${escapeHtml(form.id)}">
-  <div class="form-heading"><span class="catalog-form-code">${escapeHtml(form.id)}</span><div><h3>${escapeHtml(form.title)}</h3><p>${escapeHtml(form.summary)}</p></div></div>
-  <dl class="price-grid" aria-label="Preparation prices for ${escapeHtml(form.id)}">${priceColumn('Do it yourself', 'Free')}${priceColumn('With AI', ai.price, ai.note)}${priceColumn('With an attorney', money(attorney.servicePriceUsd), attorneyScope)}</dl>
+  <div class="form-heading"><span class="catalog-form-code">${escapeHtml(form.id)}</span><div><h3>${escapeHtml(formLabels[form.id] || form.title)}</h3><p>${escapeHtml(form.summary)}</p></div></div>
+  <dl class="price-grid" aria-label="Preparation prices for ${escapeHtml(form.id)}">${priceColumn('Do it yourself', 'Free')}${priceColumn('With AI', ai.price, ai.note, pricesById.get(form.id).citizenPath.status !== 'not-offered')}${priceColumn('With an attorney', money(attorney.servicePriceUsd), attorneyScope)}</dl>
   <div class="form-card-footer"><a class="form-start" href="app/?form=${encodeURIComponent(form.id)}" aria-label="Start filling out form ${escapeHtml(form.id)}">Start filling out form <span aria-hidden="true">→</span></a><a class="official-link" href="${escapeHtml(form.officialUrl)}" target="_blank" rel="noopener noreferrer" aria-label="Official USCIS information for ${escapeHtml(form.id)}, opens a new tab">USCIS <span aria-hidden="true">↗</span></a></div>
 </article>`;
 }
@@ -77,7 +87,7 @@ await writeFile(path.join(output, 'index.html'), html);
 for (const file of files) {
   await copyFile(path.join(root, 'web', file), path.join(output, file));
 }
-for (const name of ['eagle-logo.png', 'fillout-wordmark.png']) {
+for (const name of ['eagle-logo.png', 'fillout-wordmark.png', 'fillout-logo-v2.png', 'fillout-guarantee-badge.png', 'fillout-hero-bg.jpg']) {
   await copyFile(path.join(root, 'assets', name), path.join(output, 'assets', name));
 }
 

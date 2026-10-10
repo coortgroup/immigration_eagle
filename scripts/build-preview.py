@@ -16,6 +16,10 @@ for token, filename in [("__PREPARATION_CSS__", "preparation-flow.css"), ("__QUA
 logo = base64.b64encode((root / "assets/eagle-logo.png").read_bytes()).decode()
 assert source.count("__EAGLE_IMAGE__") == 1
 result = source.replace("__EAGLE_IMAGE__", "data:image/png;base64," + logo)
+for token, filename, mime in [("__FILLOUT_BRAND__", "fillout-logo-v2-preview.png", "image/png"), ("__FILLOUT_GUARANTEE__", "fillout-guarantee-badge-preview.png", "image/png"), ("__FILLOUT_HERO__", "fillout-hero-bg.jpg", "image/jpeg")]:
+    assert result.count(token) == 1
+    encoded = base64.b64encode((root / "assets" / filename).read_bytes()).decode()
+    result = result.replace(token, "data:" + mime + ";base64," + encoded)
 for token, filename in [("__FORM_CATALOG__", "forms-catalog.json"), ("__FORM_FINDER__", "form-finder.json"), ("__FORM_PRICING__", "form-pricing.json"), ("__ATTORNEY_PRICING__", "attorney-pricing.json"), ("__ELIGIBILITY_MAIN__", "eligibility-main.json"), ("__ELIGIBILITY_OTHER__", "eligibility-other.json"), ("__PREPARATION_FIELDS__", "preparation-fields.json")]:
     assert result.count(token) == 1
     data = json.loads((root / "data" / filename).read_text())
