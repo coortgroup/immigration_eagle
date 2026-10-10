@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
   input: { minHeight: 52, borderRadius: radius.sm, borderWidth: 1, borderColor: colors.border, padding: 14, backgroundColor: colors.paper, color: colors.text, fontSize: 16 },
   error: { color: colors.error, fontSize: 13, lineHeight: 19 },
   brandEmblem: { width: 36, height: 40, flexShrink: 0 },
-  brandWordmark: { width: 238, aspectRatio: 1264 / 485, flexShrink: 1 },
+  brandWordmark: { width: 238, height: 92, maxWidth: '100%', flexShrink: 1 },
   notice: { borderRadius: radius.sm, padding: 15, gap: 6 },
   row: { paddingVertical: 16, paddingHorizontal: 2, flexDirection: 'row', alignItems: 'center', gap: 16 },
 });
