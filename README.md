@@ -78,7 +78,9 @@ The project uses SDK 57, with unresolved audit findings in its dependency tree. 
 
 ## GitHub Pages
 
-`.github/workflows/pages.yml` builds and deploys on pushes to `main` and manual runs. Repository **Settings → Pages → Source** must be **GitHub Actions**. The workflow uses the repository's name as the Expo web base path.
+`.github/workflows/pages.yml` builds and deploys on pushes to `main` and manual runs. Repository **Settings → Pages → Source** must be **GitHub Actions**. The workflow reads the configured Pages URL before building, so Expo assets work at either `/immigration_eagle/app/` on the default address or `/app/` on a custom domain.
+
+The requested custom domain is **fillout.net**. Domain ownership, GitHub Pages settings, DNS and HTTPS still need to be connected and verified before it replaces the live links above. See [custom domain setup](docs/CUSTOM_DOMAIN.md).
 
 After authenticating with `gh auth login`, an administrator can configure Pages and the About link:
 

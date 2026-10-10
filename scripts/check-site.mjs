@@ -3,7 +3,7 @@ import { readFile, stat } from 'node:fs/promises';
 import path from 'node:path';
 
 const root = path.resolve('site');
-const base = (process.env.PAGES_BASE_PATH || '/immigration_eagle').replace(/\/$/, '');
+const base = (process.env.PAGES_BASE_PATH ?? '/immigration_eagle').replace(/\/$/, '');
 const landing = await readFile(path.join(root, 'index.html'), 'utf8');
 const app = await readFile(path.join(root, 'app/index.html'), 'utf8');
 const catalog = JSON.parse(await readFile('data/forms-catalog.json', 'utf8')).forms;

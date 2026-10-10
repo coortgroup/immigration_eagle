@@ -1,7 +1,7 @@
 import http from 'node:http';
 import { readFile,stat } from 'node:fs/promises';
 import path from 'node:path';
-const root=path.resolve('site'),port=Number(process.env.PORT||4176),base=(process.env.PAGES_BASE_PATH||'/immigration_eagle').replace(/\/$/,'');
+const root=path.resolve('site'),port=Number(process.env.PORT||4176),base=(process.env.PAGES_BASE_PATH??'/immigration_eagle').replace(/\/$/,'');
 const types={'.html':'text/html','.css':'text/css','.js':'application/javascript','.json':'application/json','.png':'image/png','.jpg':'image/jpeg','.svg':'image/svg+xml','.ttf':'font/ttf','.woff2':'font/woff2','.ico':'image/x-icon'};
 http.createServer(async(req,res)=>{
  try {

@@ -25,11 +25,13 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm test
+      - name: Read GitHub Pages URL
+        id: pages
+        uses: actions/configure-pages@v5
       - run: npm run build
         env:
-          PAGES_BASE_PATH: /${{ github.event.repository.name }}
+          PAGES_BASE_PATH: ${{ steps.pages.outputs.base_path }}
           CI: '1'
-      - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
           path: site
