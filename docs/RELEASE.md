@@ -77,7 +77,7 @@ npm run eas:testflight
 npm run eas:submit
 ```
 
-EAS asks for the App Store Connect app identifier when it is not configured. Production auto-increments the build number. A successful upload still requires Apple's processing and, for external testers, applicable beta review.
+EAS asks for the App Store Connect app identifier when it is not configured. Production uses EAS-managed remote build numbers and auto-increments them for subsequent builds. Remote versioning avoids trying to rewrite the dynamic `app.config.ts` configuration, which the CLI cannot auto-increment locally. A successful upload still requires Apple's processing and, for external testers, applicable beta review.
 
 No TestFlight upload is performed by simply exporting the JavaScript bundle or committing this configuration.
 
