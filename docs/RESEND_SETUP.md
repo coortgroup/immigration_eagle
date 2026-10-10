@@ -1,6 +1,12 @@
 # Resend authentication email setup
 
-Prepared on 2026-10-10 for the `fillout-staging` Supabase project (`ceoliqoctkgwkphbmkiv`). User registration in Resend is confirmed. Domain verification, key creation, SMTP activation and a test message await the owner's requested confirmation.
+Prepared on 2026-10-10 for the `fillout-staging` Supabase project (`ceoliqoctkgwkphbmkiv`). User registration in Resend is confirmed. The owner explicitly approved the three DNS records, a sending-only key restricted to `auth.fillout.net`, saving it in Supabase SMTP and a test code to `coortgroup@gmail.com`. Do not request this authorization again for the same scope.
+
+## Current setup blocker
+
+Namecheap's session expired. Two attempts to save the DKIM record returned `Failed to save record`; refreshing after backing up the draft revealed the login page. The owner has been asked to sign in again. The exact draft is recoverable from the public records below and `/tmp/fillout-dkim-draft-backup.json`.
+
+The Resend domain exists with status **Not Started**. The key dialog currently offers only **All domains**, so no API key has been created. Retry domain-scoped key creation after DNS verification; do not broaden its scope. SMTP remains unsaved and no test email has been sent.
 
 ## Prepared sender
 
