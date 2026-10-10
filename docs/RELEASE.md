@@ -25,6 +25,20 @@ A tunnel is a development server, not an EAS cloud build. It does not create a b
 
 The launcher skips an incomplete local Android SDK for this process only because remote Expo Go does not require ADB. It does not modify the SDK or shell settings. The local team inbox is not exposed through this tunnel; contact delivery in the native preview remains unconnected.
 
+## Expo-hosted preview
+
+An EAS Update can host this app's JavaScript and assets for Expo Go without keeping the Mac running. This is a published preview, not an Apple-signed app or an entry under EAS Builds. The project uses Expo Go-compatible libraries and SDK 57.
+
+1. Sign in with `npx eas-cli@latest login --device` (or `npx expo login`).
+2. Create or link the project with `npx eas-cli@latest init --account YOUR_EXPO_ACCOUNT --non-interactive --json`.
+3. Preserve the returned project ID in `app.config.ts`: set `owner` to the authenticated account, `extra.eas.projectId` to that ID, `updates.url` to `https://u.expo.dev/PROJECT_ID`, and `runtimeVersion` to `{policy:'appVersion'}`. Keep the existing `extra` fields. Dynamic TypeScript config may need these changes applied manually. The `expo-updates` dependency is already installed.
+4. Publish with `npm run eas:preview -- --message "Immigration Eagle SDK 57 preview" --non-interactive --json`.
+5. Use the actual project and update-group IDs returned by Expo at `https://qr.expo.dev/eas-update?projectId=PROJECT_ID&groupId=GROUP_ID`. Omit the `slug` parameter to target Expo Go. Appending `&format=url` returns the corresponding direct app link. Verify on a physical phone before reporting device testing as complete.
+
+Publishing needs an authenticated Expo account and a real linked project. Merely installing the dependency or running a local bundle export does not publish an update. The SDK 57 preview continues to have the feature limits documented in the README.
+
+References: [EAS Update](https://docs.expo.dev/eas-update/introduction/), [Expo preview QR codes](https://docs.expo.dev/more/qr-codes/).
+
 ## Local Xcode build
 
 The Apple/Xcode license must be reviewed and accepted by the user. After Xcode's first-run setup and installation of an iOS Simulator runtime:

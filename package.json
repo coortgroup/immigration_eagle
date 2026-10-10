@@ -27,7 +27,8 @@
     "local": "npm run build && npm run local:serve",
     "local:serve": "node scripts/serve-local.mjs",
     "check:site": "node scripts/check-site.mjs",
-    "start:remote": "node scripts/start-expo-remote.mjs"
+    "start:remote": "node scripts/start-expo-remote.mjs",
+    "eas:preview": "npx eas-cli@latest update --branch preview --environment preview --platform all"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",
@@ -37,6 +38,7 @@
     "expo-font": "~57.0.4",
     "expo-splash-screen": "~57.0.9",
     "expo-status-bar": "~57.0.1",
+    "expo-updates": "~57.0.25",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-native": "0.86.3",
