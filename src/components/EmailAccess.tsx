@@ -35,9 +35,9 @@ export function EmailAccess({ initialEmail = '', disabled = false, purpose = 're
       <Text style={styles.title}>Verify your email</Text>
       <Text style={styles.help}>We’ll send a one-time sign-in code. Verification creates or signs in to your FILLOUT account for this session; it does not send your {purpose === 'assistant' ? 'messages' : 'request'}.</Text>
       {sentTo ? <>
-        <Text style={styles.help}>Enter the six-digit code sent to {sentTo}.</Text>
-        <Field label="Email verification code" value={code} onChangeText={value => setCode(value.replace(/\D/g, '').slice(0, 6))} editable={!locked} keyboardType="number-pad" textContentType="oneTimeCode" autoComplete="one-time-code" autoCorrect={false} maxLength={6} />
-        <Button title={busy ? 'Please wait…' : 'Verify email'} disabled={locked || code.length !== 6} onPress={() => void run(async () => { await verifyEmailCode(sentTo, code); setCode(''); })} />
+        <Text style={styles.help}>Enter the eight-digit code sent to {sentTo}.</Text>
+        <Field label="Email verification code" accessibilityHint="Enter the eight-digit code from your email." value={code} onChangeText={value => setCode(value.replace(/\D/g, '').slice(0, 8))} editable={!locked} keyboardType="number-pad" textContentType="oneTimeCode" autoComplete="one-time-code" autoCorrect={false} maxLength={8} />
+        <Button title={busy ? 'Please wait…' : 'Verify email'} disabled={locked || code.length !== 8} onPress={() => void run(async () => { await verifyEmailCode(sentTo, code); setCode(''); })} />
         <Button title="Send a new code" disabled={locked} variant="secondary" onPress={() => void run(async () => { await requestEmailCode(sentTo); setCode(''); })} />
         <Button title="Use another email" disabled={locked} variant="quiet" onPress={() => { setSentTo(''); setCode(''); setError(''); }} />
       </> : <>

@@ -1,6 +1,6 @@
 # FILLOUT cloud intake
 
-Prepared locally; no hosted project, production credentials, or email notification worker is provisioned by these files.
+The first staging database and both Edge Functions are deployed. See [staging deployment status](../docs/SUPABASE_STAGING.md) for verified checks and remaining setup. Production credentials and an email notification worker are not provisioned by these files.
 
 ## Boundaries
 
@@ -17,7 +17,7 @@ Prepared locally; no hosted project, production credentials, or email notificati
 
 1. Create a separate Supabase development project, then a production project in the approved region. Keep production `private` schema out of Exposed schemas. Configure team access, backups, retention and account-deletion procedures before accepting real user data.
 2. Enable email confirmation and disable anonymous sign-in. Set site URL to `https://fillout.net/app/`. Configure production SMTP before enabling general signups: Supabase's built-in mail transport is not a production customer mail service.
-3. In hosted Auth Email Templates, replace both **Confirm signup** and **Magic Link** content with `templates/email-code.html`. Configure six-digit OTPs, a ten-minute expiration and at least one minute between sends. The local `config.toml` and templates do **not** automatically update hosted Auth dashboard settings.
+3. In hosted Auth Email Templates, replace both **Confirm signup** and **Magic Link** content with `templates/email-code.html`. On the current Free project, custom SMTP is required to edit these templates; the default template sends a link, which the code-entry client cannot use. Configure eight-digit OTPs, a ten-minute expiration and at least one minute between sends. The local `config.toml` and templates do **not** automatically update hosted Auth dashboard settings.
 4. Authenticate the official Supabase CLI locally and link the intended project. Review the migration before applying it:
 
    ```sh
@@ -29,6 +29,8 @@ Prepared locally; no hosted project, production credentials, or email notificati
    ```
 
    `--use-api` bundles functions on Supabase and does not require Docker. CLI login is separate from dashboard login. If the database password is unavailable to the CLI, apply `migrations/20261010000100_cloud_intake.sql` once in the project's SQL Editor as `postgres`, with the entire script wrapped in `BEGIN;` / `COMMIT;`. Record that manual application and reconcile migration history with `supabase migration repair` before subsequently using `db push`; do not apply the same migration twice. The Edge Function deployment commands above need CLI account authorization, but do not require database credentials or project linking.
+
+   On this Mac, CLI versions 2.120.0 and 2.117.0 hang before displaying help. Version 2.90.0 works and supports `--use-api`; use `npx --yes supabase@2.90.0` for the commands above until a newer version is verified to start correctly. No OS security settings need to be changed.
 
 5. Configure server secrets in Supabase. Do not put them in Expo, GitHub Pages, a public environment variable, or source control. Hosted functions receive Supabase URL/key variables automatically. `_shared/http.mjs` supports singular/plural publishable and secret keys, with legacy anon/service-role fallbacks. Use the AI handler's documented provider settings for that function.
 6. Configure only the public Supabase URL and publishable key in the app build. Keep the service disabled in published clients until the following checks pass against the staging project, then production.
@@ -73,6 +75,10 @@ References: [OpenAI Responses](https://developers.openai.com/api/docs/guides/tex
 ## Local checks and limitations
 
 `node scripts/check-cloud-intake.mjs` exercises the handler through mocked Auth/network calls and executes the actual migration and SQL functions in PGlite's PostgreSQL engine. It verifies RLS/grants, receipts, replay/conflict behavior, database validation, intake limits and both AI quotas. PGlite uses minimal Auth fixtures; this does not verify hosted Supabase Auth, SMTP, the Edge gateway or multiple database sessions. No live credentials or real customer information are required for these tests.
+
+Run `scripts/verify-cloud-schema.sql` in the hosted SQL Editor to check deployed tables, grants, policies and functions without reading customer records. Run `node scripts/check-cloud-hosted.mjs --url https://PROJECT_REF.supabase.co` to verify the deployed HTTP authentication and CORS boundaries without an account or user data. Neither check confirms email delivery or a successful authenticated submission.
+
+Add `--check-anon-data-api` to also verify anonymous table/RPC denial and the unexposed private schema. This optional mode reads only `.env.staging.local` and requires its public URL to match the supplied project. It never uses a service key or signed-in user token.
 
 Official references: [Auth on Edge Functions](https://supabase.com/docs/guides/functions/auth), [API keys](https://supabase.com/docs/guides/api/api-keys), [RLS](https://supabase.com/docs/guides/database/postgres/row-level-security), [database functions](https://supabase.com/docs/guides/database/functions), [email templates](https://supabase.com/docs/guides/auth/auth-email-templates), [passwordless email](https://supabase.com/docs/guides/auth/auth-email-passwordless).
 

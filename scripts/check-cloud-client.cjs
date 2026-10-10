@@ -146,9 +146,14 @@ async function main() {
   client.setAuthError({ status: 429 });
   await assert.rejects(() => client.exports.requestEmailCode('sample@example.com'), /wait before requesting/);
   client.setAuthError(null);
-  await assert.rejects(() => client.exports.verifyEmailCode('sample@example.com', '123'), /six-digit/);
-  await client.exports.verifyEmailCode('sample@example.com', '123456');
+  const callsBeforeInvalidCodes = client.calls.length;
+  for (const invalidCode of ['123', '123456', '1234567', '123456789', '1234567a']) {
+    await assert.rejects(() => client.exports.verifyEmailCode('sample@example.com', invalidCode), /eight-digit/);
+  }
+  assert.equal(client.calls.length, callsBeforeInvalidCodes, 'Malformed verification codes never reach Auth.');
+  await client.exports.verifyEmailCode('sample@example.com', ' 12345678 ');
   assert.equal(client.calls.at(-1)[1].type, 'email');
+  assert.equal(client.calls.at(-1)[1].token, '12345678', 'All eight OTP digits must be forwarded unchanged.');
   assert.equal(client.exports.useCloudSession().user.id, 'test-account');
   client.setSession({ ...verifiedSession, user: { ...verifiedSession.user, id: 'different-account' } });
   const callsBeforeSwitch = client.calls.length;

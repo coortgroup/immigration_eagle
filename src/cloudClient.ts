@@ -124,7 +124,7 @@ export async function requestEmailCode(email: string): Promise<void> {
 }
 
 export async function verifyEmailCode(email: string, code: string): Promise<void> {
-  if (!/^\d{6}$/.test(code.trim())) throw new Error('Enter the six-digit code from your email.');
+  if (!/^\d{8}$/.test(code.trim())) throw new Error('Enter the eight-digit code from your email.');
   const { data, error } = await requireClient().auth.verifyOtp({ email: cleanEmail(email), token: code.trim(), type: 'email' });
   if (error || !verifiedUser(data.user) || !data.session) throw new Error('This code is invalid or expired. Check your email or request a new code.');
   updateSession(data.user);
