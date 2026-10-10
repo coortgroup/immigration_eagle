@@ -31,6 +31,9 @@ jobs:
       - run: npm run build
         env:
           PAGES_BASE_PATH: ${{ steps.pages.outputs.base_path }}
+          EXPO_PUBLIC_SUPABASE_URL: ${{ vars.EXPO_PUBLIC_SUPABASE_URL }}
+          EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${{ vars.EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY }}
+          EXPO_PUBLIC_ENABLE_LIVE_AI: ${{ vars.EXPO_PUBLIC_ENABLE_LIVE_AI }}
           CI: '1'
       - uses: actions/upload-pages-artifact@v3
         with:

@@ -8,7 +8,8 @@ import { Badge, BrandMark, Button, Card, Field, Notice, RowLink, SectionTitle } 
 import { colors, radius } from '../theme';
 import { draftProgress, draftResume, evaluateQualification, matchesFormSearch, validateField } from '../qualification';
 import { loadDraft, saveDraft, SavedDraft } from '../draftStorage';
-import { submitLocalRequest, useLocalDelivery } from '../localRequests';
+import { EmailAccess } from '../components/EmailAccess';
+import { submitRequest, useRequestDelivery, useRequestIdentity, type RequestReceipt } from '../requestDelivery';
 import { DraftSummary, FormRecord, PreparationField, PreparationMode, QualificationAnswer, QualificationSchema } from '../types';
 import catalogFile from '../../data/forms-catalog.json';
 import finderFile from '../../data/form-finder.json';
@@ -98,11 +99,14 @@ export function FormsFlow({ onContact, onDraftSaved, isActive = true, initialFor
   const [lawyer, setLawyer] = useState({ name: '', email: '', phone: '', note: '' });
   const [lawyerErrors, setLawyerErrors] = useState<Record<string, string>>({});
   const [sendingRequest, setSendingRequest] = useState(false);
-  const [requestReceipt, setRequestReceipt] = useState('');
+  const [requestReceipt, setRequestReceipt] = useState<RequestReceipt | null>(null);
   const [requestError, setRequestError] = useState('');
   const savingDraftRef = useRef(false);
   const sendingRequestRef = useRef(false);
-  const delivery = useLocalDelivery();
+  const delivery = useRequestDelivery();
+  const requestIdentity = useRequestIdentity();
+  const requestGeneration = useRef(0);
+  const previousRequestUser = useRef(delivery.user?.id);
   const scroll = useRef<ScrollView>(null);
 
   const form = forms.find(item => item.id === formId) || forms[0];
@@ -125,6 +129,19 @@ export function FormsFlow({ onContact, onDraftSaved, isActive = true, initialFor
   useEffect(() => { scroll.current?.scrollTo({ y: 0, animated: false }); }, [route, formId, questionIndex, fieldIndex]);
 
   useEffect(() => {
+    const userId = delivery.user?.id;
+    if (previousRequestUser.current && previousRequestUser.current !== userId) {
+      requestGeneration.current += 1;
+      sendingRequestRef.current = false; setSendingRequest(false);
+      setLawyer({ name: '', email: '', phone: '', note: '' }); setLawyerErrors({});
+      setRequestReceipt(null); setRequestError(''); requestIdentity.reset();
+      setRoute(current => current === 'attorneyPreview' ? 'attorney' : current);
+    }
+    previousRequestUser.current = userId;
+  }, [delivery.user?.id]);
+  useEffect(() => () => { requestGeneration.current += 1; }, []);
+
+  useEffect(() => {
     if (!resumeRequest) return;
     let active = true;
     setLoadingDraft(true); setDraftError(''); setDraftMessage(''); setPicker(null);
@@ -143,7 +160,7 @@ export function FormsFlow({ onContact, onDraftSaved, isActive = true, initialFor
       setFieldIndex(Math.max(0, restored.progress.firstInvalid)); setFieldError('');
       setEditingDraft(false); setShowCheckAnswers(false); setDraftFinished(restored.progress.complete);
       setDraftMessage('Loaded your saved draft. Changes are saved only when you choose Save.');
-      setRequestReceipt(''); setRequestError('');
+      setRequestReceipt(null); setRequestError(''); requestIdentity.reset();
       if (restored.qualification.status === 'passed' && !restoredOffer.unavailable && !restoredOffer.target) {
         setRoute(restored.progress.complete ? 'interviewReview' : 'interview');
       } else {
@@ -159,7 +176,7 @@ export function FormsFlow({ onContact, onDraftSaved, isActive = true, initialFor
     setFormId(id); setReturnTo(origin === 'detail' ? 'catalog' : origin); setRoute('detail');
     setAnswers({}); setQuestionIndex(0); setShowCheckAnswers(false); setFieldError('');
     setDraftFinished(false); setDraftMessage(''); setDraftError(''); setEditingDraft(false);
-    setRequestReceipt(''); setRequestError(''); setLawyerErrors({});
+    setRequestReceipt(null); setRequestError(''); setLawyerErrors({}); requestIdentity.reset();
     if (id !== formId) setLawyer(previous => ({ ...previous, note: '' }));
   }
 
@@ -191,7 +208,7 @@ export function FormsFlow({ onContact, onDraftSaved, isActive = true, initialFor
 
   function startCheck(selectedMode: PreparationMode) {
     setMode(selectedMode); setAnswers({}); setQuestionIndex(0); setShowCheckAnswers(false);
-    setRequestReceipt(''); setRequestError('');
+    setRequestReceipt(null); setRequestError(''); requestIdentity.reset();
     setRoute(schema?.questions.length ? 'check' : 'result');
   }
 
@@ -256,22 +273,25 @@ export function FormsFlow({ onContact, onDraftSaved, isActive = true, initialFor
     if (phone && (phoneDigits < 7 || phoneDigits > 15 || !/^\+?[\d\s().-]+$/.test(phone))) errors.phone = 'Enter a phone number with 7–15 digits, or leave this blank.';
     if (!lawyer.note.trim()) errors.note = 'Briefly describe the help you need.';
     setLawyerErrors(errors);
-    if (!Object.keys(errors).length) { setRequestReceipt(''); setRequestError(''); setRoute('attorneyPreview'); }
+    if (!Object.keys(errors).length) { setRequestReceipt(null); setRequestError(''); setRoute('attorneyPreview'); }
   }
 
   async function sendAttorneyRequest() {
-    if (sendingRequestRef.current || requestReceipt || !delivery.available) return;
+    if (sendingRequestRef.current || requestReceipt || !delivery.canSubmit) return;
+    const generation = requestGeneration.current;
     sendingRequestRef.current = true; setSendingRequest(true); setRequestError('');
     try {
-      const receipt = await submitLocalRequest({
-        type: 'attorney', name: lawyer.name.trim(), email: lawyer.email.trim(), phone: lawyer.phone.trim() || undefined,
+      const payload = {
+        type: 'attorney' as const, name: lawyer.name.trim(), email: lawyer.email.trim(), phone: lawyer.phone.trim() || undefined,
         question: lawyer.note.trim(), formId: form.id,
-      });
-      setRequestReceipt(receipt.id);
+      };
+      const receipt = await submitRequest(payload, requestIdentity.getId(payload, delivery.user?.id));
+      if (generation !== requestGeneration.current) return;
+      setRequestReceipt(receipt);
     } catch (error) {
-      setRequestError(error instanceof Error ? error.message : 'The request could not be saved. Please try again.');
+      if (generation === requestGeneration.current) setRequestError(error instanceof Error ? error.message : 'The request could not be saved. Please try again.');
     } finally {
-      sendingRequestRef.current = false; setSendingRequest(false);
+      if (generation === requestGeneration.current) { sendingRequestRef.current = false; setSendingRequest(false); }
     }
   }
 
@@ -447,27 +467,35 @@ export function FormsFlow({ onContact, onDraftSaved, isActive = true, initialFor
   }
 
   function attorneyIntake() {
+    const updateLawyer = (key: keyof typeof lawyer, value: string) => {
+      requestIdentity.reset();
+      setLawyer(previous => ({ ...previous, [key]: value }));
+    };
     return <><Badge>{form.id} · ATTORNEY ASSISTANCE</Badge><SectionTitle title="Tell us how we can help" subtitle="Prepare a request for individual guidance on your application." /><Card><View style={styles.metaRow}><Text style={styles.label}>Service price</Text><Text style={styles.compactPrice}>{money(attorney?.servicePriceUsd)}</Text></View><Text style={styles.small}>{attorney?.benchmark?.scope || 'Scope and price will need confirmation.'}</Text><Text style={styles.footnote}>Government fees and taxes are separate.</Text></Card>
-      <Field label="Your full name" value={lawyer.name} onChangeText={name => setLawyer(previous => ({ ...previous, name }))} autoComplete="name" maxLength={150} error={lawyerErrors.name} />
-      <Field label="Email address" value={lawyer.email} onChangeText={email => setLawyer(previous => ({ ...previous, email }))} autoComplete="email" autoCapitalize="none" keyboardType="email-address" maxLength={254} error={lawyerErrors.email} />
-      <Field label="Phone number · optional" value={lawyer.phone} onChangeText={phone => setLawyer(previous => ({ ...previous, phone }))} autoComplete="tel" keyboardType="phone-pad" maxLength={40} error={lawyerErrors.phone} />
-      <Field label="What would you like help with?" help="A brief description is enough. Avoid identity numbers or sensitive document details." value={lawyer.note} onChangeText={note => setLawyer(previous => ({ ...previous, note }))} multiline maxLength={2000} error={lawyerErrors.note} />
+      <Field label="Your full name" value={lawyer.name} onChangeText={name => updateLawyer('name', name)} autoComplete="name" maxLength={150} error={lawyerErrors.name} />
+      <Field label="Email address" value={lawyer.email} onChangeText={email => updateLawyer('email', email)} autoComplete="email" autoCapitalize="none" keyboardType="email-address" maxLength={254} error={lawyerErrors.email} />
+      <Field label="Phone number · optional" value={lawyer.phone} onChangeText={phone => updateLawyer('phone', phone)} autoComplete="tel" keyboardType="phone-pad" maxLength={40} error={lawyerErrors.phone} />
+      <Field label="What would you like help with?" help="A brief description is enough. Avoid identity numbers or sensitive document details." value={lawyer.note} onChangeText={note => updateLawyer('note', note)} multiline maxLength={2000} error={lawyerErrors.note} />
       <Button title="Preview my request" icon="arrow-forward" onPress={previewAttorney} /><Notice>This preview does not send your request, book an attorney, charge a fee or establish an attorney-client relationship.</Notice>
     </>;
   }
 
   function attorneyPreview() {
     return <><Badge>{form.id} · {requestReceipt ? 'REQUEST SAVED' : 'REQUEST PREVIEW'}</Badge>
-      <SectionTitle title={requestReceipt ? 'Your request is saved locally' : 'Your request is ready to review'} subtitle={requestReceipt ? 'Your request is in the local inbox on this computer.' : 'Review your details before sending your request.'} />
-      {!!requestReceipt && <Notice tone="success" title="Local receipt"><Text selectable style={styles.small}>Reference: {requestReceipt}</Text><Text style={styles.small}>No email was sent. An attorney has not been booked or assigned.</Text></Notice>}
+      <SectionTitle title={requestReceipt ? requestReceipt.delivery === 'team-inbox' ? 'Your request has been received' : 'Your request is saved locally' : 'Your request is ready to review'} subtitle={requestReceipt ? requestReceipt.delivery === 'team-inbox' ? 'Your details are saved in the FILLOUT team inbox.' : 'Your request is in the local inbox on this computer.' : 'Review your details before sending your request.'} />
+      {!!requestReceipt && <Notice tone="success" title={requestReceipt.delivery === 'team-inbox' ? 'Request receipt' : 'Local receipt'}><Text selectable style={styles.small}>Reference: {requestReceipt.id}</Text><Text style={styles.small}>No payment was collected and no email notification was sent. An attorney has not been booked or assigned.</Text></Notice>}
       <Card><Text style={styles.cardTitle}>{lawyer.name}</Text><Text style={styles.body}>{lawyer.email}</Text>{!!lawyer.phone && <Text style={styles.body}>{lawyer.phone}</Text>}<View style={styles.divider} /><Text style={styles.label}>{form.id} · {form.title}</Text><Text style={styles.body}>{lawyer.note}</Text><View style={styles.metaRow}><Text style={styles.small}>Service price</Text><Text style={styles.compactPrice}>{money(attorney?.servicePriceUsd)}</Text></View></Card>
       {!!requestError && <Text accessibilityRole="alert" style={styles.error}>{requestError}</Text>}
       {!requestReceipt && <>
-        {delivery.available && <Button title={sendingRequest ? 'Saving request…' : 'Send request'} disabled={sendingRequest} icon="send-outline" onPress={() => void sendAttorneyRequest()} />}
+        {delivery.cloud && <EmailAccess initialEmail={lawyer.email} disabled={sendingRequest} />}
+        {delivery.available && <>
+          <Notice>{delivery.cloud ? 'By choosing Send request, you agree to share your contact details, selected form and question shown above with the FILLOUT team, stored in our online inbox. This does not book an attorney, take payment or send an email notification.' : 'By choosing Send request, you save your contact details, selected form and question in the local team inbox on this Mac.'}</Notice>
+          <Button title={sendingRequest ? 'Saving request…' : 'Send request'} disabled={sendingRequest || !delivery.canSubmit} icon="send-outline" onPress={() => void sendAttorneyRequest()} />
+        </>}
         <Button title="Edit my request" disabled={sendingRequest} variant="secondary" icon="create-outline" onPress={() => setRoute('attorney')} />
       </>}
       <Button title="Contact us" disabled={sendingRequest} variant="secondary" onPress={onContact} />
-      <Text style={styles.footnote}>{delivery.checking ? 'Checking whether the local inbox is connected…' : delivery.available ? 'Send request saves your details to the inbox on this computer. It does not email a lawyer, schedule a consultation or collect payment.' : 'Request preview only. Sending is available from the locally hosted website; external delivery and scheduling are not connected.'}</Text>
+      <Text style={styles.footnote}>{delivery.error || (delivery.checking ? 'Checking request delivery…' : delivery.cloud ? 'You remain in control: nothing is submitted until you choose Send request.' : delivery.available ? 'Send request saves your details to the inbox on this computer. It does not email a lawyer, schedule a consultation or collect payment.' : 'Request preview only. Sending is available from the locally hosted website; external delivery and scheduling are not connected.')}</Text>
     </>;
   }
 

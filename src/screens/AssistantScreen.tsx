@@ -13,7 +13,10 @@ import {
   View,
 } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { submitLocalRequest, useLocalDelivery } from '../localRequests';
+import { cloudRequested } from '../cloudClient';
+import { LiveAssistant, liveAiEnabled } from '../components/LiveAssistant';
+import { EmailAccess } from '../components/EmailAccess';
+import { submitRequest, useRequestDelivery, useRequestIdentity, type RequestReceipt } from '../requestDelivery';
 
 export type AssistantScreenProps = {
   /** Increment to open Contact us, including when this screen is already mounted. */
@@ -60,11 +63,14 @@ export function AssistantScreen({ contactRequest = 0, isActive = true }: Assista
   const [draft, setDraft] = useState<ContactDraft>({ ...EMPTY_CONTACT });
   const [errors, setErrors] = useState<ContactErrors>({});
   const [preview, setPreview] = useState<ContactDraft | null>(null);
-  const delivery = useLocalDelivery();
+  const delivery = useRequestDelivery();
+  const requestIdentity = useRequestIdentity();
   const [sending, setSending] = useState(false);
-  const [receipt, setReceipt] = useState('');
+  const [receipt, setReceipt] = useState<RequestReceipt | null>(null);
   const [sendError, setSendError] = useState('');
   const submitting = useRef(false);
+  const requestGeneration = useRef(0);
+  const previousRequestUser = useRef(delivery.user?.id);
   const [message, setMessage] = useState('');
   const [turns, setTurns] = useState<ChatTurn[]>([]);
   const lastContactRequest = useRef(0);
@@ -77,10 +83,22 @@ export function AssistantScreen({ contactRequest = 0, isActive = true }: Assista
   const shouldScrollChat = useRef(false);
 
   useEffect(() => {
+    const userId = delivery.user?.id;
+    if (previousRequestUser.current && previousRequestUser.current !== userId) {
+      requestGeneration.current += 1;
+      submitting.current = false; setSending(false);
+      setDraft({ ...EMPTY_CONTACT }); setPreview(null); setErrors({});
+      setReceipt(null); setSendError(''); requestIdentity.reset();
+    }
+    previousRequestUser.current = userId;
+  }, [delivery.user?.id]);
+  useEffect(() => () => { requestGeneration.current += 1; }, []);
+
+  useEffect(() => {
     if (contactRequest > 0 && contactRequest !== lastContactRequest.current) {
       lastContactRequest.current = contactRequest;
       setPreview(null);
-      setReceipt(''); setSendError('');
+      setReceipt(null); setSendError(''); requestIdentity.reset();
       setContactOpen(true);
       Keyboard.dismiss();
       scrollRef.current?.scrollTo({ y: 0, animated: false });
@@ -102,7 +120,7 @@ export function AssistantScreen({ contactRequest = 0, isActive = true }: Assista
 
   const openContact = () => {
     setPreview(null);
-    setReceipt(''); setSendError('');
+    setReceipt(null); setSendError(''); requestIdentity.reset();
     setContactOpen(true);
     Keyboard.dismiss();
     scrollRef.current?.scrollTo({ y: 0, animated: false });
@@ -117,6 +135,7 @@ export function AssistantScreen({ contactRequest = 0, isActive = true }: Assista
   };
 
   const updateDraft = (field: ContactField, value: string) => {
+    requestIdentity.reset();
     setDraft(current => ({ ...current, [field]: value }));
     setErrors(current => ({ ...current, [field]: undefined, ...(field === 'phone' && !draft.email.trim() ? { email: undefined } : {}) }));
   };
@@ -132,7 +151,7 @@ export function AssistantScreen({ contactRequest = 0, isActive = true }: Assista
       return;
     }
     Keyboard.dismiss();
-    setReceipt(''); setSendError('');
+    setReceipt(null); setSendError('');
     setPreview({ name: draft.name.trim(), email: draft.email.trim(), phone: draft.phone.trim(), question: draft.question.trim() });
     scrollRef.current?.scrollTo({ y: 0, animated: false });
     AccessibilityInfo.announceForAccessibility('Request preview. No request has been sent.');
@@ -153,21 +172,24 @@ export function AssistantScreen({ contactRequest = 0, isActive = true }: Assista
   const backToForm = () => {
     if (submitting.current) return;
     setPreview(null);
-    setReceipt(''); setSendError('');
+    setReceipt(null); setSendError(''); requestIdentity.reset();
     scrollRef.current?.scrollTo({ y: 0, animated: false });
   };
 
   const sendContact = async () => {
-    if (!preview || submitting.current || receipt || !delivery.available) return;
+    if (!preview || submitting.current || receipt || !delivery.canSubmit) return;
+    const generation = requestGeneration.current;
     submitting.current = true; setSending(true); setSendError('');
     try {
-      const result = await submitLocalRequest({ type:'contact', ...preview });
-      setReceipt(result.id);
+      const payload = { type: 'contact' as const, ...preview };
+      const result = await submitRequest(payload, requestIdentity.getId(payload, delivery.user?.id));
+      if (generation !== requestGeneration.current) return;
+      setReceipt(result);
       setDraft({ ...EMPTY_CONTACT });
-      AccessibilityInfo.announceForAccessibility('Request saved to the local team inbox.');
+      AccessibilityInfo.announceForAccessibility(result.delivery === 'team-inbox' ? 'Request saved to the team inbox.' : 'Request saved to the local team inbox.');
     } catch (error) {
-      setSendError(error instanceof Error ? error.message : 'The request could not be saved. Please try again.');
-    } finally { submitting.current=false; setSending(false); }
+      if (generation === requestGeneration.current) setSendError(error instanceof Error ? error.message : 'The request could not be saved. Please try again.');
+    } finally { if (generation === requestGeneration.current) { submitting.current=false; setSending(false); } }
   };
 
   return (
@@ -191,10 +213,10 @@ export function AssistantScreen({ contactRequest = 0, isActive = true }: Assista
               <Text style={styles.textButton}>{preview ? 'Back to form' : 'FILLOUT AI'}</Text>
             </Pressable>
             <Text style={styles.eyebrow}>WE’RE HERE TO HELP</Text>
-            <Text accessibilityRole="header" style={styles.title}>{receipt ? 'Request received locally' : preview ? 'Review your request' : 'Contact us'}</Text>
+            <Text accessibilityRole="header" style={styles.title}>{receipt ? receipt.delivery === 'team-inbox' ? 'Request received' : 'Request received locally' : preview ? 'Review your request' : 'Contact us'}</Text>
             <View style={styles.notice}>
               <Ionicons name="information-circle-outline" size={20} color="#092653" />
-              <Text style={styles.noticeText}>{delivery.available ? 'Requests are saved to the team inbox on this Mac. No email, call or external notification is sent during local testing.' : 'Request delivery is not connected here. You can review your details without sending them.'}</Text>
+              <Text style={styles.noticeText}>{delivery.error || (delivery.cloud ? 'Verify your email, review your contact details, then send your question to the FILLOUT team inbox.' : delivery.available ? 'Requests are saved to the team inbox on this Mac. No email, call or external notification is sent during local testing.' : 'Request delivery is not connected here. You can review your details without sending them.')}</Text>
             </View>
 
             {preview ? (
@@ -205,15 +227,19 @@ export function AssistantScreen({ contactRequest = 0, isActive = true }: Assista
                   {preview.phone ? <PreviewField label="Phone" value={preview.phone} /> : null}
                   <PreviewField label="Question" value={preview.question} />
                 </View>
-                {!!receipt && <View style={styles.notice}><Text selectable style={styles.noticeText}>Saved to the local team inbox. Reference: {receipt}</Text></View>}
+                {!!receipt && <View style={styles.notice}><Text selectable style={styles.noticeText}>{receipt.delivery === 'team-inbox' ? 'Saved to the FILLOUT team inbox.' : 'Saved to the local team inbox.'} Reference: {receipt.id}</Text></View>}
                 {!!sendError && <Text accessibilityRole="alert" style={[styles.error,{marginBottom:14}]}>{sendError}</Text>}
-                {delivery.available && !receipt && <Pressable accessibilityRole="button" disabled={sending} accessibilityState={{disabled:sending}} onPress={()=>void sendContact()} style={({pressed})=>[styles.primaryButton,{marginBottom:12},sending&&styles.disabled,pressed&&styles.pressed]}><Text style={styles.primaryButtonText}>{sending?'Sending…':'Send request to local team'}</Text><Ionicons name="send-outline" size={20} color="#092653"/></Pressable>}
+                {delivery.cloud && !receipt && <EmailAccess initialEmail={preview.email} disabled={sending} />}
+                {delivery.available && !receipt && <>
+                  <Text style={[styles.noticeText, { marginBottom: 12 }]}>{delivery.cloud ? 'By choosing Send request, you agree to share the contact details and question shown above with the FILLOUT team, stored in our online inbox. This does not book an appointment, take payment or send an email notification.' : 'By choosing Send request, you save the contact details and question shown above in the local team inbox on this Mac.'}</Text>
+                  <Pressable accessibilityRole="button" disabled={sending || !delivery.canSubmit} accessibilityState={{disabled:sending || !delivery.canSubmit}} onPress={()=>void sendContact()} style={({pressed})=>[styles.primaryButton,{marginBottom:12},(sending || !delivery.canSubmit)&&styles.disabled,pressed&&styles.pressed]}><Text style={styles.primaryButtonText}>{sending?'Sending…':delivery.cloud?'Send request':'Send request to local team'}</Text><Ionicons name="send-outline" size={20} color="#092653"/></Pressable>
+                </>}
                 {!receipt && <Pressable accessibilityRole="button" disabled={sending} onPress={backToForm} style={({ pressed }) => [styles.primaryButton,sending&&styles.disabled, pressed && styles.pressed]}>
                   <Text style={styles.primaryButtonText}>Edit request</Text>
                   <Ionicons name="create-outline" size={20} color="#092653" />
                 </Pressable>}
                 {!!receipt && <Pressable accessibilityRole="button" onPress={closeContact} style={styles.primaryButton}><Text style={styles.primaryButtonText}>Back to FILLOUT AI</Text></Pressable>}
-                <Text style={styles.footnote}>{receipt ? 'This local receipt does not book an appointment or establish an attorney-client relationship.' : delivery.available ? 'Review your contact details before sending. Your question and contact details will be visible in the local team inbox.' : 'This is a request preview. Nothing has been submitted.'}</Text>
+                <Text style={styles.footnote}>{receipt ? 'This receipt does not book an appointment or establish an attorney-client relationship. No payment was collected and no email notification was sent.' : delivery.available ? 'Nothing is submitted until you choose Send request.' : 'This is a request preview. Nothing has been submitted.'}</Text>
               </>
             ) : (
               <>
@@ -232,11 +258,11 @@ export function AssistantScreen({ contactRequest = 0, isActive = true }: Assista
                 <TextInput ref={questionRef} accessibilityLabel="Your question, required" accessibilityHint={errors.question} style={[styles.input, styles.questionInput, errors.question && styles.invalidInput]} value={draft.question} onChangeText={value => updateDraft('question', value)} placeholder="How can we help?" placeholderTextColor="#738094" multiline textAlignVertical="top" autoComplete="off" textContentType="none" maxLength={1500} />
                 <Text style={styles.characterCount}>{draft.question.length}/1,500</Text>
 
-                <Pressable accessibilityRole="button" accessibilityHint="Validates your details and shows a local preview. Does not send a request." onPress={previewContact} style={({ pressed }) => [styles.primaryButton, pressed && styles.pressed]}>
+                <Pressable accessibilityRole="button" accessibilityHint="Validates your details and shows a preview. Does not send a request." onPress={previewContact} style={({ pressed }) => [styles.primaryButton, pressed && styles.pressed]}>
                   <Text style={styles.primaryButtonText}>Review request</Text>
                   <Ionicons name="arrow-forward" size={20} color="#092653" />
                 </Pressable>
-                <Text style={styles.footnote}>Use sample details for local testing. Nothing is sent until you review and choose Send request.</Text>
+                <Text style={styles.footnote}>{delivery.cloud ? 'Please do not include identity numbers or sensitive document details. Nothing is sent until you review and choose Send request.' : 'Use sample details for local testing. Nothing is sent until you review and choose Send request.'}</Text>
               </>
             )}
           </>
@@ -250,6 +276,7 @@ export function AssistantScreen({ contactRequest = 0, isActive = true }: Assista
                 <Text style={styles.contactButtonText}>Contact us</Text>
               </Pressable>
             </View>
+            {cloudRequested && liveAiEnabled ? <LiveAssistant /> : <>
             <View style={styles.demoBadge}>
               <View style={styles.demoDot} />
               <Text style={styles.demoBadgeText}>DEMO · SCRIPTED RESPONSES</Text>
@@ -295,6 +322,7 @@ export function AssistantScreen({ contactRequest = 0, isActive = true }: Assista
               </Pressable>
             </View>
             <Text style={styles.footnote}>Chat stays in this session. Contact requests are saved only when you choose Send request.</Text>
+            </>}
           </>
         )}
       </ScrollView>

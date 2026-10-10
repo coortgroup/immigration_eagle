@@ -1,0 +1,36 @@
+project_id = "fillout-immigration-forms"
+
+[api]
+enabled = true
+schemas = ["public", "graphql_public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 100
+
+[auth]
+enabled = true
+site_url = "https://fillout.net/app/"
+enable_signup = true
+enable_anonymous_sign_ins = false
+
+[auth.email]
+enable_signup = true
+enable_confirmations = true
+max_frequency = "1m"
+otp_length = 6
+otp_expiry = 600
+
+[auth.email.template.confirmation]
+subject = "Your FILLOUT verification code"
+content_path = "./supabase/templates/email-code.html"
+
+[auth.email.template.magic_link]
+subject = "Your FILLOUT sign-in code"
+content_path = "./supabase/templates/email-code.html"
+
+# The handler verifies the Bearer token with Auth /user before any action.
+# This supports asymmetric user JWTs without relying on the legacy gateway JWT check.
+[functions.submit-request]
+verify_jwt = false
+
+[functions.ai-assistant]
+verify_jwt = false

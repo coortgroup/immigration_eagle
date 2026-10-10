@@ -14,10 +14,13 @@ android/
 !.env.example
 *.mobileprovision
 *.p12
+*.p8
 *.ipa
 *.keystore
 *.jks
 *.log
 .eas/
 .local/
+supabase/.temp/
+supabase/.branches/
 dist/
