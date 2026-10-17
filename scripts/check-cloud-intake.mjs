@@ -12,6 +12,9 @@ const userId = '11111111-1111-4111-8111-111111111111';
 const otherId = '22222222-2222-4222-8222-222222222222';
 const pendingId = '33333333-3333-4333-8333-333333333333';
 const anonymousId = '44444444-4444-4444-8444-444444444444';
+const attorneyId = '55555555-5555-4555-8555-555555555555';
+const legacyId = '66666666-6666-4666-8666-666666666666';
+const attorneyConsent = 'share-contact-and-question-v1';
 const settings = {
   SUPABASE_URL: 'https://example.supabase.co', SUPABASE_PUBLISHABLE_KEY: 'sb_publishable_example', SUPABASE_SECRET_KEY: 'sb_secret_example',
 };
@@ -69,9 +72,19 @@ try {
   `);
   const migration = await readFile(new URL('../supabase/migrations/20261010000100_cloud_intake.sql', import.meta.url), 'utf8');
   await db.exec(migration);
-  for (const [id, confirmed, anonymous] of [[userId, true, false], [otherId, true, false], [pendingId, false, false], [anonymousId, true, true]]) {
+  for (const [id, confirmed, anonymous] of [[userId, true, false], [otherId, true, false], [pendingId, false, false], [anonymousId, true, true], [attorneyId, true, false], [legacyId, true, false]]) {
     await db.query('insert into auth.users values($1, $2, $3, $4)', [id, `${id}@example.test`, confirmed ? new Date().toISOString() : null, anonymous]);
   }
+  // Create a genuine pre-migration record. An old request must remain history,
+  // never become evidence that the user agreed to attorney disclosure.
+  const legacyRequestId = randomUUID();
+  const legacyPayload = { type: 'attorney', name: 'Legacy Example', email: 'legacy@example.test', phone: null, question: 'Please contact me.', formId: 'N-400' };
+  await db.query('select public.fillout_submit_request($1,$2,$3)', [legacyId, legacyRequestId, legacyPayload]);
+  const legacyBefore = (await db.query('select * from public.requests where request_id = $1', [legacyRequestId])).rows[0];
+  const consentMigration = await readFile(new URL('../supabase/migrations/20261017000200_attorney_referral_consent.sql', import.meta.url), 'utf8');
+  await db.exec(consentMigration);
+  assert.deepEqual((await db.query('select * from public.requests where request_id = $1', [legacyRequestId])).rows[0], legacyBefore, 'Migration preserves legacy records without inventing consent');
+  assert.equal(Object.hasOwn(legacyBefore.payload, 'attorneyConsent'), false);
   rpc = async (name, args) => {
     await db.exec('set role service_role');
     try {
@@ -114,6 +127,14 @@ try {
   checkError(await call({ ...valid(), requestId: 'not-a-uuid' }), 422, 'validation_failed');
   checkError(await call({ ...valid(), formId: 'I-999' }), 422, 'validation_failed');
   checkError(await call({ ...valid(), type: 'attorney' }), 422, 'validation_failed');
+  for (const consent of [undefined, '', 'yes', 'share-contact-and-question-v0', null, true, { version: attorneyConsent }]) {
+    const rejected = await call({ ...valid(), type: 'attorney', formId: 'N-400', attorneyConsent: consent });
+    checkError(rejected, 422, 'validation_failed');
+    assert.ok(rejected.body.error.fields.attorneyConsent, 'Missing or invalid consent identifies the field to correct');
+  }
+  for (const consent of [attorneyConsent, '', null]) {
+    checkError(await call({ ...valid(), attorneyConsent: consent }), 422, 'validation_failed');
+  }
   checkError(await call({ ...valid(), name: 'Name\nInjected' }), 422, 'validation_failed');
   checkError(await call({ ...valid(), email: 'bad-email' }), 422, 'validation_failed');
   checkError(await call({ ...valid(), email: '', phone: '+1 (123)' }), 422, 'validation_failed');
@@ -133,12 +154,12 @@ try {
   assert.equal(replay.result.headers.get('access-control-allow-origin'), 'https://fillout.net');
   assert.equal(replay.result.headers.get('cache-control'), 'no-store');
   checkError(await call({ ...original, question: 'Changed' }), 409, 'request_conflict');
-  assert.equal((await db.query('select count(*)::int as count from public.requests')).rows[0].count, 1);
-  assert.equal((await db.query('select count(*)::int as count from private.notification_outbox')).rows[0].count, 1);
-  const saved = (await db.query('select * from public.requests')).rows[0];
+  assert.equal((await db.query('select count(*)::int as count from public.requests where user_id = $1', [userId])).rows[0].count, 1);
+  assert.equal((await db.query('select count(*)::int as count from private.notification_outbox o join public.requests r on r.id = o.request_id where r.user_id = $1', [userId])).rows[0].count, 1);
+  const saved = (await db.query('select * from public.requests where user_id = $1', [userId])).rows[0];
   assert.equal(saved.user_id, userId, 'User ID comes from authenticated Auth response');
   assert.equal(saved.payload.name, 'Example Person');
-  assert.deepEqual((await db.query('select * from private.notification_outbox')).rows[0], { request_id: saved.id, event_type: 'request_created', created_at: saved.created_at, state: 'pending', attempts: 0 });
+  assert.deepEqual((await db.query('select * from private.notification_outbox where request_id = $1', [saved.id])).rows[0], { request_id: saved.id, event_type: 'request_created', created_at: saved.created_at, state: 'pending', attempts: 0 });
 
   // Table privileges and RLS: neither API role can write or call service RPCs.
   await db.exec('set role authenticated');
@@ -181,8 +202,45 @@ try {
   for (let i = 0; i < 4; i++) assert.equal((await call()).result.status, 201);
   checkError(await call(), 429, 'rate_limited');
   assert.deepEqual((await call(original)).body, created.body, 'Replay still succeeds at the limit');
-  await db.query("update public.requests set created_at = now() - interval '61 minutes' where request_id <> $1", [original.requestId]);
+  await db.query("update public.requests set created_at = now() - interval '61 minutes' where request_id <> $1 and user_id = $2", [original.requestId, userId]);
   assert.equal((await call()).result.status, 201, 'The rolling hour expires');
+
+  // Service-RPC validation still applies if a caller bypasses the HTTP handler.
+  const attorneyPayload = { ...legacyPayload, attorneyConsent };
+  for (const consent of [undefined, '', 'yes', 'share-contact-and-question-v0', null, true, { version: attorneyConsent }]) {
+    const payload = { ...legacyPayload, ...(consent === undefined ? {} : { attorneyConsent: consent }) };
+    const rejected = await rpc('fillout_submit_request', { p_user_id: attorneyId, p_request_id: randomUUID(), p_payload: payload });
+    assert.equal((await rejected.json()).code, 'PT422', 'Database independently rejects missing or invalid attorney consent');
+  }
+  for (const consent of [attorneyConsent, '', null]) {
+    const rejected = await rpc('fillout_submit_request', { p_user_id: attorneyId, p_request_id: randomUUID(), p_payload: { ...normalized, attorneyConsent: consent } });
+    assert.equal((await rejected.json()).code, 'PT422', 'Database rejects attorney consent attached to contact requests');
+  }
+  assert.equal((await db.query('select count(*)::int as count from public.requests where user_id = $1', [attorneyId])).rows[0].count, 0, 'Invalid consent produces no stored request');
+
+  user = { ...user, id: attorneyId };
+  const attorneyRequest = { ...valid(), type: 'attorney', formId: 'N-400', attorneyConsent };
+  const attorneyCreated = await call(attorneyRequest);
+  assert.equal(attorneyCreated.result.status, 201);
+  assert.equal(attorneyCreated.body.externalNotification, false, 'Saving consent never claims an external referral was sent');
+  assert.deepEqual((await call(attorneyRequest)).body, attorneyCreated.body, 'Attorney retry returns the original receipt');
+  const storedAttorney = (await db.query('select * from public.requests where user_id = $1', [attorneyId])).rows;
+  assert.equal(storedAttorney.length, 1, 'Attorney retry does not create another request');
+  assert.equal(storedAttorney[0].payload.attorneyConsent, attorneyConsent, 'Stored request retains the exact disclosure consent version');
+  const directReplay = await rpc('fillout_submit_request', { p_user_id: attorneyId, p_request_id: attorneyRequest.requestId, p_payload: validateRequest(attorneyRequest).payload });
+  assert.equal((await directReplay.json()).id, attorneyCreated.body.id, 'Direct service retry remains idempotent');
+  assert.equal((await db.query('select count(*)::int as count from private.notification_outbox where request_id = $1', [attorneyCreated.body.id])).rows[0].count, 1, 'Consent retries cannot duplicate the outbox event');
+  checkError(await call({ ...attorneyRequest, question: 'A changed question requires a new request.' }), 409, 'request_conflict');
+
+  user = { ...user, id: legacyId };
+  checkError(await call({ requestId: legacyRequestId, ...legacyPayload, phone: '' }), 422, 'validation_failed');
+  const legacyReplay = await rpc('fillout_submit_request', { p_user_id: legacyId, p_request_id: legacyRequestId, p_payload: legacyPayload });
+  assert.equal((await legacyReplay.json()).code, 'PT422', 'Replaying an old request cannot bypass the new consent requirement');
+  const rewrittenLegacy = await rpc('fillout_submit_request', { p_user_id: legacyId, p_request_id: legacyRequestId, p_payload: attorneyPayload });
+  assert.equal((await rewrittenLegacy.json()).code, 'PT409', 'Consent cannot be retroactively attached to an existing request ID');
+  assert.deepEqual((await db.query('select * from public.requests where request_id = $1', [legacyRequestId])).rows[0], legacyBefore, 'Legacy history remains unchanged after rejected retries');
+  assert.equal((await db.query("select count(*)::int as count from public.requests where user_id = $1 and payload->>'attorneyConsent' = $2", [legacyId, attorneyConsent])).rows[0].count, 0, 'Legacy history is not permission to share with attorneys');
+  user = { ...user, id: userId };
 
   const config = readConfig(env);
   for (let i = 0; i < 20; i++) await consumeAiQuota(config, userId, fakeFetch);
@@ -204,5 +262,5 @@ try {
   settings.CORS_ALLOWED_ORIGINS = 'https://fillout.net';
   settings.SUPABASE_URL = 'https://attacker.example';
   assert.throws(() => readConfig(env), error => error.status === 503, 'Server configuration cannot redirect secrets to an arbitrary host');
-  console.log('Cloud intake checks passed: verified Auth, CORS, validation, idempotency, real PostgreSQL migration/RLS/grants, rolling intake and AI quotas. Hosted gateway and multi-session concurrency require staging verification.');
+  console.log('Cloud intake checks passed: verified Auth, CORS, explicit attorney consent and legacy preservation, idempotency, real PostgreSQL migrations/RLS/grants, direct SQL bypass rejection, rolling intake and AI quotas. Hosted gateway and multi-session concurrency require staging verification.');
 } finally { await db.close(); }

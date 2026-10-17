@@ -1,0 +1,22 @@
+{
+  "Chat": "Чат",
+  "FillOut team": "Команда FillOut",
+  "Login": "Войти",
+  "Login to send": "Войти и отправить",
+  "Message the FillOut team": "Напишите команде FillOut",
+  "Ask us about your forms or using the app. Our team will reply here.": "Задайте вопрос о формах или работе приложения. Ответ команды появится здесь.",
+  "Message sent to the FillOut team.": "Сообщение отправлено команде FillOut.",
+  "Earlier messages": "Предыдущие сообщения",
+  "Sent": "Отправлено",
+  "Refresh": "Обновить",
+  "Chat is not connected in this version. Your message has not been sent.": "В этой версии чат пока не подключён. Ваше сообщение не отправлено.",
+  "Log in to send a message and keep your conversation.": "Войдите, чтобы отправить сообщение и сохранить переписку.",
+  "Updating conversation…": "Обновление переписки…",
+  "Write a message…": "Напишите сообщение…",
+  "Send message": "Отправить сообщение",
+  "Messages are shared with the FillOut team. Replies appear here.": "Сообщения передаются команде FillOut. Ответы появятся здесь.",
+  "The conversation could not be loaded. Please try again.": "Не удалось загрузить переписку. Попробуйте ещё раз.",
+  "Enter a message of up to 2,000 characters.": "Введите сообщение длиной до 2000 символов.",
+  "Message delivery was not confirmed. Try sending the same message again.": "Доставка сообщения не подтверждена. Попробуйте отправить это же сообщение ещё раз.",
+  "Check your message and try again.": "Проверьте сообщение и попробуйте ещё раз."
+}

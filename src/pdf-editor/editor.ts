@@ -1,11 +1,14 @@
 /// <reference lib="dom" />
+import './compatibility';
 import * as pdfjs from 'pdfjs-dist/legacy/build/pdf.mjs';
 // The worker is bundled into this document so editing works without a CDN or network.
 // @ts-expect-error PDF.js does not publish a declaration for its worker entry point.
 import { WorkerMessageHandler } from 'pdfjs-dist/legacy/build/pdf.worker.mjs';
 import { FreePdfValidationError, prepareFreePdf, saveFreePdf } from '../freePdfEngine';
+import { restorePdfDraft } from '../pdfEditorBridge';
+import { translate } from '../i18n';
 
-type Config = { formId: string; base64: string; native: boolean };
+type Config = { language?: 'en' | 'ru'; formId: string; base64: string; native: boolean; values?: Record<string, string | boolean>; page?: number; resume?: boolean };
 type PreparedPdf = Awaited<ReturnType<typeof prepareFreePdf>>;
 type Field = PreparedPdf['fields'][number];
 type FieldInput = HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
@@ -31,13 +34,34 @@ const fieldsLayer = element<HTMLElement>('fields');
 const previousButton = element<HTMLButtonElement>('previous-page');
 const nextButton = element<HTMLButtonElement>('next-page');
 const pageSelect = element<HTMLSelectElement>('page-select');
-const zoomSelect = element<HTMLSelectElement>('zoom-select');
+const notice = element<HTMLElement>('editor-notice');
+const dismissNoticeButton = element<HTMLButtonElement>('dismiss-notice');
 const help = element<HTMLElement>('field-help');
 const saveButton = element<HTMLButtonElement>('save-pdf');
 const printButton = element<HTMLButtonElement>('print-pdf');
 const defaultHelp = 'Select a blue field to type. Use Tab to move between fields.';
 
 let config: Config;
+let language: 'en' | 'ru' = 'en';
+const t = (text: string, params?: Record<string, string | number>) => translate(language, text, params);
+let statusMessage = 'Opening your fillable PDF…';
+let errorMessage = '';
+function setStatus(message: string) { statusMessage = message; status.textContent = t(message); }
+
+/** Translate the shell in place, retaining PDF values, current page and focused input. */
+function setLanguage(next: 'en' | 'ru') {
+  language = next;
+  document.documentElement.lang = next;
+  document.querySelectorAll<HTMLElement>('[data-i18n]').forEach(node => { node.textContent = t(node.dataset.i18n!); });
+  document.querySelectorAll<HTMLElement>('[data-i18n-label]').forEach(node => { node.setAttribute('aria-label', t(node.dataset.i18nLabel!)); });
+  if (config) { title.textContent = t('{formId} · Free PDF form', { formId: config.formId }); document.title = t('{formId} — Fillable PDF', { formId: config.formId }); }
+  for (const option of Array.from(pageSelect.options)) { if (pdf) option.setAttribute('aria-label', t('Page {page} of {total}', { page: Number(option.value), total: pdf.numPages })); }
+  if (pdf) pageSelect.setAttribute('aria-label', t('Page {page} of {total}', { page: currentPage, total: pdf.numPages }));
+  if (pdf) pageFrame.setAttribute('aria-label', t('Page {page} of {total}', { page: currentPage, total: pdf.numPages }));
+  if (!fieldsLayer.contains(document.activeElement)) help.textContent = t(defaultHelp);
+  status.textContent = t(statusMessage);
+  errorText.textContent = t(errorMessage);
+}
 let prepared: PreparedPdf | undefined;
 let pdf: pdfjs.PDFDocumentProxy | undefined;
 let values: Record<string, string | boolean> = Object.create(null);
@@ -46,7 +70,6 @@ let renderSequence = 0;
 let renderTask: pdfjs.RenderTask | undefined;
 let busy = false;
 let loading = false;
-let dirty = false;
 let lastExportAction: ExportAction = 'save';
 let retryAction: (() => void) | undefined;
 let renderPromise: Promise<void> = Promise.resolve();
@@ -63,7 +86,8 @@ function messageOf(error: unknown) {
 }
 
 function showError(message: string, retry?: () => void) {
-  errorText.textContent = message;
+  errorMessage = message;
+  errorText.textContent = t(message);
   errorBox.hidden = false;
   retryAction = retry;
   retryButton.hidden = !retry;
@@ -79,7 +103,6 @@ function updateControls() {
   previousButton.disabled = unavailable || busy || currentPage <= 1;
   nextButton.disabled = unavailable || busy || currentPage >= (pdf?.numPages || 1);
   pageSelect.disabled = unavailable || busy;
-  zoomSelect.disabled = unavailable || busy;
   saveButton.disabled = unavailable || busy;
   printButton.disabled = unavailable || busy;
   fieldsLayer.toggleAttribute('inert', busy);
@@ -121,8 +144,12 @@ function syncFieldInputs(field: Field) {
 function updateValue(field: Field, input: FieldInput) {
   values[field.name] = input instanceof HTMLInputElement && input.type === 'checkbox' ? input.checked : input.value;
   syncFieldInputs(field);
-  if (!dirty) { dirty = true; notify({ type: 'dirty' }); }
-  status.textContent = 'Changes are in this window. Save a filled copy to keep them.';
+  notifyDraft();
+}
+
+function notifyDraft() {
+  setStatus('Saving your draft on this device…');
+  notify({ type: 'change', values: { ...values }, page: currentPage });
 }
 
 function createInput(field: Field, widget: Field['widgets'][number], index: number): FieldInput {
@@ -158,7 +185,7 @@ function createInput(field: Field, widget: Field['widgets'][number], index: numb
   input.spellcheck = false;
   if (field.kind === 'text' && field.maxLength && !(input instanceof HTMLSelectElement)) input.maxLength = field.maxLength;
   input.addEventListener('focus', () => { help.textContent = label; });
-  input.addEventListener('blur', () => { help.textContent = defaultHelp; });
+  input.addEventListener('blur', () => { help.textContent = t(defaultHelp); });
   input.addEventListener(field.kind === 'text' ? 'input' : 'change', () => updateValue(field, input));
   return input;
 }
@@ -169,8 +196,7 @@ async function renderPage(sequence: number) {
   const page = await pdf.getPage(pageNumber);
   if (sequence !== renderSequence) return;
   const unscaled = page.getViewport({ scale: 1 });
-  const fitScale = Math.max(0.3, Math.min(1.6, (stage.clientWidth - 32) / unscaled.width));
-  const scale = zoomSelect.value === 'fit' ? fitScale : Number(zoomSelect.value);
+  const scale = Math.max(0.3, Math.min(1.6, (stage.clientWidth - 32) / unscaled.width));
   const viewport = page.getViewport({ scale });
   renderedStageWidth = stage.clientWidth;
   const focusedInput = document.activeElement instanceof HTMLElement && fieldsLayer.contains(document.activeElement)
@@ -223,7 +249,8 @@ async function renderPage(sequence: number) {
   pageFrame.hidden = false;
   stage.setAttribute('aria-busy', 'false');
   pageSelect.value = String(pageNumber);
-  pageFrame.setAttribute('aria-label', `Page ${pageNumber} of ${pdf.numPages}`);
+  pageSelect.setAttribute('aria-label', t('Page {page} of {total}', { page: pageNumber, total: pdf.numPages }));
+  pageFrame.setAttribute('aria-label', t('Page {page} of {total}', { page: pageNumber, total: pdf.numPages }));
   updateControls();
   if (focusSnapshot) {
     const input = Array.from(fieldsLayer.querySelectorAll<FieldInput>('[data-field]')).find((candidate) =>
@@ -243,7 +270,7 @@ function queueRender() {
   renderPromise = renderPromise.catch(() => {}).then(() => renderPage(sequence)).catch((error: unknown) => {
     if (sequence !== renderSequence || (error instanceof Error && error.name === 'RenderingCancelledException')) return;
     stage.setAttribute('aria-busy', 'false');
-    showError(`The page could not be displayed. ${messageOf(error)}`, queueRender);
+    showError(messageOf(error), queueRender);
   });
   return renderPromise;
 }
@@ -252,18 +279,19 @@ function goToPage(page: number) {
   if (!pdf || busy) return;
   currentPage = Math.min(pdf.numPages, Math.max(1, page));
   stage.scrollTo({ top: 0, left: 0 });
-  help.textContent = defaultHelp;
+  help.textContent = t(defaultHelp);
   updateControls();
   void queueRender();
+  notifyDraft();
 }
 
 function finishNativeExport(error?: string) {
   if (!busy) return;
   setBusy(false);
   if (error) showError(error, () => { void exportPdf(lastExportAction); });
-  else status.textContent = lastExportAction === 'print'
+  else setStatus(lastExportAction === 'print'
     ? 'Print dialog closed. You can continue editing or save a filled copy.'
-    : 'Save dialog closed. You can continue editing this form.';
+    : 'Save dialog closed. You can continue editing this form.');
 }
 
 async function exportPdf(action: ExportAction) {
@@ -278,12 +306,12 @@ async function exportPdf(action: ExportAction) {
       return;
     }
     printWindow.opener = null;
-    printWindow.document.title = 'Preparing filled PDF';
-    printWindow.document.body.textContent = 'Preparing your filled PDF. When it opens, use the PDF viewer’s Print button.';
+    printWindow.document.title = t('Preparing filled PDF');
+    printWindow.document.body.textContent = t('Preparing your filled PDF. When it opens, use the PDF viewer’s Print button.');
   }
   lastExportAction = action;
   setBusy(true);
-  status.textContent = 'Preparing your current answers in the filled PDF…';
+  setStatus('Preparing your current answers in the filled PDF…');
   try {
     const snapshot = { ...values };
     const bytes = await saveFreePdf(prepared.bytes, prepared.fields, snapshot);
@@ -304,12 +332,12 @@ async function exportPdf(action: ExportAction) {
       link.remove();
       // Leave enough time for the browser to consume the download before revocation.
       setTimeout(() => URL.revokeObjectURL(url), 60_000);
-      status.textContent = 'Your filled PDF is ready to save. You can reopen it in a PDF app to continue editing.';
+      setStatus('Your filled PDF is ready to save. You can reopen it in a PDF app to continue editing.');
     } else if (printWindow && !printWindow.closed) {
       printWindow.location.replace(url);
       // The opened viewer owns this object URL for this editor session. Do not revoke it
       // while the user is reading or printing the document in the separate viewer tab.
-      status.textContent = 'Filled PDF opened in a new tab. Use the PDF viewer’s Print button to print it.';
+      setStatus('Filled PDF opened in a new tab. Use the PDF viewer’s Print button to print it.');
     } else {
       URL.revokeObjectURL(url);
       throw new Error('The print tab was closed. Choose Print to open it again.');
@@ -319,7 +347,7 @@ async function exportPdf(action: ExportAction) {
     printWindow?.close();
     setBusy(false);
     showError(messageOf(error), () => { void exportPdf(action); });
-    status.textContent = 'Your answers are still here. Try again when you are ready.';
+    setStatus('Your answers are still here. Try again when you are ready.');
     if (error instanceof FreePdfValidationError && error.fieldName) {
       const invalidField = prepared.fields.find((field) => field.name === error.fieldName);
       if (invalidField?.widgets[0]) {
@@ -337,7 +365,7 @@ async function initialize() {
   if (loading) return;
   loading = true;
   clearError();
-  status.textContent = 'Opening your fillable PDF…';
+  setStatus('Opening your fillable PDF…');
   updateControls();
   try {
     const value: unknown = JSON.parse(element<HTMLElement>('pdf-config').textContent || '{}');
@@ -346,11 +374,8 @@ async function initialize() {
       throw new Error('The form could not be opened. Close this window and choose the free form again.');
     }
     config = value as Config;
-    title.textContent = `${config.formId} · Free PDF form`;
-    document.title = `${config.formId} — Fillable PDF`;
+    setLanguage(config.language === 'ru' ? 'ru' : 'en');
     prepared = await prepareFreePdf(decodeBase64(config.base64), config.formId);
-    values = Object.create(null);
-    prepared.fields.forEach((field) => { values[field.name] = field.value; });
     pdf = await pdfjs.getDocument({
       data: new Uint8Array(prepared.bytes),
       useSystemFonts: true,
@@ -361,16 +386,24 @@ async function initialize() {
     for (let number = 1; number <= pdf.numPages; number += 1) {
       const option = document.createElement('option');
       option.value = String(number);
-      option.textContent = `Page ${number} of ${pdf.numPages}`;
+      option.textContent = `${number} / ${pdf.numPages}`;
+      option.setAttribute('aria-label', t('Page {page} of {total}', { page: number, total: pdf.numPages }));
       pageSelect.append(option);
     }
-    currentPage = 1;
+    const restored = restorePdfDraft(prepared.fields, config.values, config.page, pdf.numPages);
+    values = restored.values;
+    currentPage = restored.page;
     await queueRender();
     if (!errorBox.hidden) return;
-    status.textContent = 'Your answers stay in this window until you save a filled copy.';
-    notify({ type: 'ready' });
+    if (config.resume && restored.focusField) {
+      const input = Array.from(fieldsLayer.querySelectorAll<FieldInput>('[data-field]')).find(candidate => candidate.dataset.field === restored.focusField);
+      input?.scrollIntoView({ block: 'center', inline: 'nearest' });
+      input?.focus({ preventScroll: true });
+    }
+    setStatus('Your progress is saved automatically on this device.');
+    notify({ type: 'ready', values: { ...values }, page: currentPage });
   } catch (error) {
-    status.textContent = 'The PDF is not ready yet.';
+    setStatus('The PDF is not ready yet.');
     showError(messageOf(error), () => { void initialize(); });
   } finally {
     loading = false;
@@ -381,15 +414,24 @@ async function initialize() {
 previousButton.addEventListener('click', () => goToPage(currentPage - 1));
 nextButton.addEventListener('click', () => goToPage(currentPage + 1));
 pageSelect.addEventListener('change', () => goToPage(Number(pageSelect.value)));
-zoomSelect.addEventListener('change', () => { void queueRender(); });
+dismissNoticeButton.addEventListener('click', () => {
+  notice.hidden = true;
+  // Keep keyboard focus in the editor after its close button disappears.
+  if (!saveButton.disabled) saveButton.focus({ preventScroll: true });
+  else { stage.tabIndex = -1; stage.focus({ preventScroll: true }); }
+});
 saveButton.addEventListener('click', () => { void exportPdf('save'); });
 printButton.addEventListener('click', () => { void exportPdf('print'); });
 retryButton.addEventListener('click', () => { const action = retryAction; clearError(); action?.(); });
 function receiveMessage(event: MessageEvent) {
-  if (!config?.native) return;
+  if (!config?.native && event.source !== window.parent) return;
   try {
     const data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
     if (data?.type === 'export-result') finishNativeExport(typeof data.error === 'string' ? data.error : undefined);
+    if (data?.type === 'set-language' && (data.language === 'en' || data.language === 'ru')) setLanguage(data.language);
+    if (data?.type === 'draft-result') setStatus(data.error
+      ? 'Your draft could not be saved. Keep this form open and try closing it again to retry.'
+      : 'Draft saved on this device. Continue anytime from Saved drafts.');
   } catch { /* Unrelated bridge messages are not editor commands. */ }
 }
 window.addEventListener('message', receiveMessage);
@@ -400,8 +442,8 @@ window.addEventListener('resize', () => {
   clearTimeout(resizeTimer);
   resizeTimer = setTimeout(() => {
     // The mobile keyboard changes height, but does not require replacing inputs.
-    if (zoomSelect.value === 'fit' && pdf && !busy && Math.abs(stage.clientWidth - renderedStageWidth) > 1) void queueRender();
+    if (pdf && !busy && Math.abs(stage.clientWidth - renderedStageWidth) > 1) void queueRender();
   }, 180);
 });
-help.textContent = defaultHelp;
+help.textContent = t(defaultHelp);
 void initialize();

@@ -30,54 +30,6 @@ document.querySelectorAll('[data-year]').forEach(node => {
   node.textContent = String(new Date().getFullYear());
 });
 
-function revealFooterSection() {
-  const id = window.location.hash.slice(1);
-  if (!['privacy', 'support', 'status', 'guarantee'].includes(id)) return;
-  const section = document.getElementById(id);
-  if (section instanceof HTMLDetailsElement) section.open = true;
-}
-revealFooterSection();
-window.addEventListener('hashchange', revealFooterSection);
-
-async function updateLocalServiceStatus() {
-  const loopbackHosts = new Set(['localhost', '127.0.0.1', '[::1]', '::1']);
-  if (!loopbackHosts.has(window.location.hostname)) return;
-
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 4000);
-  try {
-    const response = await fetch(new URL('/api/status', window.location.origin), {
-      signal: controller.signal, cache: 'no-store',
-    });
-    if (!response.ok) return;
-    const status = await response.json();
-    if (status.local !== true || status.contactDelivery !== 'local-inbox') return;
-
-    const copy = {
-      '[data-status-label]': 'Local testing',
-      '[data-status-copy]': 'Contact and attorney requests can be saved to the local team inbox for testing. FILLOUT AI responses are scripted. Live AI, full PDF generation, payments, and government filing are not connected. A preliminary form check does not confirm every filing requirement.',
-      '[data-privacy-delivery]': 'Submitted contact and attorney requests are stored in the local team inbox on this computer for testing. They are not sent to an outside legal team, AI service, or government agency.',
-      '[data-support-label]': 'Local team inbox',
-      '[data-support-copy]': 'Use the app’s contact or attorney request form to send a test request to the local team inbox. You can open that inbox below to review it. This local test does not book an attorney or promise a reply.',
-      '[data-attorney-status]': 'Local test · Requests saved locally',
-    };
-    for (const [selector, value] of Object.entries(copy)) {
-      const element = document.querySelector(selector);
-      if (element) element.textContent = value;
-    }
-    const inbox = document.querySelector('[data-local-inbox]');
-    if (inbox) {
-      inbox.href = new URL('/local-inbox/', window.location.origin).href;
-      inbox.hidden = false;
-    }
-  } catch {
-    // Static and unavailable local servers keep the preview-only defaults.
-  } finally {
-    clearTimeout(timeout);
-  }
-}
-updateLocalServiceStatus();
-
 // Discovery uses the same status/goal data as the app. Preparation checks run there.
 const statusSelect = document.querySelector('#finder-status');
 const goalSelect = document.querySelector('#finder-goal');
@@ -97,6 +49,7 @@ if (statusSelect && goalSelect && results && resetFinder && finderSubmit && find
       const status = selectedStatus();
       goalSelect.replaceChildren(placeholder(status ? 'Choose what you want to do' : 'Choose your status first'));
       (status?.goals || []).forEach(goal => goalSelect.add(new Option(goal.label, goal.id)));
+      localizeTree(goalSelect);
       goalSelect.disabled = !status;
       finderSubmit.disabled = !status;
       resetFinder.hidden = !status;
@@ -111,12 +64,12 @@ if (statusSelect && goalSelect && results && resetFinder && finderSubmit && find
       if (!goal) return;
       const label = document.createElement('p');
       label.className = 'finder-match-label';
-      label.textContent = goal.forms.length === 1 ? 'Your form match' : 'Forms to explore';
+      setText(label, goal.forms.length === 1 ? 'Your form match' : 'Forms to explore');
       results.append(label);
       goal.forms.forEach(id => {
         const original = cards.get(id);
         if (!original) return;
-        const match = original.cloneNode(true);
+        const match = cloneLocalized(original);
         match.removeAttribute('data-catalog-form');
         results.append(match);
       });
@@ -136,7 +89,14 @@ if (statusSelect && goalSelect && results && resetFinder && finderSubmit && find
     });
     // Do not retain a browser-restored goal after a status change or reload.
     resetGoals();
+    window.addEventListener('fillout-language-change', () => {
+      const goal = goalSelect.value;
+      resetGoals();
+      goalSelect.value = goal;
+      showMatches();
+    });
   } catch {
-    results.textContent = 'The finder is unavailable. Browse all forms below to choose your next step.';
+    setText(results, 'The finder is unavailable. Browse all forms below to choose your next step.');
   }
 }
+import { cloneLocalized, localizeTree, setText } from './i18n.js';

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLanguage } from '../LanguageContext';
 import { Image, Pressable, StyleSheet, Text, TextInput, TextInputProps, View, ViewStyle } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { colors, radius } from '../theme';
@@ -42,11 +43,12 @@ export function Field({ label, help, error, multiline, ...props }: TextInputProp
 }
 
 export function BrandMark({ compact = false, width = 280 }: { compact?: boolean; width?: number }) {
+  const { t } = useLanguage();
   return <Image
     source={compact ? require('../../assets/eagle-logo.png') : require('../../assets/fillout-logo-v3.png')}
     style={compact ? styles.brandEmblem : [styles.brandWordmark, { width, height: width * 494 / 1200 }]}
     resizeMode="contain"
-    accessibilityLabel="FILLOUT IMMIGRATION FORMS logo"
+    accessibilityLabel={t("FILLOUT IMMIGRATION FORMS logo")}
   />;
 }
 

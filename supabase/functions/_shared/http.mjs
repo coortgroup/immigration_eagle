@@ -107,7 +107,7 @@ export async function readJson(request, maxBytes = 16_384) {
   }
 }
 
-async function boundedFetchJson(url, init, fetchImpl) {
+export async function boundedFetchJson(url, init, fetchImpl, maxBytes = 65_536) {
   try {
     const response = await fetchImpl(url, { ...init, redirect: 'error', signal: AbortSignal.timeout(10_000) });
     // Trusted services are still bounded; never echo an upstream error or user record.
@@ -120,7 +120,7 @@ async function boundedFetchJson(url, init, fetchImpl) {
         const { value, done } = await reader.read();
         if (done) break;
         size += value.byteLength;
-        if (size > 65_536) throw unavailable();
+        if (size > maxBytes) throw unavailable();
         chunks.push(value);
       }
     } finally { reader.cancel().catch(() => {}); }
@@ -148,12 +148,16 @@ export async function requireVerifiedUser(request, config, fetchImpl = fetch) {
   if (body.is_anonymous !== false || typeof body.email !== 'string' || !body.email || !body.email_confirmed_at) {
     throw new HttpError(403, 'email_verification_required', 'Verify your email before continuing.');
   }
-  return { id: body.id };
+  return { id: body.id, lastSignInAt: body.last_sign_in_at };
 }
 
 export async function serviceRpc(config, name, args, fetchImpl = fetch) {
   // RPC names are constants in server code, never supplied by the caller.
-  if (!['fillout_submit_request', 'fillout_consume_ai_quota'].includes(name)) throw unavailable();
+  if (!['fillout_submit_request', 'fillout_consume_ai_quota', 'fillout_support_list', 'fillout_support_send',
+    'fillout_account_deletion_status', 'fillout_account_deletion_begin',
+    'fillout_support_operator_access', 'fillout_support_inbox', 'fillout_support_reply', 'fillout_support_operator_list',
+    'fillout_payment_sync_begin', 'fillout_payment_sync_finish', 'fillout_payment_case', 'fillout_payment_case_access', 'fillout_payment_webhook',
+    'fillout_form_review_submit', 'fillout_form_review_list', 'fillout_form_review_inbox', 'fillout_form_review_file', 'fillout_form_review_decide', 'fillout_form_review_decision_context'].includes(name)) throw unavailable();
   const { response, body } = await boundedFetchJson(`${config.supabaseUrl}/rest/v1/rpc/${name}`, {
     method: 'POST',
     headers: {
@@ -163,11 +167,15 @@ export async function serviceRpc(config, name, args, fetchImpl = fetch) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(args),
-  }, fetchImpl);
+  }, fetchImpl, name === 'fillout_form_review_file' ? 12 * 1024 * 1024
+    : ['fillout_form_review_list','fillout_form_review_inbox'].includes(name) ? 256 * 1024 : 65_536);
   if (response.ok) return body;
+  if (body?.code === 'PT402') throw new HttpError(402, 'payment_required', 'Complete payment for this application before continuing.');
+  if (body?.code === 'PT409' && body.message === 'purchase_already_pending') throw new HttpError(409, 'purchase_pending', 'A purchase is awaiting confirmation. Check payment before trying again.');
   if (body?.code === 'PT409') throw new HttpError(409, 'request_conflict', 'This request has already been used. Start a new request to change its details.');
   if (body?.code === 'PT429') throw new HttpError(429, 'rate_limited', 'The request limit has been reached. Please try again later.');
-  if (body?.code === 'PT403') throw new HttpError(403, 'email_verification_required', 'Verify your email before continuing.');
+  if (body?.code === 'PT403') throw new HttpError(403, name.startsWith('fillout_form_review_') ? 'review_access_required' : 'email_verification_required', name.startsWith('fillout_form_review_') ? 'This form is not available to this account.' : 'Verify your email before continuing.');
+  if (body?.code === 'PT422') throw new HttpError(422, 'invalid_request', 'Check your request and try again.');
   throw unavailable();
 }
 

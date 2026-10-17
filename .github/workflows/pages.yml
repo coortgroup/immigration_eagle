@@ -32,9 +32,11 @@ jobs:
       - run: npm run build
         env:
           PAGES_BASE_PATH: ${{ steps.pages.outputs.base_path }}
-          EXPO_PUBLIC_SUPABASE_URL: ${{ vars.EXPO_PUBLIC_SUPABASE_URL }}
-          EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${{ vars.EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY }}
-          EXPO_PUBLIC_ENABLE_LIVE_AI: ${{ vars.EXPO_PUBLIC_ENABLE_LIVE_AI }}
+          EXPO_PUBLIC_SUPABASE_URL: 'https://ceoliqoctkgwkphbmkiv.supabase.co'
+          EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY: 'sb_publishable_FKXdjwUf6t0PjajntcvqiQ_EcP46vDI'
+          EXPO_PUBLIC_ENABLE_LIVE_AI: 'false'
+          EXPO_PUBLIC_ENABLE_AI_PAYMENTS: 'false'
+          EXPO_PUBLIC_PAYMENT_TEST_BUILD: 'false'
           CI: '1'
       - uses: actions/upload-pages-artifact@v3
         with:

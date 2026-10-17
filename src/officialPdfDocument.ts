@@ -29,12 +29,13 @@ export async function loadPrintTemplate(module: number): Promise<Uint8Array> {
 }
 
 /** Keep the completed document local until the user explicitly downloads, prints or shares it. */
-export async function createPrintableDocument(bytes: Uint8Array, formId: string): Promise<PrintableDocument> {
+export async function createPrintableDocument(bytes: Uint8Array, formId: string, dialogTitle = 'Save or share completed form', options: { test?: boolean } = {}): Promise<PrintableDocument> {
   if (!bytes.byteLength) throw new Error('The completed PDF is empty.');
-  const formCode = /^[A-Z]{1,3}-[0-9]{1,5}[A-Z]?$/.test(formId) ? formId : 'Form';
-  if (Platform.OS === 'web') return createWebDocument(bytes, `${formCode}-filled.pdf`);
+  const formCode = /^[A-Z]{1,3}-[0-9]{1,5}[A-Z]{0,3}$/.test(formId) ? formId : 'Form';
+  const filename = `${options.test ? 'TEST-' : ''}${formCode}-filled`;
+  if (Platform.OS === 'web') return createWebDocument(bytes, `${filename}.pdf`);
 
-  const file = new File(Paths.cache, `${formCode}-filled-${randomUUID()}.pdf`);
+  const file = new File(Paths.cache, `${filename}-${randomUUID()}.pdf`);
   try {
     file.create();
     file.write(bytes);
@@ -59,7 +60,7 @@ export async function createPrintableDocument(bytes: Uint8Array, formId: string)
 
   const share = () => useDocument(async () => {
     if (!await Sharing.isAvailableAsync()) throw new Error('Saving and sharing files is unavailable on this device.');
-    await Sharing.shareAsync(file.uri, { mimeType: 'application/pdf', UTI: 'com.adobe.pdf', dialogTitle: 'Save or share completed form' });
+    await Sharing.shareAsync(file.uri, { mimeType: 'application/pdf', UTI: 'com.adobe.pdf', dialogTitle });
   });
   return {
     uri: file.uri,

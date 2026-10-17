@@ -81,12 +81,12 @@ export function validateRequest(input) {
   if (!input || typeof input !== 'object' || Array.isArray(input)) {
     throw new HttpError(422, 'Request must be a JSON object.');
   }
-  const allowed = new Set(['type', 'name', 'email', 'phone', 'question', 'formId']);
+  const allowed = new Set(['type', 'name', 'email', 'phone', 'question', 'formId', 'attorneyConsent']);
   const errors = {};
   if (Object.keys(input).some(key => !allowed.has(key))) errors.fields = 'The request contains unsupported fields.';
   const value = {};
   for (const field of allowed) {
-    if (input[field] === undefined && ['email', 'phone', 'formId'].includes(field)) value[field] = '';
+    if (input[field] === undefined && ['email', 'phone', 'formId', 'attorneyConsent'].includes(field)) value[field] = '';
     else if (typeof input[field] !== 'string') { errors[field] = 'Must be text.'; value[field] = ''; }
     else value[field] = input[field].trim();
   }
@@ -98,7 +98,10 @@ export function validateRequest(input) {
   if (value.phone && (value.phone.length > 40 || !/^\+?[\d\s().-]+$/.test(value.phone) || digits.length < 7 || digits.length > 15)) errors.phone = 'Enter a valid phone number.';
   if (!value.question || value.question.length > 3000 || /\u0000/.test(value.question)) errors.question = 'Enter a question of 1–3,000 characters.';
   if (value.formId && !/^[A-Z]{1,3}-\d{1,4}[A-Z]{0,2}$/.test(value.formId)) errors.formId = 'Use a form identifier such as N-400.';
+  if (value.type === 'attorney' && value.attorneyConsent !== 'share-contact-and-question-v1') errors.attorneyConsent = 'Confirm permission to share this request with an independent attorney.';
+  if (value.type !== 'attorney' && input.attorneyConsent !== undefined) errors.attorneyConsent = 'Consent is only accepted for attorney requests.';
   if (Object.keys(errors).length) throw new HttpError(422, 'Check the request fields.', errors);
+  if (!value.attorneyConsent) delete value.attorneyConsent;
   if (!value.formId) delete value.formId;
   return value;
 }

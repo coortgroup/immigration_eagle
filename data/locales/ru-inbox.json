@@ -1,0 +1,20 @@
+{
+  "Client messages": "Сообщения клиентов",
+  "My chat": "Мой чат",
+  "Open a conversation to reply personally.": "Откройте переписку, чтобы ответить клиенту лично.",
+  "Loading client messages…": "Загрузка переписок…",
+  "No client messages yet.": "Сообщений от клиентов пока нет.",
+  "Client": "Клиент",
+  "Needs reply": "Ждёт ответа",
+  "More conversations": "Ещё переписки",
+  "Reply to client": "Ответ клиенту",
+  "Write a reply…": "Напишите ответ…",
+  "Send reply": "Отправить ответ",
+  "Replies are sent as FillOut team.": "Ответы отправляются от команды FillOut.",
+  "Send or clear your reply before switching conversations.": "Отправьте или очистите ответ перед переходом в другую переписку.",
+  "No messages yet.": "Сообщений пока нет.",
+  "Client messages could not be loaded. Please try again.": "Не удалось загрузить переписки клиентов. Попробуйте ещё раз.",
+  "Select a client conversation.": "Выберите переписку с клиентом.",
+  "This account does not have access to client messages.": "У этого аккаунта нет доступа к перепискам клиентов.",
+  "Check your request and try again.": "Проверьте запрос и попробуйте ещё раз."
+}

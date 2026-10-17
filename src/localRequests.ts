@@ -8,6 +8,7 @@ export type LocalRequest = {
   phone?: string;
   question: string;
   formId?: string;
+  attorneyConsent?: 'share-contact-and-question-v1';
 };
 
 function localOrigin(): string | null {

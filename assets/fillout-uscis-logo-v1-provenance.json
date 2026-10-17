@@ -1,0 +1,8 @@
+{
+  "tool": "Built-in ImageGen",
+  "date": "2026-10-12",
+  "source": "assets/fillout-logo-v3.png",
+  "output": "assets/fillout-uscis-logo-v1.png",
+  "transparent_background": true,
+  "prompt": "Edit the attached existing transparent logo into a clean finished horizontal brand lockup. Preserve the existing illustrated bald eagle and shield on the LEFT faithfully: white eagle, gold outlines, navy shield with white stars and red/white stripes. Preserve its detailed visual identity and proportions. Replace ALL existing lettering on the RIGHT. The exact new text is two lines only: first line 'FillOut' (case-sensitive: capital F and O, other letters lowercase), second line 'USCIS' (all capitals). Both lines must be substantial, highly legible, elegant navy lettering, using a refined bold serif consistent with the original wordmark. A subtle thin gold horizontal rule between the two lines may echo the original. Align the two-line text as one balanced block alongside the eagle and shield. Remove 'IMMIGRATION FORMS' and the old all-capitals 'FILLOUT' completely. No additional text, no caption, no enclosing card, no background, no mockup. Keep navy and gold brand colors. True transparent alpha background, crisp high resolution, generously padded canvas with the entire emblem and lettering fully visible. Deliver only the logo artwork."
+}

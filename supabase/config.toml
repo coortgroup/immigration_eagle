@@ -34,3 +34,24 @@ verify_jwt = false
 
 [functions.ai-assistant]
 verify_jwt = false
+
+[functions.support-chat]
+verify_jwt = false
+
+# Handler authorizes new deletion via Auth and retry via a 256-bit one-time capability.
+[functions.delete-account]
+verify_jwt = false
+
+[functions.support-inbox]
+verify_jwt = false
+
+# Verified customers submit; service-provisioned reviewers approve exact immutable PDFs.
+[functions.form-review]
+verify_jwt = false
+
+# Customer payment endpoint verifies Auth; provider webhook requires authorization + HMAC.
+[functions.ai-payment]
+verify_jwt = false
+
+[functions.revenuecat-webhook]
+verify_jwt = false

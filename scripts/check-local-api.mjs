@@ -80,8 +80,19 @@ try {
   check(saved.requests[0].question === 'Help me choose a form.', 'Question is saved accurately');
   if (process.platform !== 'win32') check(((await stat(storage)).mode & 0o777) === 0o600, 'Request storage is readable only by its owner');
 
-  const phoneOnly = await post({ type: 'attorney', formId: 'N-400', name: 'Phone Visitor', phone: '+1 (212) 555-0199', question: 'Please call about attorney assistance.' });
-  check(phoneOnly.status === 201, 'Phone-only attorney request is accepted');
+  const attorney = { type: 'attorney', formId: 'N-400', name: 'Phone Visitor', phone: '+1 (212) 555-0199', question: 'Please call about attorney assistance.' };
+  const beforeConsent = (await request('/api/requests')).json.requests.length;
+  for (const consent of [undefined, '', 'yes', 'share-contact-and-question-v0', null, true, { version: 'share-contact-and-question-v1' }]) {
+    const rejected = await post({ ...attorney, attorneyConsent: consent });
+    check(rejected.status === 422 && !!rejected.json.fields.attorneyConsent, 'Attorney requests require the explicit current consent version');
+    check(!rejected.json.id, 'Missing or invalid consent never produces a saved receipt');
+  }
+  check((await request('/api/requests')).json.requests.length === beforeConsent, 'Rejected consent does not write a request');
+  const phoneOnly = await post({ ...attorney, attorneyConsent: 'share-contact-and-question-v1' });
+  check(phoneOnly.status === 201, 'Phone-only attorney request with consent is accepted');
+  const savedAttorney = (await request('/api/requests')).json.requests.find(record => record.id === phoneOnly.json.id);
+  check(savedAttorney.attorneyConsent === 'share-contact-and-question-v1', 'The exact consent version is retained with the attorney request');
+  check(savedAttorney.externalNotification === false, 'Consent does not trigger forwarding or an external notification');
   const maximum = await post({ ...valid, name: 'A'.repeat(150), email: 'a'.repeat(242) + '@example.com', phone: '+1 212 555 0100', question: 'Q'.repeat(3000) });
   check(maximum.status === 201, 'Documented maximum field lengths are accepted');
   const htmlPayload = await post({ ...valid, name: '<img src=x onerror=alert(1)>', question: '<script>globalThis.injected=true</script>' });
@@ -97,6 +108,8 @@ try {
     ['unexpected field', { ...valid, delivery: 'email' }],
     ['wrong field type', { ...valid, name: { value: 'Example' } }],
     ['invalid form ID', { ...valid, formId: '../../private' }],
+    ['attorney consent on a contact request', { ...valid, attorneyConsent: 'share-contact-and-question-v1' }],
+    ['empty attorney consent on a contact request', { ...valid, attorneyConsent: '' }],
   ]) check((await post(payload)).status === 422, `Validation rejects ${label}`);
 
   check((await post(valid, { body: '{bad-json' })).status === 400, 'Malformed JSON is rejected');
@@ -138,7 +151,7 @@ try {
   check(failed.status === 500 && !failed.json.id, 'A storage failure never produces a success receipt');
   check((await readFile(storage, 'utf8')) === corrupt, 'Corrupted data is retained instead of silently overwritten');
   check(!failed.text.includes(temporary) && !failed.text.includes('SyntaxError'), 'Internal paths and error details are not disclosed');
-  console.log(`Local API: ${checks} checks passed (validation, origin/host boundaries, local-only delivery, concurrent durable storage, restart, static-file boundaries, and safe inbox rendering).`);
+  console.log(`Local API: ${checks} checks passed (validation, explicit attorney consent, origin/host boundaries, local-only delivery, concurrent durable storage, restart, static-file boundaries, and safe inbox rendering).`);
 } finally {
   await stop();
   await rm(temporary, { recursive: true, force: true });

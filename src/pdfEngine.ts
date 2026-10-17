@@ -57,7 +57,8 @@ function fail(code: PrintIssueCode, message: string, fieldName?: string): never 
 }
 
 async function sha256(bytes: Uint8Array): Promise<string> {
-  const value = await digest(CryptoDigestAlgorithm.SHA256, new Uint8Array(bytes).buffer);
+  // Native Expo Crypto requires a TypedArray; a bare ArrayBuffer only works on web.
+  const value = await digest(CryptoDigestAlgorithm.SHA256, new Uint8Array(bytes));
   return Array.from(new Uint8Array(value), byte => byte.toString(16).padStart(2, '0')).join('');
 }
 

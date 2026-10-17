@@ -2,7 +2,7 @@ import { createAuthenticatedEndpoint, HttpError, UUID, serviceRpc } from '../_sh
 import { FORM_IDS } from '../_shared/form-ids.mjs';
 
 export function validateRequest(input) {
-  const allowed = new Set(['requestId', 'type', 'name', 'email', 'phone', 'question', 'formId']);
+  const allowed = new Set(['requestId', 'type', 'name', 'email', 'phone', 'question', 'formId', 'attorneyConsent']);
   const fields = {};
   if (Object.keys(input).some(key => !allowed.has(key))) fields.request = 'Unexpected fields are not accepted.';
   const value = {};
@@ -19,10 +19,12 @@ export function validateRequest(input) {
   if (!value.question || value.question.length > 3000 || /[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]/.test(value.question)) fields.question = 'Enter a question of up to 3,000 characters.';
   if (value.formId && !FORM_IDS.has(value.formId)) fields.formId = 'Choose a form from the catalog.';
   if (value.type === 'attorney' && !FORM_IDS.has(value.formId)) fields.formId = 'Choose the form for your attorney request.';
+  if (value.type === 'attorney' && value.attorneyConsent !== 'share-contact-and-question-v1') fields.attorneyConsent = 'Confirm permission to share this request with an independent attorney.';
+  if (value.type !== 'attorney' && input.attorneyConsent !== undefined) fields.attorneyConsent = 'Consent is only accepted for attorney requests.';
   if (Object.keys(fields).length) throw new HttpError(422, 'validation_failed', 'Please check the highlighted fields.', fields);
   return {
     requestId: value.requestId.toLowerCase(),
-    payload: { type: value.type, name: value.name, email: value.email || null, phone: value.phone || null, question: value.question, formId: value.formId || null },
+    payload: { type: value.type, name: value.name, email: value.email || null, phone: value.phone || null, question: value.question, formId: value.formId || null, ...(value.type === 'attorney' ? {attorneyConsent: value.attorneyConsent} : {}) },
   };
 }
 

@@ -1,6 +1,7 @@
 import { useSyncExternalStore } from 'react';
 import { AppState, Platform } from 'react-native';
 import { createClient, FunctionsHttpError, type User } from '@supabase/supabase-js';
+import { accountStorage } from './accountStorage';
 
 // Expo replaces these public values at build time. A service-role key must never be used here.
 const projectUrl = process.env.EXPO_PUBLIC_SUPABASE_URL?.trim() || '';
@@ -36,7 +37,9 @@ async function boundedFetch(input: RequestInfo | URL, init?: RequestInit): Promi
     // deadline and size cap cover a stalled or unexpectedly large JSON body.
     return await Promise.race([deadline, (async () => {
       const response = await fetch(input, { ...init, signal: controller.signal });
-      const limit = 1_048_576;
+      // A reviewed PDF is returned through this authenticated endpoint only.
+      // Keep auth, chat, and every other service at their existing small limit.
+      const limit = requestUrl === `${projectUrl.replace(/\/$/, '')}/functions/v1/form-review` ? 12 * 1024 * 1024 : 1_048_576;
       const declaredLength = Number(response.headers.get('content-length'));
       if (declaredLength > limit) throw new Error('The online response is too large.');
       let bytes: Uint8Array<ArrayBuffer>;
@@ -72,7 +75,7 @@ async function boundedFetch(input: RequestInfo | URL, init?: RequestInit): Promi
 }
 
 const client = cloudConfigured ? createClient(projectUrl, publishableKey, {
-  auth: { persistSession: false, detectSessionInUrl: false, autoRefreshToken: true },
+  auth: { persistSession: true, storage: accountStorage, detectSessionInUrl: false, autoRefreshToken: true },
   global: { fetch: boundedFetch },
 }) : null;
 
@@ -87,10 +90,12 @@ function updateSession(user: User | null, error: string | null = null) {
   listeners.forEach(listener => listener());
 }
 if (client) {
-  client.auth.onAuthStateChange((_event, session) => { updateSession(session?.user || null); });
+  let sessionRevision = 0;
+  client.auth.onAuthStateChange((_event, session) => { sessionRevision++; updateSession(session?.user || null); });
+  const initialRevision = sessionRevision;
   void client.auth.getSession().then(({ data, error }) => {
-    updateSession(data.session?.user || null, error ? 'Please verify your email again to continue.' : null);
-  }).catch(() => updateSession(null, 'Could not check your sign-in. Please try again.'));
+    if (sessionRevision === initialRevision) updateSession(data.session?.user || null, error ? 'Please sign in again to continue.' : null);
+  }).catch(() => { if (sessionRevision === initialRevision) updateSession(null, 'Could not check your sign-in. Please try again.'); });
   if (Platform.OS !== 'web') {
     if (AppState.currentState === 'active') client.auth.startAutoRefresh();
     else client.auth.stopAutoRefresh();
@@ -130,11 +135,103 @@ export async function verifyEmailCode(email: string, code: string): Promise<void
   updateSession(data.user);
 }
 
+export type AccountDetails = { name?: string; email: string; phone: string };
+function cleanProfile(profile: Pick<AccountDetails, 'name' | 'phone'>) {
+  const name = profile.name?.trim();
+  const phone = profile.phone.trim();
+  if (name && name.length > 120) throw new Error('Enter your name (up to 120 characters).');
+  if (!phone) throw new Error('Enter your phone number.');
+  if (!/^\+?[\d\s().-]+$/.test(phone) || phone.replace(/\D/g, '').length < 7 || phone.replace(/\D/g, '').length > 15) {
+    throw new Error('Enter a valid phone number, including its country code if needed.');
+  }
+  // Names are no longer collected here. Omission preserves an existing name.
+  return { ...(name ? { full_name: name } : {}), phone };
+}
+function checkPassword(password: string) {
+  if (!password) throw new Error('Enter your password.');
+}
+function passwordServiceError(error: { code?: string; message?: string }): string | undefined {
+  if (error.code === 'validation_failed' && /^Password cannot be longer than \d+ characters\.?$/i.test(error.message || '')) {
+    return 'This password is too long for the sign-in service. Use a shorter password.';
+  }
+  if (error.code !== 'weak_password') return undefined;
+  const minimum = error.message?.match(/at least (\d{1,3}) characters/i)?.[1];
+  return minimum ? `The sign-in service requires at least ${minimum} characters.`
+    : 'The sign-in service did not accept this password. Choose another password.';
+}
+export async function signUpWithPassword(profile: AccountDetails, password: string) {
+  const email = cleanEmail(profile.email);
+  const details = cleanProfile(profile);
+  checkPassword(password);
+  const { data, error } = await requireClient().auth.signUp({ email, password, options: { data: { ...details, fillout_password_account: true } } });
+  if (error) throw new Error(passwordServiceError(error) || (error.status === 429 ? 'Please wait before trying again.' : 'Your account could not be created. Try signing in or requesting an email code.'));
+  if (data.session && verifiedUser(data.user)) updateSession(data.user);
+  // Existing unconfirmed OTP users keep their original credentials on signup.
+  // Only the server-returned marker can confirm this app created their password.
+  return { confirmationRequired: !data.session, email, passwordSetupRequired: data.user?.user_metadata?.fillout_password_account !== true };
+}
+export async function signInWithPassword(email: string, password: string): Promise<void> {
+  checkPassword(password);
+  const { data, error } = await requireClient().auth.signInWithPassword({ email: cleanEmail(email), password });
+  if (error || !data.session || !verifiedUser(data.user)) throw new Error('Could not sign in. Check your email and password, and confirm your email if you just registered.');
+  updateSession(data.user);
+}
+/** Recovery uses a verified email code and never silently creates a new account. */
+export async function requestSignInCode(email: string): Promise<void> {
+  const { error } = await requireClient().auth.signInWithOtp({ email: cleanEmail(email), options: { shouldCreateUser: false } });
+  if (error) throw new Error(error.status === 429 ? 'Please wait before requesting another code.' : 'The verification email could not be sent. Please try again.');
+}
+export async function saveCloudProfile(profile: Pick<AccountDetails, 'name' | 'phone'>): Promise<void> {
+  if (!state.user) throw new Error('Please sign in again to continue.');
+  const expected = state.user.id;
+  const { data, error } = await requireClient().auth.updateUser({ data: cleanProfile(profile) });
+  if (error || !data.user || data.user.id !== expected || state.user?.id !== expected) throw new Error('Your profile could not be saved. Please try again.');
+  updateSession(data.user);
+}
+export async function changeCloudPassword(password: string): Promise<void> {
+  checkPassword(password);
+  if (!state.user) throw new Error('Please sign in again to continue.');
+  const expected = state.user.id;
+  const { data, error } = await requireClient().auth.updateUser({ password, data: { fillout_password_account: true } });
+  if (error && state.user?.id === expected) throw new Error(passwordServiceError(error) || 'Your password could not be updated. Request a fresh email code and try again.');
+  if (error || !data.user || data.user.id !== expected || state.user?.id !== expected) throw new Error('Your password could not be updated. Request a fresh email code and try again.');
+  updateSession(data.user);
+}
+export async function requestCloudEmailChange(email: string, password: string): Promise<boolean> {
+  const nextEmail = cleanEmail(email);
+  const current = state.user;
+  if (!current?.email) throw new Error('Please sign in again to continue.');
+  // Verify current credentials before changing the account's login identity.
+  await signInWithPassword(current.email, password);
+  if (state.user?.id !== current.id) throw new Error('Your signed-in account changed. Review your details and try again.');
+  const { data, error } = await requireClient().auth.updateUser({ email: nextEmail });
+  if (error || !data.user || data.user.id !== current.id || state.user?.id !== current.id) throw new Error('Your email could not be updated. Please try again.');
+  updateSession(data.user);
+  return data.user.email !== nextEmail;
+}
+export async function refreshCloudUser(): Promise<void> {
+  const api = requireClient();
+  const expected = state.user?.id;
+  if (!expected) throw new Error('Please sign in again to continue.');
+  // getUser only reads the server profile. Refresh the session as well so a
+  // confirmed email change survives reopening the app before token expiry.
+  const { data, error } = await api.auth.refreshSession();
+  if (error) throw new Error('Could not check your sign-in. Please try again.');
+  if (state.user?.id !== expected) return;
+  if (!data.session || !verifiedUser(data.user) || data.user?.id !== expected) {
+    throw new Error('Could not check your sign-in. Please try again.');
+  }
+  updateSession(data.user);
+}
+
 export async function signOutCloud(): Promise<void> {
   const { error } = await requireClient().auth.signOut({ scope: 'local' });
   if (error) throw new Error('Could not sign out. Please try again.');
   updateSession(null);
 }
+
+/** Capture the authenticated owner before and after a store operation. */
+export function getCloudUserId(): string | null { return state.user?.id || null; }
 
 export async function invokeCloudFunction<T>(name: string, body: unknown): Promise<T> {
   const api = requireClient();
@@ -162,4 +259,22 @@ export async function invokeCloudFunction<T>(name: string, body: unknown): Promi
   }
   if (data === null || data === undefined) throw new Error('The server did not confirm the result. Please try again.');
   return data;
+}
+
+/** Retry carries only a random deletion capability, including after Auth removes the session. */
+export async function deleteCloudAccount(deletionToken: string, expectedUserId: string): Promise<void> {
+  const api = requireClient();
+  if (state.user && state.user.id !== expectedUserId) throw new Error('Your signed-in account changed. Review your details and try again.');
+  const { data } = await api.auth.getSession();
+  const token = data.session?.user.id === expectedUserId ? data.session.access_token : undefined;
+  const response = await boundedFetch(`${projectUrl.replace(/\/$/, '')}/functions/v1/delete-account`, {
+    method: 'POST', headers: { apikey: publishableKey, 'Content-Type': 'application/json',
+      ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+    body: JSON.stringify({ confirmation: 'DELETE', deletionToken }),
+  });
+  const result = await response.json().catch(() => null);
+  if (!response.ok || result?.deleted !== true) {
+    const message = result?.error?.message;
+    throw new Error(typeof message === 'string' && message.length <= 400 ? message : 'Account deletion has not been confirmed. Keep this screen open and try again.');
+  }
 }

@@ -31,7 +31,8 @@ export async function loadFreePdfTemplate(formId: string): Promise<Uint8Array> {
   const definition = templatesFile.templates[formId as keyof typeof templatesFile.templates];
   if (!assets[formId] || !definition) throw new Error('This PDF form is not available.');
   const bytes = await loadPrintTemplate(assets[formId]);
-  const hash = await digest(CryptoDigestAlgorithm.SHA256, new Uint8Array(bytes).buffer);
+  // Native Expo Crypto requires a TypedArray; a bare ArrayBuffer only works on web.
+  const hash = await digest(CryptoDigestAlgorithm.SHA256, new Uint8Array(bytes));
   const hex = Array.from(new Uint8Array(hash), value => value.toString(16).padStart(2, '0')).join('');
   if (hex !== definition.sha256) throw new Error('This form could not be verified. Please reload the PDF.');
   return bytes;

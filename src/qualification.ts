@@ -39,10 +39,12 @@ export function validateField(field: PreparationField, value: string): string | 
   return null;
 }
 
-export function draftProgress(fields: PreparationField[], answers: Record<string, string>) {
+export function draftProgress(fields: PreparationField[], answers: Record<string, string>, completedFieldIds: string[] = []) {
   const firstInvalid = fields.findIndex(field => validateField(field, answers[field.id] || '') !== null);
   const answered = fields.filter(field => !!answers[field.id]?.trim() && validateField(field, answers[field.id]) === null).length;
-  return { answered, total: fields.length, firstInvalid, complete: fields.length > 0 && firstInvalid < 0 };
+  const firstUnanswered = fields.findIndex(field => validateField(field, answers[field.id] || '') !== null
+    || (!answers[field.id]?.trim() && !completedFieldIds.includes(field.id)));
+  return { answered, total: fields.length, firstInvalid, firstUnanswered, complete: fields.length > 0 && firstUnanswered < 0 };
 }
 
 // Resume against today's questions instead of trusting a previously saved result.
@@ -51,8 +53,9 @@ export function draftResume(
   checks: Record<string, QualificationAnswer>,
   fields: PreparationField[],
   answers: Record<string, string>,
+  completedFieldIds: string[] = [],
 ) {
-  return { qualification: evaluateQualification(schema, checks), progress: draftProgress(fields, answers) };
+  return { qualification: evaluateQualification(schema, checks), progress: draftProgress(fields, answers, completedFieldIds) };
 }
 
 export function matchesFormSearch(form: FormRecord, query: string, alternateTitle = ''): boolean {
@@ -60,7 +63,7 @@ export function matchesFormSearch(form: FormRecord, query: string, alternateTitl
   const normalize = (value: string) => value.toLowerCase()
     .replace(/[\u2010-\u2015\u2212]/g, '-')
     .replace(/\b([a-z]{1,2})[\s-]*(\d+)([a-z]*)\b/g, '$1$2$3')
-    .replace(/[^a-z0-9]+/g, ' ').trim();
+    .replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
   const haystack = normalize(`${form.id} ${form.title} ${form.summary} ${form.category} ${alternateTitle}`);
   return normalize(query).split(/\s+/).every(word => haystack.includes(word));
 }

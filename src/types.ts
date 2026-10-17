@@ -1,4 +1,6 @@
 export type PreparationMode = 'self' | 'ai' | 'attorney';
+export type DraftStage = 'check' | 'interview' | 'fullPreparation' | 'freePreparation' | 'attorney';
+export type AttorneyStatus = 'awaiting_call' | 'preparing_documents' | 'sent';
 export type QualificationAnswer = 'yes' | 'no' | 'unsure';
 export type QuestionOutcome = 'next' | 'stop' | 'review';
 
@@ -51,4 +53,8 @@ export interface DraftSummary {
   answered: number;
   total: number;
   updatedAt: string;
+  mode?: PreparationMode;
+  stage?: DraftStage;
+  attorneyStatus?: AttorneyStatus;
+  paymentCaseId?: string;
 }
