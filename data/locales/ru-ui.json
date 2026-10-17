@@ -387,5 +387,8 @@
   "Continue request {formId}": "Продолжить заявку {formId}",
   "Free contact request. Review your details and permission to share before sending. Legal services are arranged directly with the attorney.": "Бесплатная заявка. Перед отправкой проверьте данные и согласие на их передачу. Юридические услуги согласуются напрямую с адвокатом.",
   "Choose how to prepare, or leave a free request for an attorney to contact you.": "Выберите способ подготовки или оставьте бесплатную заявку для связи с адвокатом.",
-  "The App Store shows the final price before payment. Government filing fees are separate.": "App Store покажет окончательную цену перед оплатой. Государственные сборы оплачиваются отдельно."
+  "The App Store shows the final price before payment. Government filing fees are separate.": "App Store покажет окончательную цену перед оплатой. Государственные сборы оплачиваются отдельно.",
+  "Prices are in USD. The App Store confirms the final FillOut price. Attorney services are paid directly to the attorney; sending a request is free. Government fees are separate.": "Цены указаны в долларах США. Итоговую цену FillOut подтвердит App Store. Услуги адвоката оплачиваются ему напрямую; отправка заявки бесплатна. Государственные сборы оплачиваются отдельно.",
+  "Attorney service price · Confirm the scope and final fee with the attorney.": "Стоимость услуг адвоката · Объём услуг и итоговую сумму уточните у адвоката.",
+  "Free request · Pay the attorney directly for legal services.": "Заявка бесплатная · Юридические услуги оплачиваются адвокату напрямую."
 }

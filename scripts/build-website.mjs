@@ -12,17 +12,35 @@ const appOutput = path.join(output, 'app');
 try { await access(path.join(appExport, 'index.html')); }
 catch { throw new Error('A complete Expo web export is required. Run npm run build:web first.'); }
 const readData = async name => JSON.parse(await readFile(path.join(root, 'data', name), 'utf8'));
-const [catalog, finder] = await Promise.all([readData('forms-catalog.json'), readData('form-finder.json')]);
+const [catalog, finder, pricing, attorneys] = await Promise.all([
+  readData('forms-catalog.json'), readData('form-finder.json'),
+  readData('form-pricing.json'), readData('attorney-pricing.json'),
+]);
 const mainIds = ['N-400', 'I-90', 'I-130', 'I-485', 'I-765', 'I-751', 'I-129F', 'I-864'];
 const escapeHtml = value => String(value).replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
 const formsById = new Map(catalog.forms.map(form => [form.id, form]));
+const pricesById = new Map(pricing.forms.map(form => [form.id, form]));
+const attorneysById = new Map(attorneys.forms.map(form => [form.id, form]));
+const money = value => typeof value === 'number' ? '$' + Math.round(value).toLocaleString('en-US') : 'Quote required';
+const attorneyScopes = {
+  'I-90': 'Replacement', 'I-129F': 'Petition stage', 'I-130': 'Petition only',
+  'I-485': 'Standalone filing', 'I-751': 'Joint petition', 'I-131': 'Reentry permit',
+  'I-821D': 'Renewal with work permit', 'G-639': 'Request and records review',
+};
 function aiPrice(id) {
+  const item = pricesById.get(id);
+  if (!item) throw new Error(`Missing preparation price for ${id}`);
+  const reference = item.citizenPath;
+  const parentId = reference.includedWith?.[0] || reference.requiredPackage;
+  const parentPrice = pricesById.get(parentId)?.eagleAi.serviceAmountUsd30;
   if (['AR-11', 'G-1145'].includes(id)) return { price: 'Free', note: '' };
   if (id === 'G-639') return { price: 'Not offered', note: 'FOIA requests generally must be submitted online' };
-  if (['I-765WS', 'I-821', 'I-821D'].includes(id)) return { price: 'Review first', note: 'Paid preparation is not offered' };
-  if (id === 'I-130A') return { price: 'Included', note: 'With a qualifying I-130 or I-485 application' };
-  if (id === 'I-864A') return { price: 'In-app price', note: 'Separate add-on to I-864' };
-  return { price: 'In-app price', note: 'One payment per application' };
+  if (reference.status === 'not-offered') return { price: 'Not offered', note: 'Paid preparation is not offered' };
+  if (id === 'I-765WS') return { price: money(parentPrice), note: 'I-821D package · Paid preparation currently unavailable' };
+  if (id === 'I-821D') return { price: money(item.eagleAi.serviceAmountUsd30), note: 'Includes I-765 and I-765WS · Paid preparation currently unavailable' };
+  if (reference.status === 'included') return { price: money(parentPrice), note: `Included in ${parentId} · full package price` };
+  if (reference.status === 'add-on') return { price: '+' + money(item.eagleAi.serviceAmountUsd30), note: `Add-on to ${parentId} (${money(parentPrice)})` };
+  return { price: money(item.eagleAi.serviceAmountUsd30), note: id === 'I-485' ? 'Base package' : 'One payment per application' };
 }
 
 const formLabels = {
@@ -37,6 +55,8 @@ const formLabels = {
 
 function formCard(form) {
   const ai = aiPrice(form.id);
+  const attorney = attorneysById.get(form.id);
+  if (!attorney) throw new Error(`Missing attorney price for ${form.id}`);
   const recordsRequest = form.id === 'G-639';
   const action = recordsRequest
     ? `<a class="form-start" href="${escapeHtml(form.officialUrl)}" target="_blank" rel="noopener noreferrer">Request records at USCIS <span aria-hidden="true">↗</span></a>`
@@ -44,7 +64,7 @@ function formCard(form) {
   const priceColumn = (label, price, note = '') => `<div><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(price)}</dd>${note ? `<dd class="price-note">${escapeHtml(note)}</dd>` : ''}</div>`;
   return `<article class="catalog-card" data-catalog-form="${escapeHtml(form.id)}">
   <div class="form-heading"><span class="catalog-form-code">${escapeHtml(form.id)}</span><div><h3>${escapeHtml(formLabels[form.id] || form.title)}</h3><p>${escapeHtml(form.summary)}</p></div></div>
-  <dl class="price-grid" aria-label="Preparation prices for ${escapeHtml(form.id)}">${priceColumn('Do it yourself', recordsRequest ? 'USCIS online' : 'Free')}${priceColumn('With FillOut', ai.price, ai.note)}</dl>
+  <dl class="price-grid" aria-label="Preparation prices for ${escapeHtml(form.id)}">${priceColumn('Do it yourself', 'Free', recordsRequest ? 'USCIS online' : '')}${priceColumn('With FillOut', ai.price, ai.note)}${priceColumn('With an attorney', money(attorney.servicePriceUsd), attorneyScopes[form.id] || '')}</dl>
   <div class="form-card-footer">${action}<a class="official-link" href="${escapeHtml(form.officialUrl)}" target="_blank" rel="noopener noreferrer" aria-label="Official USCIS information for ${escapeHtml(form.id)}, opens a new tab">USCIS <span aria-hidden="true">↗</span></a></div>
 </article>`;
 }

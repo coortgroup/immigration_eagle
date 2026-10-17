@@ -17,7 +17,25 @@ assert.ok(!landing.includes('href="app/?form=G-639"'),'FOIA must direct users to
 assert.ok(landing.includes('Request records at USCIS'));
 assert.equal((landing.match(/<dt>Do it yourself<\/dt>/g)||[]).length,21);
 assert.equal((landing.match(/<dt>With FillOut<\/dt>/g)||[]).length,21);
-assert.equal((landing.match(/<dt>With an attorney<\/dt>/g)||[]).length,0);
+assert.equal((landing.match(/<dt>With an attorney<\/dt>/g)||[]).length,21);
+assert.ok(landing.includes('An attorney request is free.'));
+assert.ok(landing.includes('Legal services are paid directly to the attorney, with no attorney payment in the app.'));
+const attorneyPrices = JSON.parse(await readFile('data/attorney-pricing.json', 'utf8')).forms;
+const preparationPrices = JSON.parse(await readFile('data/form-pricing.json', 'utf8')).forms;
+for (const form of catalog) {
+  const card = landing.match(new RegExp(`<article class="catalog-card" data-catalog-form="${form.id}">([\\s\\S]*?)<\\/article>`))?.[1];
+  assert.ok(card, `Missing price card for ${form.id}`);
+  assert.equal((card.match(/<dt>/g) || []).length, 3, `Three preparation options for ${form.id}`);
+  const attorney = attorneyPrices.find(item => item.id === form.id);
+  const expectedAttorneyPrice = typeof attorney.servicePriceUsd === 'number' ? '$' + Math.round(attorney.servicePriceUsd).toLocaleString('en-US') : 'Quote required';
+  assert.ok(card.includes(`<dt>With an attorney</dt><dd>${expectedAttorneyPrice}</dd>`), `Attorney price for ${form.id}`);
+  const preparation = preparationPrices.find(item => item.id === form.id);
+  const amount = preparation.eagleAi.serviceAmountUsd30;
+  if (typeof amount === 'number' && amount > 0) {
+    const prefix = preparation.citizenPath.status === 'add-on' ? '+' : '';
+    assert.ok(card.includes(`<dt>With FillOut</dt><dd>${prefix}$${Math.round(amount).toLocaleString('en-US')}</dd>`), `FillOut price for ${form.id}`);
+  }
+}
 assert.ok(!/guaranteed\.|planned guarantee|guarantee-badge|no payment is collected|app preview/i.test(landing),'Remove obsolete purchase and guarantee claims');
 const policyPages = [];
 for (const language of ['en','ru']) for (const page of ['privacy','support','terms']) {
@@ -48,4 +66,4 @@ for(const [html,folder] of [[landing,''],[app,'app'],...policyPages]) {
   for(const match of html.matchAll(/(?:href|src)="([^"]+)"/g)) await checkReference(match[1],folder);
 }
 assert.ok(app.includes(`${base}/app/_expo/static/js/web/`),'Missing production app bundle');
-console.log(`Built website: 21 forms, 42 preparation columns, 6 static EN/RU policy pages and ${files} local asset/page references passed.`);
+console.log(`Built website: 21 forms, 63 preparation columns, original FillOut/attorney prices, 6 static EN/RU policy pages and ${files} local asset/page references passed.`);

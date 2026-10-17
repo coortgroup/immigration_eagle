@@ -89,9 +89,9 @@ function aiOffer(id: string) {
   const parent = target ? pricing.forms.find((record: any) => record.id === target) : undefined;
   const amount = item.eagleAi.serviceAmountUsd30;
   if (reference.status === 'not-offered') return { price: 'Ask our team', note: 'Availability needs confirmation', unavailable: true, target: null };
-  if (reference.status === 'included') return { price: 'Included', note: `Included in ${target}`, unavailable: false, target };
-  if (reference.status === 'add-on') return { price: 'Price at checkout', note: `Add-on to ${target}`, unavailable: false, target };
-  return { price: amount === 0 ? 'Free' : 'Price at checkout', note: amount === 0 ? 'No preparation charge' : 'One payment per application', unavailable: false, target: null };
+  if (reference.status === 'included') return { price: money(parent?.eagleAi.serviceAmountUsd30), note: `Included in ${target} · full package price`, unavailable: false, target };
+  if (reference.status === 'add-on') return { price: '+' + money(amount), note: `Add-on to ${target} (${money(parent?.eagleAi.serviceAmountUsd30)})`, unavailable: false, target };
+  return { price: amount === 0 ? 'Free' : money(amount), note: amount === 0 ? 'No preparation charge' : 'One payment per application', unavailable: false, target: null };
 }
 
 async function openOfficial(url: string | null | undefined, t: (text: string) => string) {
@@ -462,6 +462,7 @@ export function FormsFlow({ onContact, onAccount, draftOwner, onDraftSaved, isAc
     return <View style={styles.priceColumns}>
       <View style={styles.priceColumn}><Text style={styles.priceLabel}>{t("Do it yourself")}</Text><Text numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.7} style={[styles.listPrice, language === 'ru' && { fontSize: contentWidth < 330 ? 12 : 15 }]}>{t("Free")}</Text></View>
       <View style={styles.priceColumn}><Text style={styles.priceLabel}>{t("With FillOut")}</Text><Text numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.6} style={styles.listPrice}>{t(ai.unavailable ? 'Ask in Chat' : ai.price)}</Text>{!!detail && <Text style={styles.priceNote}>{t(detail)}</Text>}{!ai.unavailable && <Pressable accessibilityRole="button" accessibilityLabel={t(`Read service terms for ${item.id}`)} onPress={() => setGuaranteeOpen(true)} hitSlop={6} style={styles.priceGuarantee}><Text style={styles.priceGuaranteeText}>{t("Service terms")}</Text></Pressable>}</View>
+      <View style={[styles.priceColumn, styles.attorneyPriceColumn]}><Text style={styles.priceLabel}>{t("With an attorney")}</Text><Text numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.6} style={styles.listPrice}>{t(typeof lawyerPrice === 'number' ? money(lawyerPrice) : 'Get a quote')}</Text>{typeof lawyerPrice === 'number' && !!attorneyScope[item.id] && <Text style={styles.priceNote}>{t(attorneyScope[item.id])}</Text>}</View>
     </View>;
   }
 
@@ -489,7 +490,7 @@ export function FormsFlow({ onContact, onAccount, draftOwner, onDraftSaved, isAc
         <View style={{ flex: 1, gap: 3 }}><Text style={styles.label}>{t("All other forms")}</Text><Text style={styles.small}>{t("Compare all three preparation options")}</Text></View><Badge>{otherForms.length}</Badge><Ionicons name={otherFormsOpen ? 'chevron-up' : 'chevron-down'} size={20} color={colors.navy} />
       </Pressable>
       {otherFormsOpen && otherForms.map(item => pricedFormRow(item, true))}
-      <Text style={styles.footnote}>{t("The App Store shows the final price before payment. Government filing fees are separate.")}</Text>
+      <Text style={styles.footnote}>{t("Prices are in USD. The App Store confirms the final FillOut price. Attorney services are paid directly to the attorney; sending a request is free. Government fees are separate.")}</Text>
     </View>;
   }
 
@@ -591,17 +592,25 @@ export function FormsFlow({ onContact, onAccount, draftOwner, onDraftSaved, isAc
       <Text accessibilityLiveRegion="polite" style={styles.small}>{visibleForms.length} {t(visibleForms.length === 1 ? 'document' : 'documents')}</Text>
       {visibleForms.length ? <View style={{ gap: 16 }}>{visibleForms.map(formRow)}</View> : <Notice title={t("No forms found")}>{t("Try a form number or a broader search, such as family or travel.")}</Notice>}
       {(!!search || category !== 'All') && <Button title={t("Clear search and filters")} variant="quiet" onPress={() => { setSearch(''); setCategory('All'); }} />}
-      <Text style={styles.footnote}>{t("Government filing fees are separate from preparation services.")}</Text>
+      <Text style={styles.footnote}>{t("Prices are in USD. The App Store confirms the final FillOut price. Attorney services are paid directly to the attorney; sending a request is free. Government fees are separate.")}</Text>
     </>;
   }
 
+  function attorneyPriceDetails() {
+    return <><Text style={styles.label}>{t("With an attorney")}: {t(money(attorney?.servicePriceUsd))}</Text>{!!attorneyScope[form.id] && <Text style={styles.small}>{t(attorneyScope[form.id])}</Text>}<Text style={styles.small}>{t("Attorney service price · Confirm the scope and final fee with the attorney.")}</Text></>;
+  }
+
+  function attorneyServiceCard() {
+    return <Card><View style={styles.sectionHeading}><Ionicons name="briefcase-outline" size={25} color={colors.navy} /><Text style={styles.cardTitle}>{t("With an attorney")}</Text></View><Text style={styles.price}>{t(money(attorney?.servicePriceUsd))}</Text>{!!attorneyScope[form.id] && <Text style={styles.small}>{t(attorneyScope[form.id])}</Text>}<Text style={styles.small}>{t("Attorney service price · Confirm the scope and final fee with the attorney.")}</Text><Text style={styles.body}>{t("With your permission, FillOut passes your contact details and question to an independent attorney. The attorney contacts you directly. Any legal services and fees are agreed with the attorney outside FillOut.")}</Text><Text style={styles.small}>{t("Free request · Pay the attorney directly for legal services.")}</Text><Button title={t("Request attorney contact")} variant="secondary" onPress={() => startCheck('attorney')} /></Card>;
+  }
+
   function details() {
-    if (form.id === 'G-639') return <><Badge>G-639 · FOIA</Badge><SectionTitle title={t(form.title)} subtitle={t(form.summary)} /><Notice>{t('USCIS generally requires FOIA and Privacy Act requests online. Use the USCIS online records service and check its current exceptions before submitting a paper request.')}</Notice><Button title={t('Open USCIS online records request')} icon="open-outline" onPress={() => void openOfficial('https://www.uscis.gov/records/request-records-through-the-freedom-of-information-act-or-privacy-act', t)} /><Button title={t('Request attorney contact')} variant="secondary" onPress={() => void startCheck('attorney')} /></>;
+    if (form.id === 'G-639') return <><Badge>G-639 · FOIA</Badge><SectionTitle title={t(form.title)} subtitle={t(form.summary)} /><Notice>{t('USCIS generally requires FOIA and Privacy Act requests online. Use the USCIS online records service and check its current exceptions before submitting a paper request.')}</Notice><Button title={t('Open USCIS online records request')} icon="open-outline" onPress={() => void openOfficial('https://www.uscis.gov/records/request-records-through-the-freedom-of-information-act-or-privacy-act', t)} />{attorneyServiceCard()}</>;
     return <><Badge gold>{form.id} · {t(form.category)}</Badge><SectionTitle title={t(form.title)} subtitle={t(form.summary)} />
       <Text style={styles.body}>{t("Choose how to prepare, or leave a free request for an attorney to contact you.")}</Text>
       <Card><View style={styles.sectionHeading}><Ionicons name="create-outline" size={25} color={colors.navy} /><Text style={styles.cardTitle}>{t("Do it yourself")}</Text></View><Text numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.7} style={[styles.price, language === 'ru' && { fontSize: 26 }]}>{t("Free")}</Text><Text style={styles.small}>{t("No preparation charge")}</Text><Text style={styles.body}>{t("After the short check, fill in your PDF form, save your answers and print your completed document.")}</Text><Button title={t("Start free form check")} variant="secondary" onPress={() => startCheck('self')} /></Card>
       <Card style={{ borderColor: colors.gold, borderWidth: 1.5 }}><View style={styles.sectionHeading}><Ionicons name="sparkles-outline" size={25} color={colors.navy} /><Text style={styles.cardTitle}>{t("Prepare with FillOut")}</Text></View><Text style={styles.price}>{t(offer.price)}</Text><Text style={styles.small}>{t(offer.note)}</Text><Text style={styles.body}>{t('Answer the official form questions and send your completed form to FillOut for review. Download and print are available after our approval.')}</Text><Button title={t("Check & prepare with FillOut")} variant="gold" onPress={() => startCheck('ai')} /><Text style={styles.footnote}>{t('Payment availability depends on the selected form and store. Follow the official instructions for the sections that apply to you.')}</Text></Card>
-      <Card><View style={styles.sectionHeading}><Ionicons name="briefcase-outline" size={25} color={colors.navy} /><Text style={styles.cardTitle}>{t("Request attorney contact")}</Text></View><Text style={styles.price}>{t("Free request")}</Text><Text style={styles.body}>{t("With your permission, FillOut passes your contact details and question to an independent attorney. The attorney contacts you directly. Any legal services and fees are agreed with the attorney outside FillOut.")}</Text><Button title={t("Request attorney contact")} variant="secondary" onPress={() => startCheck('attorney')} /></Card>
+      {attorneyServiceCard()}
       <Text style={styles.footnote}>{t("AI payment follows a passed form check, before the guided questions. Free self-preparation has no service charge. Government fees are separate.")}</Text>
       <Button title={t("View official USCIS information")} variant="quiet" icon="open-outline" onPress={() => void openOfficial(form.officialUrl, t)} />
     </>;
@@ -678,6 +687,7 @@ export function FormsFlow({ onContact, onAccount, draftOwner, onDraftSaved, isAc
       void autosave(makeDraft('attorney', { attorneyDetails: updated }));
     };
     return <><Badge>{form.id} {t("· ATTORNEY CONTACT REQUEST")}</Badge><SectionTitle title={t("Request attorney contact")} subtitle={t("Leave your contact details and a short question. Sending this request is free.")} /><Notice>{t("With your permission, FillOut passes your contact details and question to an independent attorney. The attorney contacts you directly. Any legal services and fees are agreed with the attorney outside FillOut.")}</Notice>
+      <Card>{attorneyPriceDetails()}<Text style={styles.small}>{t("Free request · Pay the attorney directly for legal services.")}</Text></Card>
       <Field label={t("Your full name")} value={lawyer.name} onChangeText={name => updateLawyer('name', name)} autoComplete="name" maxLength={150} error={t(lawyerErrors.name)} />
       <Field label={t("Email address")} value={lawyer.email} onChangeText={email => updateLawyer('email', email)} autoComplete="email" autoCapitalize="none" keyboardType="email-address" maxLength={254} error={t(lawyerErrors.email)} />
       <Field label={t("Phone number · optional")} value={lawyer.phone} onChangeText={phone => updateLawyer('phone', phone)} autoComplete="tel" keyboardType="phone-pad" maxLength={40} error={t(lawyerErrors.phone)} />
@@ -690,7 +700,7 @@ export function FormsFlow({ onContact, onAccount, draftOwner, onDraftSaved, isAc
     return <><Badge>{form.id} · {t(requestReceipt ? 'REQUEST SAVED' : 'REQUEST PREVIEW')}</Badge>
       <SectionTitle title={t(requestReceipt ? requestReceipt.delivery === 'team-inbox' ? 'Your request has been received' : 'Your request is saved locally' : 'Your request is ready to review')} subtitle={t(requestReceipt ? requestReceipt.delivery === 'team-inbox' ? 'Your details are saved in the FILLOUT team inbox.' : 'Your request is in the local inbox on this computer.' : 'Review your details before sending your request.')} />
       {!!requestReceipt && <Notice tone="success" title={t(requestReceipt.delivery === 'team-inbox' ? 'Request receipt' : 'Local receipt')}><Text selectable style={styles.small}>{t("Reference: ")}{requestReceipt.id}</Text><Text style={styles.small}>{t("Your request is saved for the FillOut team to pass to an independent attorney. No payment was collected. Sending a request does not book an attorney or establish an attorney-client relationship.")}</Text></Notice>}
-      <Card><Text style={styles.cardTitle}>{lawyer.name}</Text><Text style={styles.body}>{lawyer.email}</Text>{!!lawyer.phone && <Text style={styles.body}>{lawyer.phone}</Text>}<View style={styles.divider} /><Text style={styles.label}>{form.id} · {t(form.title)}</Text><Text style={styles.body}>{lawyer.note}</Text><Text style={styles.small}>{t("Free request · No payment in FillOut")}</Text></Card>
+      <Card><Text style={styles.cardTitle}>{lawyer.name}</Text><Text style={styles.body}>{lawyer.email}</Text>{!!lawyer.phone && <Text style={styles.body}>{lawyer.phone}</Text>}<View style={styles.divider} /><Text style={styles.label}>{form.id} · {t(form.title)}</Text><Text style={styles.body}>{lawyer.note}</Text>{attorneyPriceDetails()}<Text style={styles.small}>{t("Free request · No payment in FillOut")}</Text></Card>
       {!!requestError && <Text accessibilityRole="alert" style={styles.error}>{t(requestError)}</Text>}
       {!requestReceipt && <>
         {delivery.cloud && <EmailAccess initialEmail={lawyer.email} disabled={sendingRequest} />}
