@@ -1,9 +1,9 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
-// Only publish a contact address after the owner confirms it is a public support channel.
-export const supportEmail = null;
-const date = { en: 'October 17, 2026', ru: '17 октября 2026 года' };
+// Confirmed by the owner as the public support and privacy contact.
+export const supportEmail = 'peoplechat2@gmail.com';
+const date = { en: 'October 24, 2026', ru: '24 октября 2026 года' };
 const titles = { en: { privacy: 'Privacy Policy', support: 'Support', terms: 'Terms of Use' }, ru: { privacy: 'Политика конфиденциальности', support: 'Поддержка', terms: 'Условия использования' } };
 const content = {
   en: {
@@ -78,7 +78,7 @@ export async function buildPolicyPages(output, webDirectory = new URL('.', impor
     const home = `${prefix}${ru ? '?lang=ru' : ''}`;
     const nav = Object.entries(titles[language]).map(([id, text]) => `<a href="../${id}/"${id === type ? ' aria-current="page"' : ''}>${text}</a>`).join('');
     const contact = supportEmail ? `<p>${ru ? 'Email для поддержки и вопросов о данных:' : 'Support and privacy contact:'} <a href="mailto:${escape(supportEmail)}">${escape(supportEmail)}</a>.</p>` : '';
-    const sections = content[language][type].map(([heading, ...paragraphs], i) => `<section aria-labelledby="section-${i}"><h2 id="section-${i}">${heading}</h2>${paragraphs.map(p=>`<p>${p}</p>`).join('')}${i === 0 && type === 'support' ? `${contact}<p><a class="primary-link" href="${prefix}app/?screen=contact&amp;lang=${language}">${ru ? 'Открыть Chat' : 'Open Chat'}</a></p>` : ''}</section>`).join('\n');
+    const sections = content[language][type].map(([heading, ...paragraphs], i, all) => `<section aria-labelledby="section-${i}"><h2 id="section-${i}">${heading}</h2>${paragraphs.map(p=>`<p>${p}</p>`).join('')}${type === 'support' ? i === 0 ? `${contact}<p><a class="primary-link" href="${prefix}app/?screen=contact&amp;lang=${language}">${ru ? 'Открыть Chat' : 'Open Chat'}</a></p>` : '' : i === all.length - 1 ? contact : ''}</section>`).join('\n');
     const html = `<!doctype html>
 <html lang="${language}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#061b49"><title>${title} — FillOut</title><meta name="description" content="${title} — FillOut immigration form preparation."><link rel="canonical" href="https://fillout.net/${folder}/"><link rel="alternate" hreflang="en" href="https://fillout.net/${type}/"><link rel="alternate" hreflang="ru" href="https://fillout.net/ru/${type}/"><link rel="icon" href="${prefix}assets/favicon.png"><link rel="stylesheet" href="${prefix}policies.css"></head>
 <body><a class="skip-link" href="#main">${ru ? 'Перейти к содержанию' : 'Skip to content'}</a><header class="policy-header"><a class="brand" href="${home}" aria-label="FillOut"><img src="${prefix}assets/fillout-logo-v2.png" width="1200" height="494" alt="FillOut"></a><a class="language-link" lang="${ru ? 'en' : 'ru'}" href="${ru ? '../../' : '../ru/'}${type}/">${ru ? 'English' : 'Русский'}</a></header><nav class="policy-nav" aria-label="${ru ? 'Информация о сервисе' : 'Service information'}">${nav}</nav><main id="main"><p class="eyebrow">FILLOUT</p><h1>${title}</h1><p class="updated">${ru ? 'Обновлено:' : 'Last updated:'} ${date[language]}</p>${sections}</main><footer><a href="${home}">${ru ? 'На главную' : 'Back to home'}</a><p>© 2026 FillOut · ${ru ? 'Независимый сервис. Не связан с USCIS.' : 'Independent service. Not affiliated with USCIS.'}</p></footer></body></html>`;

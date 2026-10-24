@@ -1,6 +1,6 @@
 # App Privacy — FillOut
 
-Проверено 17 октября 2026 года по текущему исходному коду 0.8.0, миграциям, установленным SDK и официальной документации. Это инструкция для декларации; настройки App Store Connect этой проверкой не изменялись.
+Проверено 17 октября и повторно сверено 24 октября 2026 года с текущим исходным кодом **1.0.0**, миграциями, установленными SDK и официальной документацией Apple/RevenueCat. Практики передачи анкет, Chat и покупок не изменились; ниже сохранены применимые категории. Это инструкция для декларации; настройки App Store Connect этой проверкой не изменялись.
 
 ## Что выбрать на iPhone
 
@@ -10,9 +10,9 @@
 2. Отметьте категории из таблицы ниже, затем Save.
 3. Откройте каждый выбранный тип: **App Functionality**, **Linked to the user's identity: Yes**, **Used for tracking: No**.
 4. Для **Purchase History** и **User ID** дополнительно отметьте **Analytics**. Для остальных Analytics не добавляйте.
-5. Проверьте Product Page Preview, затем Publish. Privacy Policy URL: `https://fillout.net/privacy/`; русский вариант: `https://fillout.net/ru/privacy/` — использовать после проверки доступности опубликованных страниц.
+5. Проверьте Product Page Preview, затем Publish. Privacy Policy URL: `https://fillout.net/privacy/`; русский вариант: `https://fillout.net/ru/privacy/`. Оба адреса опубликованы и проверены. Публичный адрес для поддержки и обращений о данных, подтверждённый владельцем: `peoplechat2@gmail.com`.
 
-Путь и необходимость завершить каждый тип перед Publish описаны в [инструкции Apple](https://developer.apple.com/help/app-store-connect/manage-app-information/manage-app-privacy/).
+Путь и необходимость завершить каждый тип перед Publish описаны в [инструкции Apple](https://developer.apple.com/help/app-store-connect/manage-app-information/manage-app-privacy/). Apple разрешает это ролям Account Holder, Admin и App Manager: владелец не обязан лично заполнять таблицу, если доступна авторизованная сессия с подходящей ролью. Это отдельный шаг от подписи Paid Apps Agreement.
 
 | Раздел Apple | Отметить | Почему это есть в FillOut |
 | --- | --- | --- |
